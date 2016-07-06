@@ -18,7 +18,8 @@ class Sidebar extends Component {
                 var $i = $('<i/>').addClass('mi').prependTo($item)
 
                 if (item.selected) $item.addClass('selected')
-                if (item.icon == 'drive') $i.addClass('mi-console-xbox')
+                if (item.icon == 'usb') $i.addClass('mi-usb')
+                else if (item.icon == 'sd') $i.addClass('mi-sd')
                 else $i.addClass('mi-console-xbox')
 
                 $ol.append($item)

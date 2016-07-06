@@ -1,5 +1,8 @@
-class Component {
+const EventEmitter = require('events')
+
+class Component extends EventEmitter {
     constructor($element, data = {}) {
+        super()
         this.$element = $element
         this._data = data
     }
