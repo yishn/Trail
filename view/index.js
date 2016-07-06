@@ -1,14 +1,19 @@
-const $ = require('sprint-js')
+(function() {
 
+const $ = require('sprint-js')
 const setting = require('../modules/setting')
 
 $(document).ready(function() {
+    // Initialize split view
+
     var splitjs = require('split.js')
     var sidebarWidth = +setting.get('sidebar.width')
 
     splitjs(['#sidebar', 'main'], {
         sizes: [sidebarWidth, 100 - sidebarWidth],
-        gutterSize: 4,
-        snapOffset: 20
+        gutterSize: 2,
+        snapOffset: 1
     })
 })
+
+})()
