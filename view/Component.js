@@ -1,6 +1,6 @@
 class Component {
-    constructor(element, data = {}) {
-        this.element = element
+    constructor($element, data = {}) {
+        this.$element = $element
         this._data = data
     }
 

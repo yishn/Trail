@@ -3,9 +3,7 @@
 const $ = require('../modules/sprint')
 const setting = require('../modules/setting')
 
-$(document).ready(function() {
-    // Initialize split view
-
+function initializeSplitView() {
     var splitjs = require('split.js')
     var sidebarWidth = +setting.get('sidebar.width')
 
@@ -14,6 +12,27 @@ $(document).ready(function() {
         gutterSize: 2,
         snapOffset: 1
     })
+}
+
+function initializeSidebar() {
+    var $element = $('#sidebar')
+    var Sidebar = require('./Sidebar')
+    var component = new Sidebar($element)
+    $element.data('component', component)
+
+    component.data = [
+        {
+            name: 'Group1'
+        },
+        {
+            name: 'Group2'
+        }
+    ]
+}
+
+$(document).ready(function() {
+    initializeSplitView()
+    initializeSidebar()
 })
 
 })()
