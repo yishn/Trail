@@ -21,9 +21,10 @@ class Sidebar extends Component {
 
                 if (item.selected) $item.addClass('selected')
 
-                if (item.icon == 'usb') $i.addClass('mi-usb')
+                if (item.icon == 'drive') $i.addClass('mi-console-xbox')
+                else if (item.icon == 'usb') $i.addClass('mi-usb')
                 else if (item.icon == 'sd') $i.addClass('mi-sd')
-                else $i.addClass('mi-console-xbox')
+                else $i.addClass('mi-folder-outline')
 
                 $item.on('click', () => {
                     var $selected = this.$element.find('.selected')
