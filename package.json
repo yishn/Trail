@@ -18,8 +18,6 @@
   },
   "scripts": {
     "test": "mocha",
-    "build:win": "electron-packager ./ trail --platform=win32 --arch=all --app-version=0.1.0 --build-version=0.1.0 --version=1.2.6 --out=./bin --overwrite --icon=./data/icon.ico --app-copyright=\"Copyright (C) 2016 Yichuan Shen\" --version-string.CompanyName=\"Yichuan Shen\" --version-string.FileDescription=\"Trail\" --version-string.OriginalFilename=\"trail.exe\" --version-string.ProductName=\"Trail\" --version-string.InternalName=\"trail.exe\" --ignore=^test$ --asar",
-    "build:linux": "electron-packager ./ trail --platform=linux --arch=all --app-version=0.1.0 --build-version=0.1.0 --version=1.2.6 --out=./bin --overwrite --app-copyright=\"Copyright (C) 2016 Yichuan Shen\" --ignore=^test$ --asar",
-    "build:osx": "electron-packager ./ Trail --platform=darwin --arch=all --app-version=0.1.0 --build-version=0.1.0 --version=1.2.6 --out=./bin --overwrite --app-copyright=\"Copyright (C) 2016 Yichuan Shen\" --icon=./data/icon.icns --app-category-type=public.app-category.games --ignore=^test$ --asar"
+    "build": "electron-packager ./ trail --platform=win32 --arch=all --app-version=0.1.0 --build-version=0.1.0 --version=1.2.6 --out=./bin --overwrite --icon=./data/icon.ico --app-copyright=\"Copyright (C) 2016 Yichuan Shen\" --version-string.CompanyName=\"Yichuan Shen\" --version-string.FileDescription=\"Trail\" --version-string.OriginalFilename=\"trail.exe\" --version-string.ProductName=\"Trail\" --version-string.InternalName=\"trail.exe\" --ignore=^test$ --asar",
   }
 }
