@@ -2,6 +2,7 @@
 
 const $ = require('../modules/sprint')
 const setting = require('../modules/setting')
+
 var sidebar, sidebarResizer
 
 function initializeSidebar() {
@@ -12,12 +13,16 @@ function initializeSidebar() {
         left: setting.get('sidebar.width'),
         minLeft: setting.get('sidebar.minwidth')
     })
-    
+
     sidebarResizer.on('resized', () => {
         setting.set('sidebar.width', sidebarResizer.data.left)
     })
 
-    sidebar = new Sidebar($('#sidebar'), [
+    sidebar = new Sidebar($('#sidebar'))
+}
+
+function getSidebarData(callback) {
+    callback([
         {
             name: 'Devices',
             items: [
@@ -32,13 +37,14 @@ function initializeSidebar() {
         },
         {
             name: 'Favorites',
-            items: []
+            items: [] 
         }
     ])
 }
 
 $(document).ready(function() {
     initializeSidebar()
+    getSidebarData(data => sidebar.data = data)
 })
 
 })()

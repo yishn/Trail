@@ -14,7 +14,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "drivelist": "^3.2.0"
   },
   "scripts": {
     "test": "mocha",
