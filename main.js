@@ -1,14 +1,13 @@
-var process = require('process')
-var app = require('electron').app
-var shell = require('electron').shell
-var dialog = require('electron').dialog
-var ipcMain = require('electron').ipcMain
-var setting = require('./modules/setting')
+const app = require('electron').app
+const shell = require('electron').shell
+const dialog = require('electron').dialog
+const ipcMain = require('electron').ipcMain
+const setting = require('./modules/setting')
 
-var BrowserWindow = require('electron').BrowserWindow
-var Menu = require('electron').Menu
+const BrowserWindow = require('electron').BrowserWindow
+const Menu = require('electron').Menu
 
-var windows = []
+const windows = []
 
 function newWindow(path) {
     var window = new BrowserWindow({
