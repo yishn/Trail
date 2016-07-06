@@ -11,7 +11,7 @@ const windows = []
 
 function newWindow(path) {
     var window = new BrowserWindow({
-        icon: process.platform == 'linux' ? __dirname + '/logo.png' : null,
+        icon: process.platform == 'linux' ? `${__dirname}/logo.png` : null,
         title: app.getName(),
         useContentSize: true,
         width: setting.get('window.width'),
@@ -33,7 +33,7 @@ function newWindow(path) {
         window = null
     })
 
-    window.loadURL('file://' + __dirname + '/view/index.html')
+    window.loadURL(`file://${__dirname}/view/index.html`)
 
     // if (setting.get('debug.dev_tools'))
         window.toggleDevTools()
