@@ -22,6 +22,12 @@ class Sidebar extends Component {
                 else if (item.icon == 'sd') $i.addClass('mi-sd')
                 else $i.addClass('mi-console-xbox')
 
+                $item.on('click', () => {
+                    $('#sidebar .selected').removeClass('selected')
+                    $item.addClass('selected')
+                    this.emit('item-click', item)
+                })
+
                 $ol.append($item)
             })
         })
