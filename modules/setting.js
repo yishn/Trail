@@ -23,8 +23,8 @@ var settings = {}
 var defaults = {
     'debug.dev_tools': false,
     'sidebar.width': 200,
-    'window.minheight': 400,
-    'window.minwidth': 800,
+    'window.minheight': 100,
+    'window.minwidth': 400,
     'window.height': 400,
     'window.width': 800
 }
