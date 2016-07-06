@@ -13,7 +13,11 @@
     "url": "https://github.com/yishn/Trail/issues"
   },
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "drivelist": "^3.2.0",
+    "split.js": "^1.0.6",
+    "sprint-js": "^0.1.0"
+  },
   "scripts": {
     "test": "mocha",
     "build:win": "electron-packager ./ trail --platform=win32 --arch=all --app-version=0.1.0 --build-version=0.1.0 --version=1.2.6 --out=./bin --overwrite --icon=./data/icon.ico --app-copyright=\"Copyright (C) 2016 Yichuan Shen\" --version-string.CompanyName=\"Yichuan Shen\" --version-string.FileDescription=\"Trail\" --version-string.OriginalFilename=\"trail.exe\" --version-string.ProductName=\"Trail\" --version-string.InternalName=\"trail.exe\" --ignore=^test$ --asar",
