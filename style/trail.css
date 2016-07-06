@@ -19,7 +19,8 @@
 /* S I D E B A R */
 
 #sidebar {
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #sidebar h2 {

@@ -11,7 +11,7 @@ class Sidebar extends Component {
 
             this.$element.append($label, $ol)
 
-            if (!group.items) return
+            if (!group.items || !group.items.length) return
 
             group.items.forEach(item => {
                 var $item = $('<li/>').text(item.name)
