@@ -3,6 +3,7 @@ const Component = require('./Component')
 
 class Sidebar extends Component {
     render() {
+        var scrollTop = this.$element.scrollTop()
         this.$element.empty()
 
         this.data.forEach(group => {
@@ -42,6 +43,8 @@ class Sidebar extends Component {
                 $ol.append($item)
             })
         })
+
+        this.$element.scrollTop(scrollTop)
     }
 
     deselect() {
