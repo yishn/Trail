@@ -16,6 +16,28 @@
     height: 100%;
 }
 
+/* S I D E B A R */
+
 #sidebar {
-    background: #eee;
+    overflow: auto;
+}
+
+#sidebar h2 {
+    color: #555;
+    font-size: .8em;
+    padding: 5px 10px;
+}
+
+#sidebar ol li {
+    padding: 2px 10px 2px 20px;
+    white-space: nowrap;
+}
+
+#sidebar ol li.selected {
+    background: #007ACC;
+    color: white;
+}
+
+#sidebar ol li i {
+    margin-right: 10px;
 }
