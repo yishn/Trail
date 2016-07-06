@@ -23,12 +23,12 @@ var settings = {}
 var defaults = {
     'debug.dev_tools': false,
     'window.minheight': 400,
-    'window.minwidth': 800
+    'window.minwidth': 800,
     'window.height': 400,
     'window.width': 800
 }
 
-context.load = function() {
+exports.load = function() {
     try {
         settings = JSON.parse(fs.readFileSync(exports.settingsPath, { encoding: 'utf8' }))
     } catch(e) {
@@ -57,23 +57,23 @@ context.load = function() {
         settings[overwriteKey] = []
     }
 
-    return context.save()
+    exports.save()
 }
 
-context.save = function() {
+exports.save = function() {
     fs.writeFileSync(exports.settingsPath, JSON.stringify(settings, null, '  '))
-    return context
+    exports
 }
 
-context.get = function(key) {
+exports.get = function(key) {
     if (key in settings) return settings[key]
     if (key in defaults) return defaults[key]
     return null
 }
 
-context.set = function(key, value) {
+exports.set = function(key, value) {
     settings[key] = value
-    return context.save()
+    exports.save()
 }
 
-context.load()
+exports.load()
