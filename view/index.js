@@ -8,9 +8,13 @@ function initializeSidebar() {
     var Sidebar = require('./Sidebar')
     var HorizontalResizer = require('./HorizontalResizer')
 
-    sidebarResizer = new HorizontalResizer($('#sidebar + .resizer'), setting.get('sidebar.width'))
+    sidebarResizer = new HorizontalResizer($('#sidebar + .resizer'), {
+        left: setting.get('sidebar.width'),
+        minLeft: setting.get('sidebar.minwidth')
+    })
+    
     sidebarResizer.on('resized', () => {
-        setting.set('sidebar.width', sidebarResizer.data)
+        setting.set('sidebar.width', sidebarResizer.data.left)
     })
 
     sidebar = new Sidebar($('#sidebar'), [

@@ -9,7 +9,7 @@ class HorizontalResizer extends Component {
             $element
                 .data('mousepos', [evt.x, evt.y])
                 .data('mousedown', true)
-                .data('left', this.data)
+                .data('left', this.data.left)
         })
 
         $(document).on('mouseup', () => {
@@ -23,19 +23,22 @@ class HorizontalResizer extends Component {
             var left = $element.data('left')
             var [ox, oy] = $element.data('mousepos')
             var {x, y} = evt
-
             var dx = x - ox
-            this.data = left + dx
+
+            this.data = {
+                left: Math.max(left + dx, this.data.minLeft),
+                minLeft: this.data.minLeft
+            }
         })
     }
 
     render() {
         this.$element
-            .css('left', this.data)
+            .css('left', this.data.left)
         .prev()
-            .css('width', this.data)
+            .css('width', this.data.left)
         this.$element.next()
-            .css('left', this.data + 2)
+            .css('left', this.data.left + 2)
     }
 }
 
