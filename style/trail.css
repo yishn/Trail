@@ -11,14 +11,14 @@
     height: 100%;
 }
 
-#sidebar {
+#sidebar, #sidebar + .resizer {
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
 }
 
-#main {
+main {
     position: absolute;
     right: 0;
     top: 0;
@@ -28,6 +28,7 @@
 /* S I D E B A R */
 
 #sidebar {
+    background: #eee;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -50,4 +51,5 @@
 
 #sidebar ol li i {
     margin-right: 10px;
+    font-size: 16px;
 }

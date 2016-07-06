@@ -1,34 +1,39 @@
+(function() {
+
 const $ = require('../modules/sprint')
-
-;(function() {
-
 const setting = require('../modules/setting')
-
-function initializeSplitView() {
-    var sidebarWidth = parseFloat(setting.get('sidebar.width'))
-    $('#sidebar').css('width', sidebarWidth)
-    $('#sidebar + .resizer').css('left', sidebarWidth)
-    $('main').css('left', sidebarWidth + 2)
-}
+var sidebar, sidebarResizer
 
 function initializeSidebar() {
-    var $element = $('#sidebar')
     var Sidebar = require('./Sidebar')
-    var component = new Sidebar($element)
-    $element.data('component', component)
+    var HorizontalResizer = require('./HorizontalResizer')
 
-    component.data = [
+    sidebarResizer = new HorizontalResizer($('#sidebar + .resizer'), setting.get('sidebar.width'))
+    sidebarResizer.on('resized', () => {
+        setting.set('sidebar.width', sidebarResizer.data)
+    })
+
+    sidebar = new Sidebar($('#sidebar'), [
         {
-            name: 'Group1'
+            name: 'Devices',
+            items: [
+                {
+                    name: 'System (C)'
+                },
+                {
+                    name: 'Data (D)',
+                    icon: 'usb'
+                }
+            ]
         },
         {
-            name: 'Group2'
+            name: 'Favorites',
+            items: []
         }
-    ]
+    ])
 }
 
 $(document).ready(function() {
-    initializeSplitView()
     initializeSidebar()
 })
 

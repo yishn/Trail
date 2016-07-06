@@ -17,20 +17,35 @@ class Sidebar extends Component {
                 var $item = $('<li/>').text(item.name)
                 var $i = $('<i/>').addClass('mi').prependTo($item)
 
+                $item.data('item', item)
+
                 if (item.selected) $item.addClass('selected')
+
                 if (item.icon == 'usb') $i.addClass('mi-usb')
                 else if (item.icon == 'sd') $i.addClass('mi-sd')
                 else $i.addClass('mi-console-xbox')
 
                 $item.on('click', () => {
-                    $('#sidebar .selected').removeClass('selected')
+                    var $selected = this.$element.find('.selected')
+                    var selectedItem = $selected.data('item')
+
+                    $selected.removeClass('selected')
                     $item.addClass('selected')
+
+                    if (selectedItem) selectedItem.selected = false
+                    item.selected = true
+
                     this.emit('item-click', item)
                 })
 
                 $ol.append($item)
             })
         })
+    }
+
+    deselect() {
+        var $selected = this.$element.find('.selected').removeClass('selected')
+        if ($selected.length) $selected.data('item').selected = false
     }
 }
 

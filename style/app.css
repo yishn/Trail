@@ -101,7 +101,6 @@ form p, form ul li {
 
 .resizer {
         background: #ccc;
-        position: absolute;
     }
     .resizer.horizontal {
         width: 2px;

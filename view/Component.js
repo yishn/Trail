@@ -1,10 +1,12 @@
 const EventEmitter = require('events')
 
 class Component extends EventEmitter {
-    constructor($element, data = {}) {
+    constructor($element, data) {
         super()
         this.$element = $element
         this._data = data
+
+        if (data) this.render()
     }
 
     get data() {
@@ -14,6 +16,7 @@ class Component extends EventEmitter {
     set data(data) {
         this._data = data
         this.render()
+        this.emit('data-changed')
     }
 
     render() {}
