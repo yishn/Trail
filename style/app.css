@@ -95,7 +95,10 @@ form p, form ul li {
         text-align: right;
 }
 
-.gutter-horizontal {
+.gutter {
+        background: #ccc;
+    }
+    .gutter-horizontal {
         cursor: ew-resize;
     }
     .gutter-vertical {
