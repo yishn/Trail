@@ -1,6 +1,6 @@
 (function() {
 
-const $ = require('sprint-js')
+const $ = require('../modules/sprint')
 const setting = require('../modules/setting')
 
 $(document).ready(function() {
