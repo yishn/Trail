@@ -99,12 +99,17 @@ form p, form ul li {
         text-align: right;
 }
 
-.gutter {
+.resizer {
         background: #ccc;
+        position: absolute;
     }
-    .gutter-horizontal {
+    .resizer.horizontal {
+        width: 2px;
+        height: 100%;
         cursor: ew-resize;
     }
-    .gutter-vertical {
+    .resizer.vertical {
+        height: 2px;
+        width: 100%;
         cursor: ns-resize;
 }

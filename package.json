@@ -14,8 +14,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "drivelist": "^3.2.0",
-    "split.js": "^1.0.6"
+    "drivelist": "^3.2.0"
   },
   "scripts": {
     "test": "mocha",

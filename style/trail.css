@@ -11,9 +11,18 @@
     height: 100%;
 }
 
-#sidebar, .gutter-horizontal, main {
-    float: left;
-    height: 100%;
+#sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+}
+
+#main {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
 
 /* S I D E B A R */
