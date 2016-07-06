@@ -1,14 +1,16 @@
-(function() {
-
 const $ = require('../modules/sprint')
+
+;(function() {
+
 const setting = require('../modules/setting')
 
 function initializeSplitView() {
     var splitjs = require('split.js')
-    var sidebarWidth = +setting.get('sidebar.width')
+    var width = parseFloat($('#root').css('width'))
+    var sidebarWidth = parseFloat(setting.get('sidebar.width'))
 
     splitjs(['#sidebar', 'main'], {
-        sizes: [sidebarWidth, 100 - sidebarWidth],
+        sizes: [(sidebarWidth - 1) + 'px', (width - sidebarWidth - 1) + 'px'],
         gutterSize: 2,
         snapOffset: 1
     })
