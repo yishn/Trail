@@ -36,7 +36,7 @@ function getSidebarData(callback) {
                 path: drive.name + pathsep,
                 icon: drive.driveType
             }
-        })
+        }).sort((x1, x2) => x1.path < x2.path ? -1 : +(x1.path != x2.path))
 
         let favorites = setting.get('sidebar.favorites').map(({path}) => {
             return {
@@ -44,7 +44,7 @@ function getSidebarData(callback) {
                 path,
                 icon: 'folder'
             }
-        })
+        }).sort((x1, x2) => x1.name < x2.name ? -1 : +(x1.name != x2.name))
 
         callback([
             {name: 'Devices', items: devices},

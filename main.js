@@ -10,7 +10,7 @@ const Menu = require('electron').Menu
 const windows = []
 
 function newWindow(path) {
-    var window = new BrowserWindow({
+    let window = new BrowserWindow({
         icon: process.platform == 'linux' ? `${__dirname}/logo.png` : null,
         title: app.getName(),
         useContentSize: true,
