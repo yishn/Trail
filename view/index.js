@@ -3,6 +3,7 @@
 const pathsep = require('path').sep
 
 const $ = require('../modules/sprint')
+const shell = require('../modules/trail-shell')
 const setting = require('../modules/setting')
 
 let sidebar, sidebarResizer
@@ -21,8 +22,8 @@ function initializeSidebar() {
     })
 
     sidebar = new Sidebar($('#sidebar'), [
-        {name: 'Devices', items: []},
-        {name: 'Favorites', items: []}
+        {name: 'Favorites', items: []},
+        {name: 'Devices', items: []}
     ])
 }
 
@@ -47,8 +48,8 @@ function getSidebarData(callback) {
         }).sort((x1, x2) => x1.name < x2.name ? -1 : +(x1.name != x2.name))
 
         callback([
-            {name: 'Devices', items: devices},
-            {name: 'Favorites', items: favorites}
+            {name: 'Favorites', items: favorites},
+            {name: 'Devices', items: devices}
         ])
     })
 }
