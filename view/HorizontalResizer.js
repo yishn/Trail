@@ -34,11 +34,11 @@ class HorizontalResizer extends Component {
 
     render() {
         this.$element
-            .css('left', this.data.left)
+            .css('left', this.data.left - 2)
         .prev()
-            .css('width', this.data.left)
+            .css('width', this.data.left - 2)
         this.$element.next()
-            .css('left', this.data.left + 2)
+            .css('left', this.data.left)
     }
 }
 
