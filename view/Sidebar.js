@@ -3,20 +3,20 @@ const Component = require('./Component')
 
 class Sidebar extends Component {
     render() {
-        var scrollTop = this.$element.scrollTop()
+        let scrollTop = this.$element.scrollTop()
         this.$element.empty()
 
         this.data.forEach(group => {
-            var $label = $('<h2/>').text(group.name)
-            var $ol = $('<ol/>')
+            let $label = $('<h2/>').text(group.name)
+            let $ol = $('<ol/>')
 
             this.$element.append($label, $ol)
 
             if (!group.items || !group.items.length) return
 
             group.items.forEach(item => {
-                var $item = $('<li/>').text(item.name)
-                var $i = $('<i/>').addClass('mi').prependTo($item)
+                let $item = $('<li/>').text(item.name)
+                let $i = $('<i/>').addClass('mi').prependTo($item)
 
                 $item.data('item', item)
 
@@ -29,8 +29,8 @@ class Sidebar extends Component {
                 else $i.addClass('mi-console-xbox')
 
                 $item.on('click', () => {
-                    var $selected = this.$element.find('.selected')
-                    var selectedItem = $selected.data('item')
+                    let $selected = this.$element.find('.selected')
+                    let selectedItem = $selected.data('item')
 
                     $selected.removeClass('selected')
                     $item.addClass('selected')
@@ -49,7 +49,7 @@ class Sidebar extends Component {
     }
 
     deselect() {
-        var $selected = this.$element.find('.selected').removeClass('selected')
+        let $selected = this.$element.find('.selected').removeClass('selected')
         if ($selected.length) $selected.data('item').selected = false
     }
 }

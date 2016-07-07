@@ -20,10 +20,10 @@ class HorizontalResizer extends Component {
         }).on('mousemove', evt => {
             if (!$element.data('mousedown')) return
 
-            var left = $element.data('left')
-            var [ox, oy] = $element.data('mousepos')
-            var {x, y} = evt
-            var dx = x - ox
+            let left = $element.data('left')
+            let [ox, oy] = $element.data('mousepos')
+            let {x, y} = evt
+            let dx = x - ox
 
             this.data = {
                 left: Math.max(left + dx, this.data.minLeft),

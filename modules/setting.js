@@ -3,7 +3,7 @@ const path = require('path')
 const remote = require('electron').remote
 const app = remote ? remote.app : require('electron').app
 
-var directory = app.getPath('userData')
+let directory = app.getPath('userData')
 try { fs.mkdirSync(directory) } catch(e) {}
 
 exports.settingsPath = path.join(directory, 'settings.json')
@@ -18,9 +18,9 @@ try {
     )
 }
 
-var settings = {}
+let settings = {}
 
-var defaults = {
+let defaults = {
     'debug.dev_tools': false,
     'sidebar.favorites': [{path: app.getPath('userData')}],
     'sidebar.minwidth': 100,
@@ -40,20 +40,20 @@ exports.load = function() {
 
     // Load default settings
 
-    for (var key in defaults) {
+    for (let key in defaults) {
         if (key in settings) continue
         settings[key] = defaults[key]
     }
 
     // Overwrite settings
 
-    for (var overwriteKey in settings) {
+    for (let overwriteKey in settings) {
         if (overwriteKey.indexOf('setting.overwrite.') != 0) continue
 
-        var overwrites = settings[overwriteKey]
+        let overwrites = settings[overwriteKey]
         if (!overwrites.length) continue
 
-        for (var i = 0; i < overwrites.length; i++) {
+        for (let i = 0; i < overwrites.length; i++) {
             settings[overwrites[i]] = defaults[overwrites[i]]
         }
 

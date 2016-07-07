@@ -1,11 +1,11 @@
 const {exec} = require('child_process')
 
 function getStartIndices(captions) {
-    var prevSpace = true
-    var indices = []
+    let prevSpace = true
+    let indices = []
 
     for (let i = 0; i < captions.length; i++) {
-        var char = captions[i]
+        let char = captions[i]
 
         if (/\s/.test(char)) {
             prevSpace = true
@@ -20,11 +20,11 @@ function getStartIndices(captions) {
 }
 
 function getValues(indices, line) {
-    var values = []
+    let values = []
 
     for (let i = 1; i < indices.length; i++) {
-        var startIndex = indices[i - 1]
-        var endIndex = indices[i]
+        let startIndex = indices[i - 1]
+        let endIndex = indices[i]
 
         values.push(line.slice(startIndex, endIndex).trim())
     }
@@ -33,11 +33,11 @@ function getValues(indices, line) {
 }
 
 function normalize(caption) {
-    var streak = 0
-    var result = ''
+    let streak = 0
+    let result = ''
 
     for (let i = 0; i < caption.length; i++) {
-        var char = caption[i]
+        let char = caption[i]
         if (char.toUpperCase() == char) streak++
         else break
     }
@@ -55,12 +55,12 @@ exports.list = function(callback) {
     exec('wmic logicaldisk get', (err, result) => {
         if (err) return callback(err)
 
-        var lines = result.trim().split('\r\r\n')
-        var indices = getStartIndices(lines[0])
-        var values = lines.map(line => getValues(indices, line))
-        var captions = values[0]
-        var list = values.slice(1).map(v => {
-            var result = {}
+        let lines = result.trim().split('\r\r\n')
+        let indices = getStartIndices(lines[0])
+        let values = lines.map(line => getValues(indices, line))
+        let captions = values[0]
+        let list = values.slice(1).map(v => {
+            let result = {}
             captions.forEach((caption, i) => result[normalize(caption)] = v[i])
             return result
         })
