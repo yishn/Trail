@@ -41,6 +41,8 @@ main {
 
 #sidebar ol li {
     padding: 2px 10px 2px 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
 }
 
@@ -70,6 +72,29 @@ main {
     right: 2px;
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+.list-column ol li {
+    padding: 2px 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.list-column ol li.selected {
+    background: #ddd;
+}
+
+.list-column.focused ol li.selected {
+    background: #007ACC;
+    color: white;
+}
+
+.list-column ol li img {
+    display: block;
+    float:  left;
+    margin-right: 5px;
+    margin-top: 3px;
 }
 
 .list-column .resizer {

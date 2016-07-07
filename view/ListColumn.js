@@ -11,6 +11,8 @@ class ListColumn extends Component {
             let $img = $('<img/>').attr('src', item.icon)
             let $li = $('<li/>').text(item.name).prepend($img)
 
+            if (item.selected) $li.addClass('selected')
+
             $ul.append($li)
         })
 
