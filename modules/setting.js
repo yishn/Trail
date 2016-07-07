@@ -21,6 +21,7 @@ try {
 let settings = {}
 
 let defaults = {
+    'columnview.colwidth': 200,
     'debug.dev_tools': false,
     'sidebar.favorites': [{path: app.getPath('userData')}],
     'sidebar.minwidth': 100,

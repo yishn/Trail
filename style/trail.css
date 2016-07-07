@@ -1,7 +1,7 @@
 @import url('../img/micon/css/micon.min.css');
 @import url('app.css');
 
-/* L A Y O U T */
+/* Layout */
 
 #root {
     position: absolute;
@@ -25,7 +25,7 @@ main {
     bottom: 0;
 }
 
-/* S I D E B A R */
+/* Sidebar */
 
 #sidebar {
     background: #eee;
@@ -52,4 +52,11 @@ main {
 #sidebar ol li i {
     margin-right: 10px;
     font-size: 16px;
+}
+
+/* ListColumn  */
+
+.list-column {
+    float: left;
+    height: 100%;
 }
