@@ -1,5 +1,7 @@
 (function() {
 
+const pathsep = require('path').sep
+
 const $ = require('../modules/sprint')
 const setting = require('../modules/setting')
 
@@ -22,24 +24,28 @@ function initializeSidebar() {
 }
 
 function getSidebarData(callback) {
-    callback([
-        {
-            name: 'Devices',
-            items: [
-                {
-                    name: 'System (C)'
-                },
-                {
-                    name: 'Data (D)',
-                    icon: 'usb'
-                }
-            ]
-        },
-        {
-            name: 'Favorites',
-            items: [] 
-        }
-    ])
+    var drives = require('../modules/drives')
+
+    drives.list((err, list) => {
+        var devices = list.map(drive => {
+            return {
+                name: drive.volumeName == null ? drive.name : `${drive.volumeName} (${drive.name})`,
+                path: drive.name + pathsep,
+                icon: drive.driveType
+            }
+        })
+
+        callback([
+            {
+                name: 'Devices',
+                items: devices
+            },
+            {
+                name: 'Favorites',
+                items: []
+            }
+        ])
+    })
 }
 
 $(document).ready(function() {

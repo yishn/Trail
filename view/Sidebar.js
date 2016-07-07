@@ -22,10 +22,11 @@ class Sidebar extends Component {
 
                 if (item.selected) $item.addClass('selected')
 
-                if (item.icon == 'drive') $i.addClass('mi-console-xbox')
-                else if (item.icon == 'usb') $i.addClass('mi-usb')
-                else if (item.icon == 'sd') $i.addClass('mi-sd')
-                else $i.addClass('mi-folder-outline')
+                if (item.icon == 'network') $i.addClass('mi-network-drive')
+                else if (item.icon == 'removable') $i.addClass('mi-usb')
+                else if (item.icon == 'cd') $i.addClass('mi-cd')
+                else if (item.icon == 'folder') $i.addClass('mi-folder-outline')
+                else $i.addClass('mi-console-xbox')
 
                 $item.on('click', () => {
                     var $selected = this.$element.find('.selected')
