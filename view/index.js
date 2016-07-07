@@ -20,7 +20,10 @@ function initializeSidebar() {
         setting.set('sidebar.width', sidebarResizer.data.left)
     })
 
-    sidebar = new Sidebar($('#sidebar'))
+    sidebar = new Sidebar($('#sidebar'), [
+        {name: 'Devices', items: []},
+        {name: 'Favorites', items: []}
+    ])
 }
 
 function getSidebarData(callback) {
@@ -38,7 +41,7 @@ function getSidebarData(callback) {
         var favorites = setting.get('sidebar.favorites').map(({path}) => {
             return {
                 name: require('path').basename(path),
-                path: path,
+                path,
                 icon: 'folder'
             }
         })
