@@ -51,7 +51,7 @@ function normalize(caption) {
     return result + caption.slice(streak)
 }
 
-module.exports = function(callback) {
+exports.list = function(callback) {
     exec('wmic logicaldisk get', (err, result) => {
         if (err) return callback(err)
 
