@@ -3,7 +3,6 @@ const Component = require('./Component')
 
 class ListColumn extends Component {
     render() {
-        let scrollTop = this.$element.scrollTop()
         this.$element.css('width', this.data.width).empty()
 
         let $ul = $('<ol/>').appendTo(this.$element)
@@ -15,7 +14,7 @@ class ListColumn extends Component {
             $ul.append($li)
         })
 
-        this.$element.scrollTop(scrollTop)
+        let $resizer = $('<div/>').addClass('resizer vertical').appendTo(this.$element)
     }
 }
 

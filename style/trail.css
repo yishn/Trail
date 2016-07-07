@@ -54,9 +54,27 @@ main {
     font-size: 16px;
 }
 
-/* ListColumn  */
+/* ListColumn */
 
 .list-column {
+    position: relative;
     float: left;
     height: 100%;
+}
+
+.list-column ol {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 2px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.list-column .resizer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
 }
