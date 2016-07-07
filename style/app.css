@@ -102,12 +102,12 @@ form p, form ul li {
 .resizer {
         background: #ccc;
     }
-    .resizer.horizontal {
+    .resizer.vertical {
         width: 2px;
         height: 100%;
         cursor: ew-resize;
     }
-    .resizer.vertical {
+    .resizer.horizontal {
         height: 2px;
         width: 100%;
         cursor: ns-resize;
