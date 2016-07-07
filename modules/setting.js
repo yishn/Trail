@@ -22,6 +22,7 @@ var settings = {}
 
 var defaults = {
     'debug.dev_tools': false,
+    'sidebar.favorites': [{path: app.getPath('userData')}],
     'sidebar.minwidth': 100,
     'sidebar.width': 200,
     'window.minheight': 100,
@@ -32,7 +33,7 @@ var defaults = {
 
 exports.load = function() {
     try {
-        settings = JSON.parse(fs.readFileSync(exports.settingsPath, { encoding: 'utf8' }))
+        settings = JSON.parse(fs.readFileSync(exports.settingsPath, {encoding: 'utf8'}))
     } catch(e) {
         settings = {}
     }

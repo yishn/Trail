@@ -35,15 +35,17 @@ function getSidebarData(callback) {
             }
         })
 
-        callback([
-            {
-                name: 'Devices',
-                items: devices
-            },
-            {
-                name: 'Favorites',
-                items: []
+        var favorites = setting.get('sidebar.favorites').map(({path}) => {
+            return {
+                name: require('path').basename(path),
+                path: path,
+                icon: 'folder'
             }
+        })
+
+        callback([
+            {name: 'Devices', items: devices},
+            {name: 'Favorites', items: favorites}
         ])
     })
 }
