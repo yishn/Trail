@@ -25,7 +25,7 @@ class Sidebar extends Component {
                 if (item.icon == 'network') $i.addClass('mi-network-drive')
                 else if (item.icon == 'removable') $i.addClass('mi-usb')
                 else if (item.icon == 'cd') $i.addClass('mi-cd')
-                else if (item.icon == 'folder') $i.addClass('mi-folder-outline')
+                else if (item.icon == 'folder') $i.addClass('mi-folder-outline mi-flip-vertical')
                 else $i.addClass('mi-console-xbox')
 
                 $item.on('click', () => {
