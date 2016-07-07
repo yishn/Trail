@@ -1,9 +1,9 @@
 const {execFile} = require('child_process')
 const {join} = require('path')
 
-const server = execFile(join(__dirname, 'bin/TrailShell.exe'))
-const commands = []
-const buffer = ''
+let server = execFile(join(__dirname, 'bin/TrailShell.exe'))
+let commands = []
+let buffer = ''
 
 server.stdout.on('data', function(data) {
     buffer += (data + '').replace(/\r/g, '')

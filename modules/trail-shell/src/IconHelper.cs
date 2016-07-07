@@ -79,7 +79,7 @@ namespace Etier.IconHelper {
         /// <param name="size">Specify large or small icons.</param>
         /// <param name="folderType">Specify open or closed FolderType.</param>
         /// <returns>System.Drawing.Icon</returns>
-        public static System.Drawing.Icon GetFolderIcon(IconSize size, FolderType folderType) {
+        public static System.Drawing.Icon GetFolderIcon(string name, IconSize size, FolderType folderType) {
             // Need to add size check, although errors generated at present!
             uint flags = Shell32.SHGFI_ICON | Shell32.SHGFI_USEFILEATTRIBUTES;
 
@@ -95,7 +95,7 @@ namespace Etier.IconHelper {
 
             // Get the folder icon
             Shell32.SHFILEINFO shfi = new Shell32.SHFILEINFO();
-            Shell32.SHGetFileInfo(null,
+            Shell32.SHGetFileInfo(name,
                 Shell32.FILE_ATTRIBUTE_DIRECTORY,
                 ref shfi,
                 (uint)System.Runtime.InteropServices.Marshal.SizeOf(shfi),
