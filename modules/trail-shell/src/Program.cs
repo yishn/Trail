@@ -36,7 +36,7 @@ namespace TrailShell {
 
         private static string bitmapToBase64(Image image) {
             MemoryStream memory = new MemoryStream();
-            image.Save(memory, ImageFormat.Bmp);
+            image.Save(memory, ImageFormat.Png);
             string base64 = Convert.ToBase64String(memory.ToArray());
             memory.Close();
             memory.Dispose();
