@@ -15,12 +15,12 @@ class Sidebar extends Component {
             if (!group.items || !group.items.length) return
 
             group.items.forEach(item => {
-                let $item = $('<li/>').text(item.name)
-                let $i = $('<i/>').addClass('mi').prependTo($item)
+                let $li = $('<li/>').text(item.name)
+                let $i = $('<i/>').addClass('mi').prependTo($li)
 
-                $item.data('item', item)
+                $li.data('item', item)
 
-                if (item.selected) $item.addClass('selected')
+                if (item.selected) $li.addClass('selected')
 
                 if (item.icon == 'network') $i.addClass('mi-network-drive')
                 else if (item.icon == 'removable') $i.addClass('mi-usb')
@@ -28,12 +28,12 @@ class Sidebar extends Component {
                 else if (item.icon == 'folder') $i.addClass('mi-folder-outline mi-flip-vertical')
                 else $i.addClass('mi-console-xbox')
 
-                $item.on('click', () => {
+                $li.on('click', () => {
                     let $selected = this.$element.find('.selected')
                     let selectedItem = $selected.data('item')
 
                     $selected.removeClass('selected')
-                    $item.addClass('selected')
+                    $li.addClass('selected')
 
                     if (selectedItem) selectedItem.selected = false
                     item.selected = true
@@ -41,7 +41,7 @@ class Sidebar extends Component {
                     this.emit('item-click', item)
                 })
 
-                $ol.append($item)
+                $ol.append($li)
             })
         })
 
