@@ -35,6 +35,6 @@ exports.sendCommand = function(command, callback) {
     return exports
 }
 
-exports.extractIcon = function(path, callback) {
-    return exports.sendCommand(`extract-icon ${path}`, callback)
+exports.extractIcon = function(name, callback) {
+    return exports.sendCommand(`extract-icon ${name}`, callback)
 }
