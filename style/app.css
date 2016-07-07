@@ -112,3 +112,9 @@ form p, form ul li {
         width: 100%;
         cursor: ns-resize;
 }
+
+.focus-indicator {
+    position: absolute;
+    left: -9999em;
+    top: -9999em;
+}

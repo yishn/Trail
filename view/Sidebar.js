@@ -28,7 +28,9 @@ class Sidebar extends Component {
                 else if (item.icon == 'folder') $i.addClass('mi-folder-outline mi-flip-vertical')
                 else $i.addClass('mi-console-xbox')
 
-                $li.on('click', () => {
+                $li.on('click', evt => {
+                    evt.preventDefault()
+                    
                     let $selected = this.$element.find('.selected')
                     let selectedItem = $selected.data('item')
 
