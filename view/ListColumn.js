@@ -10,7 +10,7 @@ class ListColumn extends Component {
         let $input = $('<input type="text"/>').addClass('focus-indicator')
         this.$element.append($ol, $input)
 
-        let mouseDownHandler = ($li, shift, ctrl) => {
+        let itemMouseDownHandler = ($li, shift, ctrl) => {
             let item = $li.data('item')
 
             // Focus component
@@ -43,7 +43,7 @@ class ListColumn extends Component {
 
             // Emit event
 
-            this.emit('item-click', item)
+            this.emit('item-mousedown', item)
         }
 
         $input.on('keydown', evt => {
@@ -62,9 +62,12 @@ class ListColumn extends Component {
             } else if (evt.keyCode == 38) {
                 // Up Arrow
                 $li = $lis.eq(Math.max(i - 1, 0))
+            } else if (evt.keyCode == 13) {
+                // Enter
+                this.emit('activate')
             }
 
-            mouseDownHandler($li, evt.shiftKey, evt.ctrlKey)
+            itemMouseDownHandler($li, evt.shiftKey, evt.ctrlKey)
         })
 
         this.data.items.forEach(item => {
@@ -77,7 +80,10 @@ class ListColumn extends Component {
 
             $li.on('mousedown', evt => {
                 evt.preventDefault()
-                mouseDownHandler($li, evt.shiftKey, evt.ctrlKey)
+                itemMouseDownHandler($li, evt.shiftKey, evt.ctrlKey)
+            }).on('mouseup', evt => {
+                evt.preventDefault()
+                this.emit('activate')
             })
 
             $ol.append($li)
