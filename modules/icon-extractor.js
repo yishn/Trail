@@ -14,16 +14,16 @@ let start = function() {
         let name = queue.shift()
 
         shell.extractIcon(name, (err, result) => {
-            if (err) return
-
             cache[name] = result
-            eventEmitter.emit(name, result)
+            eventEmitter.emit(name, err, result)
         })
     }
+
+    busy = false
 }
 
 exports.get = function(name, callback) {
-    if (name in cache) return callback(cache[name])
+    if (name in cache) return callback(null, cache[name])
 
     queue.push(name)
     if (!busy) start()
