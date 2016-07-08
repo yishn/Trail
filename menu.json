@@ -1,0 +1,22 @@
+[
+    {
+        "label": "{name}",
+        "submenu": [
+            {
+                "label": "{name} v{version}",
+                "enabled": false
+            },
+            { "type": "separator" },
+            {
+                "label": "New &Window",
+                "accelerator": "CommandOrControl+N",
+                "action": "new-window"
+            },
+            { "type": "separator" },
+            {
+                "role": "quit",
+                "accelerator": "CommandOrControl+Q"
+            }
+        ]
+    }
+]

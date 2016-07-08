@@ -42,6 +42,49 @@ function newWindow(path) {
 }
 
 function buildMenu(noWindows) {
+    let template = JSON.parse(JSON.stringify(require('./menu.json')))
+
+    // Process menu
+
+    let processMenu = items => {
+        items.forEach(item => {
+            if ('label' in item) {
+                item.label = item.label
+                .replace('{name}', app.getName())
+                .replace('{version}', app.getVersion())
+            }
+
+            if ('action' in item) {
+                let action = item.action
+
+                item.click = function() {
+                    let window = BrowserWindow.getFocusedWindow()
+                    if (!window) return
+
+                    window.webContents.send('menu-click', action)
+                }
+
+                delete item.action
+            }
+
+            if ('checked' in item) {
+                item.type = 'checkbox'
+                item.checked = !!setting.get(item.checked)
+            }
+
+            if ('submenu' in item) {
+                processMenu(item.submenu)
+            }
+        })
+    }
+
+    processMenu(template)
+
+    // Set menu
+
+    let menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu)
+
     // Create dock menu
 
     if (process.platform == 'darwin') {
