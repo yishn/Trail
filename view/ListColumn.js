@@ -1,6 +1,8 @@
 const $ = require('../modules/sprint')
 const Component = require('./Component')
 
+let transparentImg = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+
 class ListColumn extends Component {
     render() {
         let scrollTop = this.$element.children('ol').scrollTop() || 0
@@ -64,14 +66,15 @@ class ListColumn extends Component {
                 $li = $lis.eq(Math.max(i - 1, 0))
             } else if (evt.keyCode == 13) {
                 // Enter
-                this.emit('activate')
+                this.emit('item-activate')
+                return
             }
 
             itemMouseDownHandler($li, evt.shiftKey, evt.ctrlKey)
         })
 
         this.data.items.forEach(item => {
-            let $img = $('<img/>').attr('src', item.icon)
+            let $img = $('<img/>').attr('src', item.icon || transparentImg)
             let $li = $('<li/>').text(item.name).prepend($img)
 
             $li.data('item', item)
@@ -83,7 +86,7 @@ class ListColumn extends Component {
                 itemMouseDownHandler($li, evt.shiftKey, evt.ctrlKey)
             }).on('mouseup', evt => {
                 evt.preventDefault()
-                this.emit('activate')
+                this.emit('item-activate')
             })
 
             $ol.append($li)
