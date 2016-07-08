@@ -1,7 +1,3 @@
-(function() {
-
-const pathsep = require('path').sep
-
 const $ = require('../modules/sprint')
 const shell = require('../modules/trail-shell')
 const setting = require('../modules/setting')
@@ -35,7 +31,7 @@ const Trail = {
             let devices = list.map(drive => {
                 return {
                     name: drive.volumeName == null ? drive.name : `${drive.volumeName} (${drive.name})`,
-                    path: drive.name + pathsep,
+                    path: drive.name,
                     icon: drive.driveType
                 }
             }).sort((x1, x2) => x1.path < x2.path ? -1 : +(x1.path != x2.path))
@@ -56,11 +52,9 @@ const Trail = {
     }
 }
 
-require('./ipc')(Trail)
-
 $(document).ready(function() {
     Trail.initializeSidebar()
     Trail.getSidebarData((_, data) => Trail.Sidebar.data = data)
 })
 
-})()
+require('./ipc')(Trail)
