@@ -10,9 +10,7 @@ const Trail = {
         Trail.SidebarResizer = new HorizontalResizer($('#sidebar + .resizer'), {
             left: setting.get('sidebar.width'),
             minLeft: setting.get('sidebar.minwidth')
-        })
-
-        Trail.SidebarResizer.on('resized', () => {
+        }).on('resized', () => {
             setting.set('sidebar.width', Trail.SidebarResizer.data.left)
         })
 
@@ -55,20 +53,15 @@ const Trail = {
                 ])
             }
 
-            iconExtractor.get('folder', (err, base64) => {
-                favorites.forEach(item => {
-                    item.icon = err ? ' ' : `data:image/png;base64,${base64}`
-                })
-
-                next()
-            })
-
-            devices.forEach(item => {
-                iconExtractor.get(item.path, (err, base64) => {
+            let fetch = (item, name) => {
+                iconExtractor.get(name, (err, base64) => {
                     item.icon = err ? ' ' : `data:image/png;base64,${base64}`
                     next()
                 })
-            })
+            }
+
+            favorites.forEach(item => fetch(item, 'folder'))
+            devices.forEach(item => fetch(item, item.path))
         })
     }
 }
