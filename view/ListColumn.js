@@ -50,7 +50,7 @@ class ListColumn extends Component {
 
         $input.on('keydown', evt => {
             evt.preventDefault()
-            if ([40, 38, 13].indexOf(evt.keyCode) < 0) return
+            if ([36, 35, 33, 34, 40, 38, 13].indexOf(evt.keyCode) < 0) return
 
             let $selected = this.$element.find('.selected')
             let $lis = this.$element.find('li')
@@ -58,12 +58,24 @@ class ListColumn extends Component {
             let j = $lis.get().indexOf($selected.get(-1))
             let $li
 
-            if (evt.keyCode == 40) {
-                // Down Arrow
-                $li = $lis.eq(Math.min(j + 1, $lis.length - 1))
+            if (evt.keyCode == 36) {
+                // Home Arrow
+                $li = $lis.eq(0)
+            } else if (evt.keyCode == 35) {
+                // End Arrow
+                $li = $lis.eq(-1)
+            } else if (evt.keyCode == 33) {
+                // Page Up Arrow
+                $li = $lis.eq(Math.max(i - 10, 0))
+            } else if (evt.keyCode == 34) {
+                // Page Down Arrow
+                $li = $lis.eq(Math.min(j + 10, $lis.length - 1))
             } else if (evt.keyCode == 38) {
                 // Up Arrow
                 $li = $lis.eq(Math.max(i - 1, 0))
+            } else if (evt.keyCode == 40) {
+                // Down Arrow
+                $li = $lis.eq(Math.min(j + 1, $lis.length - 1))
             } else if (evt.keyCode == 13) {
                 // Enter
                 this.emit('item-activate')

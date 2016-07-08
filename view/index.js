@@ -23,6 +23,7 @@ const Trail = {
     },
 
     getSidebarData: function(callback) {
+        let {basename} = require('path')
         let drives = require('../modules/drives')
 
         drives.list((err, list) => {
@@ -37,7 +38,7 @@ const Trail = {
 
             let favorites = setting.get('sidebar.favorites').map(({path}) => {
                 return {
-                    name: require('path').basename(path),
+                    name: basename(path),
                     path
                 }
             }).sort((x1, x2) => x1.name < x2.name ? -1 : +(x1.name != x2.name))
@@ -52,17 +53,17 @@ const Trail = {
                 ])
             }
 
-            iconExtractor.get('folder', (_, r1) => {
+            iconExtractor.get('folder', (err, base64) => {
                 favorites.forEach(item => {
-                    item.icon = `data:image/png;base64,${r1}`
+                    item.icon = err ? transparentImg : `data:image/png;base64,${base64}`
                 })
 
                 next()
             })
 
             devices.forEach(item => {
-                iconExtractor.get(item.path, (__, r2) => {
-                    item.icon = `data:image/png;base64,${r2}`
+                iconExtractor.get(item.path, (err, base64) => {
+                    item.icon = err ? transparentImg : `data:image/png;base64,${base64}`
                     next()
                 })
             })
