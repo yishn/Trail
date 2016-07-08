@@ -57,7 +57,7 @@ function buildMenu(noWindows) {
             if ('action' in item) {
                 let action = item.action
 
-                item.click = function() {
+                item.click = () => {
                     let window = BrowserWindow.getFocusedWindow()
                     if (!window) return
 

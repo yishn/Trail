@@ -14,6 +14,10 @@
             },
             { "type": "separator" },
             {
+                "label": "&Restart",
+                "action": "restart"
+            },
+            {
                 "role": "quit",
                 "accelerator": "CommandOrControl+Q"
             }
