@@ -29,19 +29,21 @@ const Trail = {
         drives.list((err, list) => {
             if (err) return callback(err)
 
+            let transformSort = f => (x1, x2) => f(x1) < f(x2) ? -1 : +(f(x1) != f(x2))
+
             let devices = list.map(drive => {
                 return {
                     name: drive.volumeName == null ? drive.name : `${drive.volumeName} (${drive.name})`,
                     path: drive.name
                 }
-            }).sort((x1, x2) => x1.path < x2.path ? -1 : +(x1.path != x2.path))
+            }).sort(transformSort(x => x.path))
 
             let favorites = setting.get('sidebar.favorites').map(({path}) => {
                 return {
                     name: basename(path),
                     path
                 }
-            }).sort((x1, x2) => x1.name < x2.name ? -1 : +(x1.name != x2.name))
+            }).sort(transformSort(x => x.name))
 
             let next = () => {
                 if (devices.some(x => !x.icon) || favorites.some(x => !x.icon))
@@ -55,7 +57,7 @@ const Trail = {
 
             iconExtractor.get('folder', (err, base64) => {
                 favorites.forEach(item => {
-                    item.icon = err ? transparentImg : `data:image/png;base64,${base64}`
+                    item.icon = err ? ' ' : `data:image/png;base64,${base64}`
                 })
 
                 next()
@@ -63,7 +65,7 @@ const Trail = {
 
             devices.forEach(item => {
                 iconExtractor.get(item.path, (err, base64) => {
-                    item.icon = err ? transparentImg : `data:image/png;base64,${base64}`
+                    item.icon = err ? ' ' : `data:image/png;base64,${base64}`
                     next()
                 })
             })
