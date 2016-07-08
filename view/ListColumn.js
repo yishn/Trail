@@ -48,7 +48,7 @@ class ListColumn extends Component {
 
         $input.on('keydown', evt => {
             evt.preventDefault()
-            if ([40, 38].indexOf(evt.keyCode) < 0) return
+            if ([40, 38, 13].indexOf(evt.keyCode) < 0) return
 
             let $selected = this.$element.find('.selected')
             let $lis = this.$element.find('li')
@@ -90,6 +90,8 @@ class ListColumn extends Component {
         })
 
         $ol.scrollTop(scrollTop)
+
+        // Add resizer
 
         let $resizer = $('<div/>').addClass('resizer vertical').appendTo(this.$element)
     }
