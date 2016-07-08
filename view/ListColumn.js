@@ -1,10 +1,16 @@
 const $ = require('../modules/sprint')
+const setting = require('../modules/setting')
 const Component = require('./Component')
 
 let transparentImg = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
 class ListColumn extends Component {
     render() {
+        if (!('width' in this.data))
+            this.data.width = setting.get('columnview.colwidth')
+        if (!('minWidth' in this.data))
+            this.data.minWidth = setting.get('columnview.colminwidth')
+
         let scrollTop = this.$element.children('ol').scrollTop() || 0
         this.$element.css('width', this.data.width).empty()
 
@@ -48,6 +54,29 @@ class ListColumn extends Component {
             this.emit('item-mousedown', item)
         }
 
+        this.data.items.forEach(item => {
+            let $img = $('<img/>').attr('src', item.icon || transparentImg)
+            let $li = $('<li/>').text(item.name).prepend($img)
+
+            $li.data('item', item)
+
+            if (item.selected) $li.addClass('selected')
+
+            $li.on('mousedown', evt => {
+                evt.preventDefault()
+                itemMouseDownHandler($li, evt.shiftKey, evt.ctrlKey)
+            }).on('mouseup', evt => {
+                evt.preventDefault()
+                this.emit('item-activate')
+            })
+
+            $ol.append($li)
+        })
+
+        $ol.scrollTop(scrollTop)
+
+        // Handle keys
+
         $input.on('keydown', evt => {
             evt.preventDefault()
             if ([36, 35, 33, 34, 40, 38, 13].indexOf(evt.keyCode) < 0) return
@@ -84,27 +113,6 @@ class ListColumn extends Component {
 
             itemMouseDownHandler($li, evt.shiftKey, evt.ctrlKey)
         })
-
-        this.data.items.forEach(item => {
-            let $img = $('<img/>').attr('src', item.icon || transparentImg)
-            let $li = $('<li/>').text(item.name).prepend($img)
-
-            $li.data('item', item)
-
-            if (item.selected) $li.addClass('selected')
-
-            $li.on('mousedown', evt => {
-                evt.preventDefault()
-                itemMouseDownHandler($li, evt.shiftKey, evt.ctrlKey)
-            }).on('mouseup', evt => {
-                evt.preventDefault()
-                this.emit('item-activate')
-            })
-
-            $ol.append($li)
-        })
-
-        $ol.scrollTop(scrollTop)
 
         // Add resizer
 
