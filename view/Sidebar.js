@@ -1,6 +1,8 @@
 const $ = require('../modules/sprint')
 const Component = require('./Component')
 
+let transparentImg = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+
 class Sidebar extends Component {
     render() {
         let scrollTop = this.$element.scrollTop()
@@ -15,22 +17,16 @@ class Sidebar extends Component {
             if (!group.items || !group.items.length) return
 
             group.items.forEach(item => {
-                let $li = $('<li/>').text(item.name)
-                let $i = $('<i/>').addClass('mi').prependTo($li)
+                let $img = $('<img/>').attr('src', item.icon || transparentImg)
+                let $li = $('<li/>').text(item.name).prepend($img)
 
                 $li.data('item', item)
 
                 if (item.selected) $li.addClass('selected')
 
-                if (item.icon == 'network') $i.addClass('mi-network-drive')
-                else if (item.icon == 'removable') $i.addClass('mi-usb')
-                else if (item.icon == 'cd') $i.addClass('mi-cd')
-                else if (item.icon == 'folder') $i.addClass('mi-folder-outline mi-flip-vertical')
-                else $i.addClass('mi-console-xbox')
-
                 $li.on('click', evt => {
                     evt.preventDefault()
-                    
+
                     let $selected = this.$element.find('.selected')
                     let selectedItem = $selected.data('item')
 

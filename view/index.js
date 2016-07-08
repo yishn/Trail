@@ -1,5 +1,5 @@
 const $ = require('../modules/sprint')
-const shell = require('../modules/trail-shell')
+const iconExtractor = require('../modules/icon-extractor')
 const setting = require('../modules/setting')
 
 const Trail = {
@@ -31,23 +31,37 @@ const Trail = {
             let devices = list.map(drive => {
                 return {
                     name: drive.volumeName == null ? drive.name : `${drive.volumeName} (${drive.name})`,
-                    path: drive.name,
-                    icon: drive.driveType
+                    path: drive.name
                 }
             }).sort((x1, x2) => x1.path < x2.path ? -1 : +(x1.path != x2.path))
 
             let favorites = setting.get('sidebar.favorites').map(({path}) => {
                 return {
                     name: require('path').basename(path),
-                    path,
-                    icon: 'folder'
+                    path
                 }
             }).sort((x1, x2) => x1.name < x2.name ? -1 : +(x1.name != x2.name))
 
-            callback(null, [
-                {name: 'Favorites', items: favorites},
-                {name: 'Devices', items: devices}
-            ])
+            let next = () => {
+                callback(null, [
+                    {name: 'Favorites', items: favorites},
+                    {name: 'Devices', items: devices}
+                ])
+            }
+
+            iconExtractor.get('folder', (_, r1) => {
+                favorites.forEach(item => {
+                    item.icon = `data:image/png;base64,${r1}`
+                })
+
+                devices.forEach(item => {
+                    iconExtractor.get(item.path, (__, r2) => {
+                        item.icon = `data:image/png;base64,${r2}`
+
+                        if (devices.every(item => !!item.icon)) next()
+                    })
+                })
+            })
         })
     }
 }
