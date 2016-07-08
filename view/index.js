@@ -30,8 +30,15 @@ const Trail = {
             let transformSort = f => (x1, x2) => f(x1) < f(x2) ? -1 : +(f(x1) != f(x2))
 
             let devices = list.map(drive => {
+                let name = drive.name
+                
+                if (drive.volumeName != null)
+                    name = `${drive.volumeName} (${name})`
+                else if (drive.description != null)
+                    name = `${drive.description} (${name})`
+
                 return {
-                    name: drive.volumeName == null ? drive.name : `${drive.volumeName} (${drive.name})`,
+                    name,
                     path: drive.name
                 }
             }).sort(transformSort(x => x.path))
