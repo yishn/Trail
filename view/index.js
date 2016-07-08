@@ -43,6 +43,9 @@ const Trail = {
             }).sort((x1, x2) => x1.name < x2.name ? -1 : +(x1.name != x2.name))
 
             let next = () => {
+                if (devices.some(x => !x.icon) || favorites.some(x => !x.icon))
+                    return
+
                 callback(null, [
                     {name: 'Favorites', items: favorites},
                     {name: 'Devices', items: devices}
@@ -54,12 +57,13 @@ const Trail = {
                     item.icon = `data:image/png;base64,${r1}`
                 })
 
-                devices.forEach(item => {
-                    iconExtractor.get(item.path, (__, r2) => {
-                        item.icon = `data:image/png;base64,${r2}`
+                next()
+            })
 
-                        if (devices.every(item => !!item.icon)) next()
-                    })
+            devices.forEach(item => {
+                iconExtractor.get(item.path, (__, r2) => {
+                    item.icon = `data:image/png;base64,${r2}`
+                    next()
                 })
             })
         })
