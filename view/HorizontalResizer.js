@@ -7,9 +7,9 @@ class HorizontalResizer extends Component {
 
         $element.on('mousedown', evt => {
             $element
-                .data('mousepos', [evt.x, evt.y])
-                .data('mousedown', true)
-                .data('left', this.data.left)
+            .data('mousepos', [evt.x, evt.y])
+            .data('mousedown', true)
+            .data('left', this.data.left)
         })
 
         $(document).on('mouseup', () => {
@@ -34,11 +34,13 @@ class HorizontalResizer extends Component {
 
     render() {
         this.$element
-            .css('left', this.data.left - 2)
+        .css('left', this.data.left - 2)
+
         .prev()
-            .css('width', this.data.left - 2)
+        .css('width', this.data.left - 2)
+
         this.$element.next()
-            .css('left', this.data.left)
+        .css('left', this.data.left)
     }
 }
 

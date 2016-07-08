@@ -1,4 +1,4 @@
-const shell = require('./trail-shell')
+const {extractIcon} = require('./trail-shell')
 const EventEmitter = require('events')
 
 let eventEmitter = new EventEmitter()
@@ -13,7 +13,7 @@ let start = function() {
     while (queue.length > 0) {
         let name = queue.shift()
 
-        shell.extractIcon(name, (err, result) => {
+        extractIcon(name, (err, result) => {
             cache[name] = result
             eventEmitter.emit(name, err, result)
         })
