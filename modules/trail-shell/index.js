@@ -22,8 +22,12 @@ server.stdout.on('data', function(data) {
 
         if (commands.length > 0) {
             let command = commands.shift()
+
             logPush(response)
-            command.callback(null, response)
+            if (response != 'error')
+                command.callback(null, response)
+            else
+                command.callback(new Error('TrailShell error'))
         }
 
         start = buffer.indexOf('\n\n')
