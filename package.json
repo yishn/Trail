@@ -14,7 +14,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "fs-extra": "^0.30.0"
+    "octicons": "^4.2.0"
   },
   "scripts": {
     "test": "mocha",
