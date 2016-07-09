@@ -41,14 +41,14 @@ const Trail = {
                     name,
                     path: drive.name + sep
                 }
-            }).sort(transformSort(x => x.path))
+            }).sort(transformSort(x => x.path.toLowerCase()))
 
             let favorites = setting.get('sidebar.favorites').map(({path}) => {
                 return {
                     name: basename(path),
                     path
                 }
-            }).sort(transformSort(x => x.name))
+            }).sort(transformSort(x => x.name.toLowerCase()))
 
             let next = () => {
                 if (devices.some(x => !x.icon) || favorites.some(x => !x.icon))
