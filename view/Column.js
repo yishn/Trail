@@ -70,6 +70,8 @@ class Column extends Component {
         $('.focused').removeClass('focused')
         this.$element.addClass('focused')
         this.$element.find('.focus-indicator').get(0).focus()
+        this.emit('focus')
+
         return this
     }
 }
