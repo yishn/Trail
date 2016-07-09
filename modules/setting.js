@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const remote = require('electron').remote
+const {remote} = require('electron')
 const app = remote ? remote.app : require('electron').app
 
 let directory = app.getPath('userData')
