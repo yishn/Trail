@@ -17,19 +17,19 @@ class ColumnView extends Component {
             $column.data('component', component)
 
             component.load(column.path, err => {
+                if (err || !$column.hasClass('list-column')) return
+
                 // Spray breadcrumbs along the trail
 
-                if (err) return
                 if (i + 1 == this.data.columns.length) {
                     $column.find('li').eq(0).trigger('mousedown')
+                    this.$element.scrollLeft(0)
                     component.focus()
                     return
                 }
 
-                let pathToSelect = this.data.columns[i + 1].path
-                let lis = $column.find('li').get().filter(li => {
-                    return $(li).data('item').path == pathToSelect
-                })
+                let filter = li => $(li).data('item').path == this.data.columns[i + 1].path
+                let lis = $column.find('li').get().filter(filter)
 
                 if (lis.length > 0) $(lis[0]).trigger('mousedown')
             })

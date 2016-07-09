@@ -1,3 +1,5 @@
+const scroll = require('scroll')
+
 const $ = require('../modules/sprint')
 const setting = require('../modules/setting')
 const Component = require('./Component')
@@ -75,11 +77,12 @@ class Column extends Component {
             let width = $parent.width()
             let colLeft = this.$element.position().left
             let colWidth = this.$element.width()
+            let options = {duration: 200}
 
             if (colLeft < 0) {
-                $parent.scrollLeft(scrollLeft + colLeft)
+                scroll.left($parent.get(0), scrollLeft + colLeft, options)
             } else if (colLeft + colWidth > width) {
-                $parent.scrollLeft(scrollLeft + colLeft + colWidth - width)
+                scroll.left($parent.get(0), scrollLeft + colLeft + colWidth - width, options)
             }
         }
 
