@@ -128,6 +128,17 @@ class ListColumn extends Column {
 
         return this
     }
+
+    focus() {
+        super.focus()
+
+        let $selected = this.$element.find('.selected')
+
+        if ($selected.length)
+            $selected.get(0).scrollIntoViewIfNeeded(false)
+
+        return this
+    }
 }
 
 module.exports = ListColumn
