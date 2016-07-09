@@ -1,18 +1,13 @@
 const $ = require('../modules/sprint')
-const setting = require('../modules/setting')
-const Component = require('./Component')
+const Column = require('./Column')
 
 let transparentImg = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
-class ListColumn extends Component {
+class ListColumn extends Column {
     render() {
-        if (!('width' in this.data))
-            this.data.width = setting.get('columnview.colwidth')
-        if (!('minWidth' in this.data))
-            this.data.minWidth = setting.get('columnview.colminwidth')
+        super.render()
 
         let scrollTop = this.$element.children('ol').scrollTop() || 0
-        this.$element.css('width', this.data.width).empty()
 
         let $ol = $('<ol/>')
         let $input = $('<input type="text"/>').addClass('focus-indicator')
@@ -67,7 +62,10 @@ class ListColumn extends Component {
                 itemMouseDownHandler($li, evt.shiftKey, evt.ctrlKey)
             }).on('mouseup', evt => {
                 evt.preventDefault()
-                this.emit('item-activate')
+                this.emit('item-click')
+            }).on('dblclick', evt => {
+                evt.preventDefault()
+                this.emit('item-dblclick')
             })
 
             $ol.append($li)
@@ -107,39 +105,12 @@ class ListColumn extends Component {
                 $li = $lis.eq(Math.min(j + 1, $lis.length - 1))
             } else if (evt.keyCode == 13) {
                 // Enter
-                this.emit('item-activate')
+                this.emit('item-click')
+                this.emit('item-dblclick')
                 return
             }
 
             itemMouseDownHandler($li, evt.shiftKey, evt.ctrlKey)
-        })
-
-        // Add resizer
-
-        let $resizer = $('<div/>').addClass('resizer vertical').appendTo(this.$element)
-
-        $resizer.on('mousedown', evt => {
-            $resizer
-            .data('mousepos', [evt.x, evt.y])
-            .data('mousedown', true)
-            .data('width', this.data.width)
-        })
-
-        $(document).on('mouseup', () => {
-            if (!$resizer.data('mousedown')) return
-
-            $resizer.data('mousedown', false)
-            this.emit('resized')
-        }).on('mousemove', evt => {
-            if (!$resizer.data('mousedown')) return
-
-            let width = $resizer.data('width')
-            let [ox, oy] = $resizer.data('mousepos')
-            let {x, y} = evt
-            let dx = x - ox
-
-            this.data.width = Math.max(width + dx, this.data.minWidth)
-            this.$element.width(this.data.width)
         })
     }
 }
