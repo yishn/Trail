@@ -14,6 +14,7 @@ class ColumnView extends Component {
 
             let Column = require('../packages/' + column.type)
             let component = new Column($column)
+            $column.data('component', component)
 
             component.load(column.path, err => {
                 if (err) return

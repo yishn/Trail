@@ -11,6 +11,30 @@ class Column extends Component {
 
         this.$element.css('width', this.data.width).empty()
 
+        // Handle keys
+
+        let $input = $('<input type="text"/>')
+            .addClass('focus-indicator')
+            .appendTo(this.$element)
+
+        $input.on('keydown', evt => {
+            evt.preventDefault()
+            if ([37, 39].indexOf(evt.keyCode) < 0) return
+
+            let $column
+
+            if (evt.keyCode == 37) {
+                // Left arrow
+                $column = this.$element.prev('.column')
+            } else if (evt.keyCode == 39) {
+                // Right arrow
+                $column = this.$element.next('.column')
+            }
+
+            if ($column && $column.length)
+                $column.data('component').focus()
+        })
+
         // Add resizer
 
         let $resizer = $('<div/>').addClass('resizer vertical').appendTo(this.$element)
@@ -39,6 +63,13 @@ class Column extends Component {
             this.$element.width(this.data.width)
         })
 
+        return this
+    }
+
+    focus() {
+        $('.focused').removeClass('focused')
+        this.$element.addClass('focused')
+        this.$element.find('.focus-indicator').get(0).focus()
         return this
     }
 }

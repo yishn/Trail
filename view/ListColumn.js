@@ -17,9 +17,7 @@ class ListColumn extends Column {
 
         let scrollTop = this.$element.children('ol').scrollTop() || 0
 
-        let $ol = $('<ol/>')
-        let $input = $('<input type="text"/>').addClass('focus-indicator')
-        this.$element.addClass('list-column').append($ol, $input)
+        let $ol = $('<ol/>').appendTo(this.$element.addClass('list-column'))
 
         let selectItem = ($li, shift, ctrl) => {
             let item = $li.data('item')
@@ -90,7 +88,7 @@ class ListColumn extends Column {
 
         // Handle keys
 
-        $input.on('keydown', evt => {
+        this.$element.find('.focus-indicator').on('keydown', evt => {
             evt.preventDefault()
             if ([36, 35, 33, 34, 40, 38, 13].indexOf(evt.keyCode) < 0) return
 
@@ -128,13 +126,6 @@ class ListColumn extends Column {
             selectItem($li, evt.shiftKey, evt.ctrlKey)
         })
 
-        return this
-    }
-
-    focus() {
-        $('.focused').removeClass('focused')
-        this.$element.addClass('focused')
-        this.$element.find('.focus-indicator').get(0).focus()
         return this
     }
 }

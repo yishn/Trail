@@ -108,18 +108,18 @@ main {
     height: 16px;
 }
 
-.list-column .focus-indicator {
-    top: -9999em;
-    left: 0;
-    right: 0;
-}
-
 /* Column */
 
 .column {
     display: inline-block;
     position: relative;
     height: 100%;
+}
+
+.column .focus-indicator {
+    top: -9999em;
+    left: 0;
+    right: 0;
 }
 
 .column .resizer {
