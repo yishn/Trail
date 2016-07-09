@@ -48,6 +48,7 @@ exports.sendCommand = function(command, callback) {
     return exports
 }
 
-exports.extractIcon = function(name, callback) {
-    return exports.sendCommand(`extract-icon ${name}`, callback)
+exports.extractIcon = function(name, small, callback) {
+    let size = small ? 's' : 'l'
+    return exports.sendCommand(`extract-icon ${size} ${name}`, callback)
 }

@@ -21,7 +21,7 @@ const Trail = {
     },
 
     getSidebarData: function(callback) {
-        let {basename} = require('path')
+        let {basename, sep} = require('path')
         let drives = require('../modules/drives')
 
         drives.list((err, list) => {
@@ -31,7 +31,7 @@ const Trail = {
 
             let devices = list.map(drive => {
                 let name = drive.name
-                
+
                 if (drive.volumeName != null)
                     name = `${drive.volumeName} (${name})`
                 else if (drive.description != null)
@@ -39,7 +39,7 @@ const Trail = {
 
                 return {
                     name,
-                    path: drive.name
+                    path: drive.name + sep
                 }
             }).sort(transformSort(x => x.path))
 
@@ -61,7 +61,7 @@ const Trail = {
             }
 
             let fetch = (item, name) => {
-                iconExtractor.get(name, (err, base64) => {
+                iconExtractor.get(name, true, (err, base64) => {
                     item.icon = err ? ' ' : `data:image/png;base64,${base64}`
                     next()
                 })

@@ -19,13 +19,15 @@ namespace TrailShell {
 
         private static string generateResponse(string input) {
             if (input.StartsWith("extract-icon")) {
-                string name = input.Substring("extract-icon".Length + 1);
+                bool small = input.Substring("extract-icon".Length + 1, 1) == "s";
+                string name = input.Substring("extract-icon".Length + 3);
                 Icon ico;
+                IconReader.IconSize size = small ? IconReader.IconSize.Small : IconReader.IconSize.Large;
 
                 if (name == "folder") {
-                    ico = IconReader.GetFolderIcon("Folder", IconReader.IconSize.Small, IconReader.FolderType.Open);
+                    ico = IconReader.GetFolderIcon("Folder", size, IconReader.FolderType.Open);
                 } else {
-                    ico = IconReader.GetFileIcon(name, IconReader.IconSize.Small, false);
+                    ico = IconReader.GetFileIcon(name, size, false);
                 }
 
                 return bitmapToBase64(ico.ToBitmap());

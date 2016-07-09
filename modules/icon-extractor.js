@@ -11,22 +11,25 @@ let start = function() {
     busy = true
 
     while (queue.length > 0) {
-        let name = queue.shift()
+        let request = queue.shift()
+        let [name, small] = request
+        let id = request.join('|')
 
-        extractIcon(name, (err, result) => {
-            cache[name] = result
-            eventEmitter.emit(name, err, result)
+        extractIcon(name, small, (err, result) => {
+            cache[id] = result
+            eventEmitter.emit(id, err, result)
         })
     }
 
     busy = false
 }
 
-exports.get = function(name, callback) {
-    if (name in cache) return callback(null, cache[name])
+exports.get = function(name, small, callback) {
+    let id = [name, small].join('|')
+    if (id in cache) return callback(null, cache[id])
 
-    queue.push(name)
+    queue.push([name, small])
     if (!busy) start()
 
-    eventEmitter.once(name, callback)
+    eventEmitter.once(id, callback)
 }
