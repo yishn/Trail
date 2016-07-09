@@ -4,6 +4,14 @@ const Column = require('./Column')
 let transparentImg = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
 class ListColumn extends Column {
+    constructor($element, data) {
+        super($element, data)
+
+        if (!$element) return
+
+        $element.on('click', () => this.focus())
+    }
+
     render() {
         super.render()
 
@@ -12,10 +20,6 @@ class ListColumn extends Column {
         let $ol = $('<ol/>')
         let $input = $('<input type="text"/>').addClass('focus-indicator')
         this.$element.addClass('list-column').append($ol, $input)
-
-        this.$element.on('click', evt => {
-            this.deselect().focus()
-        })
 
         let selectItem = ($li, shift, ctrl) => {
             let item = $li.data('item')
@@ -42,10 +46,6 @@ class ListColumn extends Column {
             item.selected = true
 
             $li.get(0).scrollIntoViewIfNeeded(false)
-
-            // Focus component
-
-            this.focus()
         }
 
         this.data.items.forEach(item => {
@@ -76,7 +76,7 @@ class ListColumn extends Column {
                 else
                     $li.attr('title', '')
             }).on('click', evt => {
-                evt.stopPropagation()
+                evt.preventDefault()
                 this.emit('item-click')
             }).on('dblclick', evt => {
                 evt.preventDefault()
@@ -133,12 +133,6 @@ class ListColumn extends Column {
         $('.focused').removeClass('focused')
         this.$element.addClass('focused')
         this.$element.find('.focus-indicator').get(0).focus()
-        return this
-    }
-
-    deselect() {
-        let $selected = this.$element.find('.selected').removeClass('selected')
-        if ($selected.length) $selected.data('item').selected = false
         return this
     }
 }
