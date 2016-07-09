@@ -35,7 +35,7 @@ exports.getLog = function(index = null) {
     return log[(index + log.length) % log.length]
 }
 
-exports.sendCommand = function(command, callback) {
+exports.sendCommand = function(command, callback = () => {}) {
     commands.push({command, callback})
 
     try {

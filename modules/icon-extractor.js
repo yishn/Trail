@@ -24,7 +24,7 @@ let start = function() {
     busy = false
 }
 
-exports.get = function(name, small, callback) {
+exports.get = function(name, small, callback = () => {}) {
     let id = [name, small].join('|')
     if (id in cache) return callback(null, cache[id])
 
