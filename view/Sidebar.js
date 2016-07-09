@@ -37,6 +37,11 @@ class Sidebar extends Component {
                     item.selected = true
 
                     this.emit('item-click', item)
+                }).on('mouseenter', evt => {
+                    if ($li.get(0).offsetWidth < $li.get(0).scrollWidth)
+                        $li.attr('title', $li.text())
+                    else
+                        $li.attr('title', '')
                 })
 
                 $ol.append($li)
