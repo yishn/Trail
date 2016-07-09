@@ -44,9 +44,7 @@ exports.get = function(name, small, callback = () => {}) {
         if (!busy) start()
     }
 
-    emitter.setMaxListeners(emitter.getMaxListeners() + 1);
     emitter.once(id, (err, result) => {
-        emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0));
         callback(err, result)
     })
 }
