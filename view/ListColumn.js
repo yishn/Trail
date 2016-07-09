@@ -13,7 +13,7 @@ class ListColumn extends Column {
         let $input = $('<input type="text"/>').addClass('focus-indicator')
         this.$element.append($ol, $input)
 
-        let itemMouseDownHandler = ($li, shift, ctrl) => {
+        let selectItem = ($li, shift, ctrl) => {
             let item = $li.data('item')
 
             // Focus component
@@ -43,10 +43,6 @@ class ListColumn extends Column {
             if (selectedItem) selectedItem.selected = false
             item.selected = true
             $li.get(0).scrollIntoViewIfNeeded(false)
-
-            // Emit event
-
-            this.emit('item-mousedown', item)
         }
 
         this.data.items.forEach(item => {
@@ -59,9 +55,21 @@ class ListColumn extends Column {
 
             $li.on('mousedown', evt => {
                 evt.preventDefault()
-                itemMouseDownHandler($li, evt.shiftKey, evt.ctrlKey)
+
+                let selected = this.$element.find('.selected').get()
+                if (selected.indexOf($li.get(0)) < 0) {
+                    selectItem($li, evt.shiftKey, evt.ctrlKey)
+                }
+
+                this.emit('item-mousedown', item)
             }).on('mouseup', evt => {
                 evt.preventDefault()
+
+                let selected = this.$element.find('.selected').get()
+                if (selected.indexOf($li.get(0)) >= 0) {
+                    selectItem($li, evt.shiftKey, evt.ctrlKey)
+                }
+
                 this.emit('item-click')
             }).on('dblclick', evt => {
                 evt.preventDefault()
@@ -110,7 +118,7 @@ class ListColumn extends Column {
                 return
             }
 
-            itemMouseDownHandler($li, evt.shiftKey, evt.ctrlKey)
+            selectItem($li, evt.shiftKey, evt.ctrlKey)
         })
     }
 }
