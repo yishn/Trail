@@ -51,6 +51,8 @@ class DirectoryColumn extends ListColumn {
                 }
             })
         })
+
+        return this
     }
 
     getTrail(path) {

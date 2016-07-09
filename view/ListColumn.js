@@ -127,6 +127,8 @@ class ListColumn extends Column {
 
             selectItem($li, evt.shiftKey, evt.ctrlKey)
         })
+
+        return this
     }
 
     focus() {

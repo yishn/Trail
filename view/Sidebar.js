@@ -49,11 +49,13 @@ class Sidebar extends Component {
         })
 
         this.$element.scrollTop(scrollTop)
+        return this
     }
 
     deselect() {
         let $selected = this.$element.find('.selected').removeClass('selected')
         if ($selected.length) $selected.data('item').selected = false
+        return this
     }
 }
 

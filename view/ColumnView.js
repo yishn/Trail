@@ -30,6 +30,8 @@ class ColumnView extends Component {
                 if (lis.length > 0) $(lis[0]).trigger('mousedown')
             })
         })
+
+        return this
     }
 }
 

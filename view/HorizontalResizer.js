@@ -41,6 +41,8 @@ class HorizontalResizer extends Component {
 
         this.$element.next()
         .css('left', this.data.left)
+
+        return this
     }
 }
 

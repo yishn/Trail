@@ -19,7 +19,9 @@ class Component extends EventEmitter {
         this.emit('data-changed')
     }
 
-    render() {}
+    render() {
+        return this
+    }
 }
 
 module.exports = Component

@@ -38,6 +38,8 @@ class Column extends Component {
             this.data.width = Math.max(width + dx, this.data.minWidth)
             this.$element.width(this.data.width)
         })
+
+        return this
     }
 }
 
