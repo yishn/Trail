@@ -70,6 +70,9 @@ class ListColumn extends Column {
                     selectItem($li, evt.shiftKey, evt.ctrlKey)
                 }
 
+                this.emit('item-mouseup')
+            }).on('click', evt => {
+                evt.preventDefault()
                 this.emit('item-click')
             }).on('dblclick', evt => {
                 evt.preventDefault()
