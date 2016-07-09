@@ -13,14 +13,12 @@ class ListColumn extends Column {
         let $input = $('<input type="text"/>').addClass('focus-indicator')
         this.$element.addClass('list-column').append($ol, $input)
 
+        this.$element.on('click', evt => {
+            this.deselect().focus()
+        })
+
         let selectItem = ($li, shift, ctrl) => {
             let item = $li.data('item')
-
-            // Focus component
-
-            $('.focused').removeClass('focused')
-            this.$element.addClass('focused')
-            $input.get(0).focus()
 
             // Select items
 
@@ -42,7 +40,12 @@ class ListColumn extends Column {
 
             if (selectedItem) selectedItem.selected = false
             item.selected = true
+
             $li.get(0).scrollIntoViewIfNeeded(false)
+
+            // Focus component
+
+            this.focus()
         }
 
         this.data.items.forEach(item => {
@@ -73,7 +76,7 @@ class ListColumn extends Column {
                 else
                     $li.attr('title', '')
             }).on('click', evt => {
-                evt.preventDefault()
+                evt.stopPropagation()
                 this.emit('item-click')
             }).on('dblclick', evt => {
                 evt.preventDefault()
@@ -124,6 +127,19 @@ class ListColumn extends Column {
 
             selectItem($li, evt.shiftKey, evt.ctrlKey)
         })
+    }
+
+    focus() {
+        $('.focused').removeClass('focused')
+        this.$element.addClass('focused')
+        this.$element.find('.focus-indicator').get(0).focus()
+        return this
+    }
+
+    deselect() {
+        let $selected = this.$element.find('.selected').removeClass('selected')
+        if ($selected.length) $selected.data('item').selected = false
+        return this
     }
 }
 
