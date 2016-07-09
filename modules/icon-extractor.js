@@ -1,7 +1,7 @@
 const {extractIcon} = require('./trail-shell')
 const EventEmitter = require('events')
 
-let eventEmitter = new EventEmitter()
+let emitter = new EventEmitter()
 let busy = false
 let cache = {}
 let queue = []
@@ -17,7 +17,7 @@ let start = function() {
 
         extractIcon(name, small, (err, result) => {
             cache[id] = result
-            eventEmitter.emit(id, err, result)
+            emitter.emit(id, err, result)
         })
     }
 
@@ -31,5 +31,9 @@ exports.get = function(name, small, callback = () => {}) {
     queue.push([name, small])
     if (!busy) start()
 
-    eventEmitter.once(id, callback)
+    emitter.setMaxListeners(emitter.getMaxListeners() + 1);
+    emitter.once(id, (err, result) => {
+        emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0));
+        callback(err, result)
+    })
 }
