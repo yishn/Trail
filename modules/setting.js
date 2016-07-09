@@ -24,6 +24,7 @@ let defaults = {
     'columnview.colminwidth': 100,
     'columnview.colwidth': 200,
     'debug.dev_tools': false,
+    'iconextractor.nocache_ext': [ ".exe", ".ico", ".lnk", ".msi", ".cur", ".ani" ],
     'sidebar.favorites': [{path: app.getPath('userData')}],
     'sidebar.minwidth': 100,
     'sidebar.width': 200,

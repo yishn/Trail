@@ -7,7 +7,7 @@ let commands = []
 let buffer = ''
 
 function logPush(str) {
-    if (log.length > 100) log.shift()
+    if (log.length > 1000) log.shift()
     log.push(str)
 }
 

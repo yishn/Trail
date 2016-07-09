@@ -1,8 +1,12 @@
-const {extractIcon} = require('./trail-shell')
+const {extname} = require('path')
 const EventEmitter = require('events')
+
+const {extractIcon} = require('./trail-shell')
+const setting = require('./setting')
 
 let emitter = new EventEmitter()
 let busy = false
+let inProgress = {}
 let cache = {}
 let queue = []
 
@@ -17,6 +21,8 @@ let start = function() {
 
         extractIcon(name, small, (err, result) => {
             cache[id] = result
+            delete inProgress[id]
+
             emitter.emit(id, err, result)
         })
     }
@@ -25,11 +31,18 @@ let start = function() {
 }
 
 exports.get = function(name, small, callback = () => {}) {
+    let ext = extname(name).toLowerCase()
+    if (ext != '' && setting.get('iconextractor.nocache_ext').indexOf(ext) < 0)
+        name = ext
+
     let id = [name, small].join('|')
     if (id in cache) return callback(null, cache[id])
 
-    queue.push([name, small])
-    if (!busy) start()
+    if (!(id in inProgress)) {
+        inProgress[id] = true
+        queue.push([name, small])
+        if (!busy) start()
+    }
 
     emitter.setMaxListeners(emitter.getMaxListeners() + 1);
     emitter.once(id, (err, result) => {
