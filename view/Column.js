@@ -39,6 +39,12 @@ class Column extends Component {
             this.$element.width(this.data.width)
         })
     }
+
+    load(path) {}
+
+    getTrail(path) {
+        return [path]
+    }
 }
 
 module.exports = Column

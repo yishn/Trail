@@ -1,5 +1,5 @@
 const fs = require('fs')
-const {join} = require('path')
+const {dirname, join} = require('path')
 
 const $ = require('../modules/sprint')
 const iconExtractor = require('../modules/icon-extractor')
@@ -50,6 +50,17 @@ class DirectoryColumn extends ListColumn {
                 }
             })
         })
+    }
+
+    getTrail(path) {
+        let parent = dirname(path)
+        if (path == parent) return super.getTrail(path)
+
+        let dc = new DirectoryColumn($('<div/>'))
+        let trail = dc.getTrail(parent)
+
+        trail.push(path)
+        return trail
     }
 }
 
