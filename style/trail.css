@@ -58,13 +58,20 @@ main {
     height: 16px;
 }
 
-/* ListColumn */
+/* ColumnView */
 
-.list-column {
-    position: relative;
-    float: left;
-    height: 100%;
+.column-view {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
 }
+
+/* ListColumn */
 
 .list-column ol {
     position: absolute;
@@ -100,7 +107,21 @@ main {
     height: 16px;
 }
 
-.list-column .resizer {
+.list-column .focus-indicator {
+    top: -9999em;
+    left: 0;
+    right: 0;
+}
+
+/* Column */
+
+.column {
+    display: inline-block;
+    position: relative;
+    height: 100%;
+}
+
+.column .resizer {
     position: absolute;
     top: 0;
     right: 0;

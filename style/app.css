@@ -115,7 +115,6 @@ form p, form ul li {
 
 .focus-indicator {
     position: absolute;
-    left: -9999em;
-    top: -9999em;
     opacity: 0;
+    z-index: -1;
 }

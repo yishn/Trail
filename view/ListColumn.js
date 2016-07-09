@@ -11,7 +11,7 @@ class ListColumn extends Column {
 
         let $ol = $('<ol/>')
         let $input = $('<input type="text"/>').addClass('focus-indicator')
-        this.$element.append($ol, $input)
+        this.$element.addClass('list-column').append($ol, $input)
 
         let selectItem = ($li, shift, ctrl) => {
             let item = $li.data('item')
