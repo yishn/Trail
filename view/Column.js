@@ -67,11 +67,29 @@ class Column extends Component {
     }
 
     focus() {
+        // Scroll column into view
+
+        let $parent = this.$element.parent('.column-view')
+        if ($parent.length) {
+            let scrollLeft = $parent.scrollLeft()
+            let width = $parent.width()
+            let colLeft = this.$element.position().left
+            let colWidth = this.$element.width()
+
+            if (colLeft < 0) {
+                $parent.scrollLeft(scrollLeft + colLeft)
+            } else if (colLeft + colWidth > width) {
+                $parent.scrollLeft(scrollLeft + colLeft + colWidth - width)
+            }
+        }
+
+        // Add classes
+
         $('.focused').removeClass('focused')
         this.$element.addClass('focused')
         this.$element.find('.focus-indicator').get(0).focus()
-        this.emit('focus')
 
+        this.emit('focus')
         return this
     }
 }

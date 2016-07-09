@@ -17,9 +17,12 @@ class ColumnView extends Component {
             $column.data('component', component)
 
             component.load(column.path, err => {
+                // Spray breadcrumbs along the trail
+
                 if (err) return
                 if (i + 1 == this.data.columns.length) {
                     $column.find('li').eq(0).trigger('mousedown')
+                    component.focus()
                     return
                 }
 
