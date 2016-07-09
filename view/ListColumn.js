@@ -71,6 +71,11 @@ class ListColumn extends Column {
                 }
 
                 this.emit('item-mouseup')
+            }).on('mouseenter', evt => {
+                if ($li.get(0).offsetWidth < $li.get(0).scrollWidth)
+                    $li.attr('title', $li.text())
+                else
+                    $li.attr('title', '')
             }).on('click', evt => {
                 evt.preventDefault()
                 this.emit('item-click')
