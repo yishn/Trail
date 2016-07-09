@@ -54,12 +54,12 @@ class DirectoryColumn extends ListColumn {
 
     getTrail(path) {
         let parent = dirname(path)
-        if (path == parent) return super.getTrail(path)
+        if (path == parent) return [{path, type: this.constructor.name}]
 
         let dc = new DirectoryColumn($('<div/>'))
         let trail = dc.getTrail(parent)
 
-        trail.push(path)
+        trail.push({path, type: this.constructor.name})
         return trail
     }
 }
