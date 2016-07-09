@@ -78,9 +78,10 @@ main {
     top: 0;
     bottom: 0;
     left: 0;
-    right: 2px;
+    right: 1px;
     overflow-x: hidden;
     overflow-y: auto;
+    z-index: 1;
 }
 
 .list-column ol li {
@@ -126,4 +127,7 @@ main {
     top: 0;
     right: 0;
     bottom: 0;
+    width: 5px;
+    background: linear-gradient(to left, #ccc 1px, transparent 1px);
+    z-index: 2;
 }
