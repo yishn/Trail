@@ -60,8 +60,6 @@ class ListColumn extends Column {
                 if (selected.indexOf($li.get(0)) < 0) {
                     selectItem($li, evt.shiftKey, evt.ctrlKey)
                 }
-
-                this.emit('item-mousedown', item)
             }).on('mouseup', evt => {
                 evt.preventDefault()
 
@@ -69,8 +67,6 @@ class ListColumn extends Column {
                 if (selected.indexOf($li.get(0)) >= 0) {
                     selectItem($li, evt.shiftKey, evt.ctrlKey)
                 }
-
-                this.emit('item-mouseup')
             }).on('mouseenter', evt => {
                 if ($li.get(0).offsetWidth < $li.get(0).scrollWidth)
                     $li.attr('title', $li.text())

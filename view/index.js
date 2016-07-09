@@ -1,4 +1,5 @@
 const $ = require('../modules/sprint')
+const helper = require('../modules/helper')
 const iconExtractor = require('../modules/icon-extractor')
 const setting = require('../modules/setting')
 
@@ -21,7 +22,7 @@ const Trail = {
     },
 
     getSidebarData: function(callback = () => {}) {
-        let {basename, sep} = require('path')
+        let {basename} = require('path')
         let drives = require('../modules/drives')
 
         drives.list((err, list) => {
@@ -39,14 +40,14 @@ const Trail = {
 
                 return {
                     name,
-                    path: drive.name + sep
+                    path: helper.trimTrailingSep(drive.name)
                 }
             }).sort(transformSort(x => x.path.toLowerCase()))
 
             let favorites = setting.get('sidebar.favorites').map(({path}) => {
                 return {
                     name: basename(path),
-                    path
+                    path: helper.trimTrailingSep(path)
                 }
             }).sort(transformSort(x => x.name.toLowerCase()))
 
@@ -76,6 +77,12 @@ const Trail = {
 $(document).ready(function() {
     Trail.initializeSidebar()
     Trail.getSidebarData((_, data) => Trail.Sidebar.data = data)
+
+    let ColumnView = require('./ColumnView')
+    let DirectoryColumn = require('../packages/DirectoryColumn')
+    let columns = new DirectoryColumn().getTrail(require('electron').remote.app.getPath('userData'))
+
+    let cv = new ColumnView($('main .column-view'), {columns})
 })
 
 require('./ipc')(Trail)

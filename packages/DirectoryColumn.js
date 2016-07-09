@@ -2,6 +2,7 @@ const fs = require('fs')
 const {dirname, join} = require('path')
 
 const $ = require('../modules/sprint')
+const helper = require('../modules/helper')
 const iconExtractor = require('../modules/icon-extractor')
 const ListColumn = require('../view/ListColumn')
 
@@ -18,7 +19,7 @@ class DirectoryColumn extends ListColumn {
             if (err) return callback(err)
 
             let items = files.map(name => {
-                let filepath = join(path, name)
+                let filepath = helper.trimTrailingSep(join(path, name))
                 let folder = false
                 try { folder = fs.lstatSync(filepath).isDirectory() }
                 catch (_) {}
@@ -54,7 +55,8 @@ class DirectoryColumn extends ListColumn {
 
     getTrail(path) {
         let parent = dirname(path)
-        if (path == parent) return [{path, type: this.constructor.name}]
+        if (helper.trimTrailingSep(path) == helper.trimTrailingSep(parent))
+            return [{path, type: this.constructor.name}]
 
         let dc = new DirectoryColumn($('<div/>'))
         let trail = dc.getTrail(parent)
