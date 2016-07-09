@@ -8,6 +8,7 @@
     top: 0;
     width: 100%;
     height: 100%;
+    z-index: 1;
 }
 
 #sidebar, #sidebar + .resizer {
@@ -15,6 +16,39 @@
     left: 0;
     top: 0;
     bottom: 0;
+    z-index: 3;
+}
+
+#sidebar + .resizer {
+    z-index: 2;
+}
+
+#sidebar + .resizer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 2px;
+    background: #ccc;
+}
+
+#sidebar + .resizer::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    right: 0;
+    width: 500px;
+    border-radius: 10px / 100px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .7);
+    opacity: 0;
+    transition: opacity .2s;
+    z-index: -1;
+}
+
+#sidebar + .resizer.shadow::before {
+    opacity: 1;
 }
 
 main {
@@ -81,7 +115,7 @@ main {
     right: 1px;
     overflow-x: hidden;
     overflow-y: auto;
-    z-index: 1;
+    z-index: 0;
 }
 
 .list-column ol li {
@@ -129,5 +163,5 @@ main {
     bottom: 0;
     width: 5px;
     background: linear-gradient(to left, #ccc 1px, transparent 1px);
-    z-index: 2;
+    z-index: 1;
 }

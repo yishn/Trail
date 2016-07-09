@@ -2,6 +2,15 @@ const $ = require('../modules/sprint')
 const Component = require('./Component')
 
 class ColumnView extends Component {
+    constructor($element, data) {
+        super($element, data)
+
+        this.$element.on('scroll', () => {
+            let $resizer = $('#sidebar + .resizer')
+            $resizer.toggleClass('shadow', this.$element.scrollLeft() != 0)
+        })
+    }
+
     render() {
         this.$element.empty()
 

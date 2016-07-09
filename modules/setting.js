@@ -27,7 +27,7 @@ let defaults = {
     'iconextractor.nocache_ext': [ ".exe", ".ico", ".lnk", ".msi", ".cur", ".ani" ],
     'sidebar.favorites': [{path: app.getPath('userData')}],
     'sidebar.minwidth': 100,
-    'sidebar.width': 200,
+    'sidebar.width': 160,
     'window.minheight': 100,
     'window.minwidth': 400,
     'window.height': 350,
