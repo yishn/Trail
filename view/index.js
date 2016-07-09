@@ -20,7 +20,7 @@ const Trail = {
         ])
     },
 
-    getSidebarData: function(callback) {
+    getSidebarData: function(callback = () => {}) {
         let {basename, sep} = require('path')
         let drives = require('../modules/drives')
 
@@ -61,8 +61,8 @@ const Trail = {
             }
 
             let fetch = (item, name) => {
-                iconExtractor.get(name, true, (err, base64) => {
-                    item.icon = err ? ' ' : `data:image/png;base64,${base64}`
+                iconExtractor.get(name, true, (err, img) => {
+                    item.icon = err ? ' ' : img
                     next()
                 })
             }

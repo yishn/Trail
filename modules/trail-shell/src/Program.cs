@@ -30,7 +30,7 @@ namespace TrailShell {
                     ico = IconReader.GetFileIcon(name, size, false);
                 }
 
-                return bitmapToBase64(ico.ToBitmap());
+                return "data:image/png;base64," + bitmapToBase64(ico.ToBitmap());
             }
 
             return "error";
