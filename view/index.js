@@ -30,7 +30,14 @@ const Trail = {
 
         Trail.TabBar.on('tab-selected', tab => {
             $('#column-view-container .column-view').addClass('hide')
-            tab.$columnView.removeClass('hide').trigger('scroll')
+
+            let component = tab.$columnView
+                .removeClass('hide')
+                .trigger('scroll')
+                .find('.focused')
+                .data('component')
+
+            if (component) component.focus()
         }).on('addbutton-click', () => {
             let {$columnView} = $('#tab-bar .selected').data('tab')
             let {columns} = $columnView.data('component').data

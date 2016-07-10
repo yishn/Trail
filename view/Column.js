@@ -86,11 +86,12 @@ class Column extends Component {
             } else if (colLeft + colWidth > width) {
                 scroll.left($parent.get(0), scrollLeft + colLeft + colWidth - width, options)
             }
+
+            $parent.find('.focused').removeClass('focused')
         }
 
         // Add classes
 
-        $('.focused').removeClass('focused')
         this.$element.addClass('focused')
         this.$element.find('.focus-indicator').get(0).focus()
 
