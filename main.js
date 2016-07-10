@@ -14,6 +14,7 @@ function newWindow(path) {
         icon: process.platform == 'linux' ? `${__dirname}/logo.png` : null,
         title: app.getName(),
         useContentSize: true,
+        backgroundColor: '#F0F0F0',
         width: setting.get('window.width'),
         height: setting.get('window.height'),
         minWidth: setting.get('window.minwidth'),
