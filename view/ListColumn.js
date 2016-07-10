@@ -21,28 +21,22 @@ class ListColumn extends Column {
 
         let selectItem = ($li, shift, ctrl) => {
             let item = $li.data('item')
-
-            // Select items
-
             let $selected = this.$element.find('.selected')
-            let selectedItem = $selected.data('item')
 
-            if (!ctrl) $selected.removeClass('selected')
-
-            if (!shift || !$selected.length) {
-                $li.addClass('selected')
-            } else {
+            if (!ctrl && !shift) {
+                $selected = $li
+            } else if (ctrl) {
+                $selected = $selected.add($li)
+            } else if (shift) {
                 let $lis = this.$element.find('li')
                 let i = $lis.get().indexOf($selected.get(0))
                 let j = $lis.get().indexOf($selected.get(-1))
                 let k = $lis.get().indexOf($li.get(0))
 
-                $lis.slice(Math.min(i, j, k), Math.max(i, j, k) + 1).addClass('selected')
+                $selected = $lis.slice(Math.min(i, j, k), Math.max(i, j, k) + 1)
             }
 
-            if (selectedItem) selectedItem.selected = false
-            item.selected = true
-
+            this.selectItems($selected)
             $li.get(0).scrollIntoViewIfNeeded(false)
         }
 
@@ -138,6 +132,15 @@ class ListColumn extends Column {
             $selected.get(0).scrollIntoViewIfNeeded(false)
 
         return this
+    }
+
+    selectItems($li) {
+        let $selected = this.$element.find('.selected')
+        $selected.removeClass('selected')
+        $selected.get().forEach(li => $(li).data('item').selected = false)
+
+        $li.addClass('selected')
+        $li.get().forEach(li => $(li).data('item').selected = true)
     }
 }
 
