@@ -83,8 +83,8 @@ class ListColumn extends Column {
         // Handle keys
 
         this.$element.find('.focus-indicator').on('keydown', evt => {
-            evt.preventDefault()
             if ([36, 35, 33, 34, 40, 38, 13].indexOf(evt.keyCode) < 0) return
+            evt.preventDefault()
 
             let $selected = this.$element.find('.selected')
             let $lis = this.$element.find('li')

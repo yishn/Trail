@@ -20,9 +20,9 @@ class Column extends Component {
             .appendTo(this.$element)
 
         $input.on('keydown', evt => {
-            evt.preventDefault()
             if ([37, 39].indexOf(evt.keyCode) < 0) return
 
+            evt.preventDefault()
             let $column
 
             if (evt.keyCode == 37) {

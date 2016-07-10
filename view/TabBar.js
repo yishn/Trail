@@ -2,6 +2,17 @@ const $ = require('../modules/sprint')
 const Component = require('./Component')
 
 class TabBar extends Component {
+    constructor($element, data) {
+        super($element, data)
+
+        $(document).on('keydown', evt => {
+            if (!evt.ctrlKey || evt.keyCode != 9) return
+
+            if (!evt.shiftKey) this.selectNextTab()
+            else this.selectPreviousTab()
+        })
+    }
+
     render() {
         this.$element.empty()
 
@@ -82,6 +93,18 @@ class TabBar extends Component {
         $li.data('tab').selected = true
 
         this.emit('tab-selected', $li.data('tab'))
+    }
+
+    selectNextTab() {
+        let $li = this.$element.find('.selected').next('li:not(.add)')
+        if (!$li.length) $li = this.$element.find('li:not(.add)').eq(0)
+        this.selectTab($li)
+    }
+
+    selectPreviousTab() {
+        let $li = this.$element.find('.selected').prev('li:not(.add)')
+        if (!$li.length) $li = this.$element.find('li:not(.add)').eq(-1)
+        this.selectTab($li)
     }
 
     closeTab($li = null) {

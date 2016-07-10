@@ -1,6 +1,6 @@
 [
     {
-        "label": "{name}",
+        "label": "&{name}",
         "submenu": [
             {
                 "label": "{name} v{version}",
