@@ -1,5 +1,6 @@
 const $ = require('../modules/sprint')
 const Component = require('./Component')
+const Trail = require('./index')
 
 class ColumnView extends Component {
     constructor($element, data) {
@@ -15,17 +16,8 @@ class ColumnView extends Component {
         this.$element.empty()
 
         this.data.columns.forEach((column, i) => {
-            if (!column.type)
-                column.type = 'DirectoryColumn'
-
-            let $column = $('<div/>').addClass('column').data('column', column)
-            this.$element.append($column)
-
-            let Column = require('../packages/' + column.type)
-            let component = new Column($column)
-            $column.data('component', component)
-
-            component.load(column.path, err => {
+            this.addColumn(column, err => {
+                let $column = this.$element.find('.column').eq(i)
                 if (err || !$column.hasClass('list-column')) return
 
                 // Spray breadcrumbs along the trail
@@ -33,7 +25,7 @@ class ColumnView extends Component {
                 if (i + 1 == this.data.columns.length) {
                     $column.find('li').eq(0).trigger('mousedown')
                     this.$element.scrollLeft(0)
-                    component.focus()
+                    $column.data('component').focus()
                     return
                 }
 
@@ -41,7 +33,7 @@ class ColumnView extends Component {
                 let lis = $column.find('li').get().filter(filter)
 
                 if (lis.length > 0) $(lis[0]).trigger('mousedown')
-            })
+            }, false)
         })
 
         return this
@@ -49,6 +41,21 @@ class ColumnView extends Component {
 
     getLastColumn() {
         return this.$element.find('.column').eq(-1)
+    }
+
+    addColumn(column, callback = null, updateData = true) {
+        let $column = Trail.createColumn(column)
+        let component = $column.data('component')
+
+        this.$element.append($column)
+
+        if (updateData)
+            this.data.columns.push(column)
+        if (!callback)
+            callback = err => component.focus()
+
+        component.load(column.path, callback)
+        return this
     }
 }
 

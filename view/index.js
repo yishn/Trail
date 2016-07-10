@@ -6,6 +6,17 @@ const iconExtractor = require('../modules/icon-extractor')
 const setting = require('../modules/setting')
 
 const Trail = {
+    createColumn: function(info) {
+        let {path, type = 'DirectoryColumn'} = info
+        let $column = $('<div/>').addClass('column').data('column', info)
+
+        let Column = require('../packages/' + type)
+        let component = new Column($column)
+        $column.data('component', component)
+
+        return $column
+    },
+
     initializeSidebar: function() {
         let Sidebar = require('./Sidebar')
         let HorizontalResizer = require('./HorizontalResizer')
@@ -129,6 +140,13 @@ const Trail = {
         let component = new ColumnView($columnView, {columns})
 
         return $columnView.data('component', component)
+    },
+
+    getCurrentColumnView: function() {
+        return $('#tab-bar .selected')
+            .data('tab')
+            .$columnView
+            .data('component')
     }
 }
 

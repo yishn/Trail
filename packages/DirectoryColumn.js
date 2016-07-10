@@ -4,6 +4,8 @@ const {dirname, join} = require('path')
 const $ = require('../modules/sprint')
 const helper = require('../modules/helper')
 const iconExtractor = require('../modules/icon-extractor')
+
+const Trail = require('../view/index')
 const ListColumn = require('../view/ListColumn')
 
 let transformSort = f => (x1, x2) => f(x1) < f(x2) ? -1 : +(f(x1) != f(x2))
@@ -14,6 +16,23 @@ let dirSort = (x1, x2) => {
 }
 
 class DirectoryColumn extends ListColumn {
+    constructor($element, data) {
+        super($element, data)
+
+        this.on('item-click', () => {
+            let $selected = $element.find('.selected')
+            let $parent = $element.parent('.column-view')
+            let item = $selected.data('item')
+            let columnView = $parent.data('component')
+
+            if ($selected.length > 1) return
+
+            if (item.folder) {
+                columnView.disableColumnsAfter($element)
+            }
+        })
+    }
+
     load(path, callback = () => {}) {
         fs.readdir(path, (err, files) => {
             if (err) return callback(err)
