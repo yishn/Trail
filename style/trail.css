@@ -116,6 +116,8 @@ main {
     left: 0;
     top: 0;
     height: 2em;
+    width: auto;
+    min-width: 70px;
     border: 1px solid transparent;
     border-bottom: none;
     padding: 0 10px 0 10px;
@@ -123,17 +125,16 @@ main {
     line-height: calc(2em - 1px);
     text-overflow: ellipsis;
     white-space: nowrap;
-    min-width: 70px;
-    width: auto;
-    transition: top .2s, left .2s;
+    background-repeat: no-repeat;
+    transition: top .2s, left .2s, opacity .2s;
 }
 
 .tab-bar li:hover {
-    background: rgba(0, 0, 0, .08);
+    background-color: rgba(0, 0, 0, .08);
 }
 
 .tab-bar li:active {
-    background: rgba(0, 0, 0, .16);
+    background-color: rgba(0, 0, 0, .16);
 }
 
 .tab-bar li.closing {
@@ -145,8 +146,16 @@ main {
 }
 
 .tab-bar li.selected {
-    background: white;
+    background-color: white;
     border-color: #ccc;
+}
+
+.tab-bar li.dragstart {
+    opacity: 0;
+}
+
+.tab-bar li.indicator {
+    background-image: linear-gradient(to right, #007ACC 2px, transparent 2px);
 }
 
 .tab-bar li img {

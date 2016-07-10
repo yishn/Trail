@@ -8,7 +8,10 @@ class TabBar extends Component {
         let $ol = $('<ol/>').appendTo(this.$element)
 
         this.data.tabs.forEach(tab => {
-            let $li = $('<li/>').data('tab', tab).text(tab.name)
+            let $li = $('<li/>')
+                .data('tab', tab)
+                .text(tab.name)
+                .prop('draggable', true)
             let $img = $('<img/>')
                 .addClass('close')
                 .attr('src', '../node_modules/octicons/build/svg/x.svg')
@@ -23,6 +26,38 @@ class TabBar extends Component {
                     this.selectTab($li)
                 else if (evt.button == 1)
                     this.closeTab($li)
+            }).on('dragstart', () => {
+                $li.addClass('dragstart')
+            }).on('dragover', evt => {
+                evt.preventDefault()
+
+                let middle = $li.offset().left + $li.width() / 2
+                let leftPos = evt.x < middle - 10
+                let rightPos = evt.x > middle + 10
+
+                if (leftPos) {
+                    $li.addClass('indicator')
+                    .next('li').removeClass('indicator')
+                } else if (rightPos) {
+                    $li.removeClass('indicator')
+                    .next('li').addClass('indicator')
+                }
+            }).on('dragleave', () => {
+                $li.removeClass('indicator')
+                $li.next('li').removeClass('indicator')
+            }).on('dragend', () => {
+                $li.removeClass('dragstart')
+
+                let $indicator = this.$element.find('.indicator')
+                if (!$indicator.length) return
+
+                let $lis = this.$element.find('li')
+                let index = $lis.get().indexOf($li.get(0))
+                let insertIndex = $lis.not($li).get().indexOf($indicator.get(0))
+
+                this.data.tabs.splice(index, 1)
+                this.data.tabs.splice(insertIndex, 0, tab)
+                this.render()
             })
 
             $li.find('.close').on('click', evt => {
@@ -63,10 +98,8 @@ class TabBar extends Component {
         if ($li.hasClass('selected'))
             this.selectTab(this.$element.find('li').eq(nextIndex))
 
-        setTimeout(() => {
-            this.data.tabs.splice(index, 1)
-            this.render()
-        }, 200)
+        this.data.tabs.splice(index, 1)
+        setTimeout(() => this.render(), 200)
 
         // Animate
 
