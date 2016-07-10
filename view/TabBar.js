@@ -49,9 +49,11 @@ class TabBar extends Component {
         this.emit('tab-selected', $li.data('tab'))
     }
 
-    closeTab($li) {
+    closeTab($li = null) {
         if (this.$element.find('li').length <= 2)
             return
+        if (!$li)
+            $li = this.$element.find('.selected')
 
         let tab = $li.data('tab')
         let index = this.data.tabs.indexOf(tab)
