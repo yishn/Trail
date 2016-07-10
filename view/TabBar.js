@@ -18,21 +18,21 @@ class TabBar extends Component {
             $li.append($img)
             $ol.append($li)
 
-            $li.on('click', () => this.select($li))
+            $li.on('click', () => this.selectTab($li))
             $li.find('.close').on('click', evt => {
                 evt.stopPropagation()
-                this.close($li)
+                this.closeTab($li)
             })
         })
 
         $ol.append(
             $('<li/>').addClass('add').append(
                 $('<img/>').attr('src', '../node_modules/octicons/build/svg/plus.svg')
-            )
+            ).on('click', () => this.emit('addbutton-click'))
         )
     }
 
-    select($li) {
+    selectTab($li) {
         let $selected = this.$element.find('.selected')
         $selected.removeClass('selected')
         $li.addClass('selected')
@@ -43,7 +43,7 @@ class TabBar extends Component {
         this.emit('tab-selected', $li.data('tab'))
     }
 
-    close($li) {
+    closeTab($li) {
         if (this.$element.find('li').length <= 2)
             return
 
@@ -53,7 +53,7 @@ class TabBar extends Component {
         if (nextIndex == index) nextIndex++
 
         if ($li.hasClass('selected'))
-            this.select(this.$element.find('li').eq(nextIndex))
+            this.selectTab(this.$element.find('li').eq(nextIndex))
 
         setTimeout(() => {
             this.data.tabs.splice(index, 1)
@@ -65,6 +65,18 @@ class TabBar extends Component {
         let width = $li.width()
         $li.addClass('closing')
         $li.nextAll().css('left', -width + 'px')
+    }
+
+    addTab(tab) {
+        this.data.tabs.push(tab)
+        this.render()
+
+        let $li = this.$element.find('li').eq(-2)
+        this.selectTab($li)
+
+        $li.addClass('closing')
+
+        setTimeout(() => $li.removeClass('closing'), 10)
     }
 }
 

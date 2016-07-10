@@ -21,6 +21,22 @@ const Trail = {
         ])
     },
 
+    initializeTabBar: function() {
+        let TabBar = require('./TabBar')
+
+        Trail.TabBar = new TabBar($('#tab-bar'), {
+            tabs: [
+                {name: 'Trail', selected: true},
+                {name: 'Hello World!'},
+                {name: 'Blah'}
+            ]
+        })
+
+        Trail.TabBar.on('addbutton-click', () => Trail.TabBar.addTab({
+            name: 'Blah'
+        }))
+    },
+
     getSidebarData: function(callback = () => {}) {
         let {basename} = require('path')
         let drives = require('../modules/drives')
@@ -76,6 +92,7 @@ const Trail = {
 
 $(document).ready(function() {
     Trail.initializeSidebar()
+    Trail.initializeTabBar()
     Trail.getSidebarData((_, data) => Trail.Sidebar.data = data)
 
     let ColumnView = require('./ColumnView')
@@ -83,15 +100,6 @@ $(document).ready(function() {
     let columns = new DirectoryColumn().getTrail(require('electron').remote.app.getPath('userData'))
 
     let cv = new ColumnView($('main .column-view'), {columns})
-
-    let TabBar = require('./TabBar')
-    let tb = new TabBar($('main .tab-bar'), {
-        tabs: [
-            {name: 'Trail', selected: true},
-            {name: 'Hello World!'},
-            {name: 'Blah'}
-        ]
-    })
 })
 
 require('./ipc')(Trail)
