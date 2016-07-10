@@ -1,3 +1,5 @@
+const {basename} = require('path')
+
 const $ = require('../modules/sprint')
 const helper = require('../modules/helper')
 const iconExtractor = require('../modules/icon-extractor')
@@ -28,14 +30,21 @@ const Trail = {
 
         Trail.TabBar.on('tab-selected', tab => {
             $('#column-view-container .column-view').addClass('hide')
-            tab.$columnView.removeClass('hide')
-        }).on('addbutton-click', () => Trail.TabBar.addTab({
-            name: 'Blah'
-        }))
+            tab.$columnView.removeClass('hide').trigger('scroll')
+        }).on('addbutton-click', () => {
+            let {$columnView} = $('#tab-bar .selected').data('tab')
+            let {columns} = $columnView.data('component').data
+            let info = columns[columns.length - 1]
+            let $container = $('#column-view-container')
+
+            Trail.TabBar.addTab({
+                name: basename(info.path),
+                $columnView: this.createColumnView(info).appendTo($container)
+            })
+        })
     },
 
     fetchSidebarData: function(callback = () => {}) {
-        let {basename} = require('path')
         let drives = require('../modules/drives')
 
         drives.list((err, list) => {
@@ -87,13 +96,10 @@ const Trail = {
     },
 
     loadSession: function(session = null) {
-        let {basename} = require('path')
-
         if (!session)
             session = setting.get('tabbar.session')
 
-        let $container = $('#column-view-container')
-
+        let $container = $('#column-view-container').empty()
         let tabs = session.map((item, i) => {
             return {
                 name: basename(item.path),

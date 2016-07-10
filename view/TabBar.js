@@ -136,9 +136,9 @@ class TabBar extends Component {
         this.render()
 
         let $li = this.$element.find('li').eq(-2)
-        this.selectTab($li)
-
         $li.addClass('closing')
+
+        this.selectTab($li)
         setTimeout(() => $li.removeClass('closing'), 10)
     }
 }

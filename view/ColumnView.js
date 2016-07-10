@@ -46,6 +46,10 @@ class ColumnView extends Component {
 
         return this
     }
+
+    getLastColumn() {
+        return this.$element.find('.column').eq(-1)
+    }
 }
 
 module.exports = ColumnView
