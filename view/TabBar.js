@@ -139,7 +139,6 @@ class TabBar extends Component {
         this.selectTab($li)
 
         $li.addClass('closing')
-
         setTimeout(() => $li.removeClass('closing'), 10)
     }
 }

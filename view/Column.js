@@ -35,6 +35,8 @@ class Column extends Component {
 
             if ($column && $column.length)
                 $column.data('component').focus()
+        }).on('focus', () => {
+            this.focus()
         })
 
         // Add resizer
