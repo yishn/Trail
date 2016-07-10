@@ -18,7 +18,13 @@ class TabBar extends Component {
             $li.append($img)
             $ol.append($li)
 
-            $li.on('click', () => this.selectTab($li))
+            $li.on('click', evt => {
+                if (evt.button == 0)
+                    this.selectTab($li)
+                else if (evt.button == 1)
+                    this.closeTab($li)
+            })
+
             $li.find('.close').on('click', evt => {
                 evt.stopPropagation()
                 this.closeTab($li)
