@@ -132,6 +132,8 @@ const Trail = {
     }
 }
 
+module.exports = Trail
+
 $(document).ready(function() {
     Trail.initializeSidebar()
     Trail.initializeTabBar()
@@ -139,4 +141,4 @@ $(document).ready(function() {
     Trail.loadSession()
 })
 
-require('./ipc')(Trail)
+require('./ipc')
