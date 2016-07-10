@@ -29,6 +29,7 @@ class DirectoryColumn extends ListColumn {
 
             if (item.folder) {
                 columnView.removeColumnsAfter($element)
+                columnView.addColumn(item)
             }
         })
     }
@@ -41,7 +42,7 @@ class DirectoryColumn extends ListColumn {
                 let filepath = helper.trimTrailingSep(join(path, name))
                 let folder = false
                 try { folder = fs.lstatSync(filepath).isDirectory() }
-                catch (_) {}
+                catch (err) {}
 
                 return {
                     name,
@@ -53,14 +54,17 @@ class DirectoryColumn extends ListColumn {
             this.data = {items}
             callback(err)
 
-            items.forEach((item, i) => {
-                let updateIcon = (err, img) => {
-                    if (err) {
-                        img = '../node_modules/octicons/build/svg/circle-slash.svg'
-                    }
+            let i = 0
+            let next = () => {
+                let j = i++
+                if (j >= items.length) return
 
+                let item = items[j]
+                let updateIcon = (err, img) => {
+                    if (err) img = '../node_modules/octicons/build/svg/circle-slash.svg'
                     item.icon = img
-                    this.$element.find('li').eq(i).find('img').attr('src', img)
+                    this.$element.find('li img').eq(j).attr('src', img)
+                    next()
                 }
 
                 if (item.folder) {
@@ -68,7 +72,9 @@ class DirectoryColumn extends ListColumn {
                 } else {
                     iconExtractor.get(item.path, true, updateIcon)
                 }
-            })
+            }
+
+            next()
         })
 
         return this
