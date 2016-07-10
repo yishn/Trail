@@ -83,6 +83,15 @@ $(document).ready(function() {
     let columns = new DirectoryColumn().getTrail(require('electron').remote.app.getPath('userData'))
 
     let cv = new ColumnView($('main .column-view'), {columns})
+
+    let TabBar = require('./TabBar')
+    let tb = new TabBar($('main .tab-bar'), {
+        tabs: [
+            {name: 'Trail', selected: true},
+            {name: 'Hello World!'},
+            {name: 'Blah'}
+        ]
+    })
 })
 
 require('./ipc')(Trail)

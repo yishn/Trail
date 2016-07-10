@@ -36,7 +36,7 @@
 #sidebar + .resizer::before {
     content: '';
     position: absolute;
-    top: 10px;
+    top: calc(2em + 10px);
     bottom: 10px;
     right: 0;
     width: 500px;
@@ -86,11 +86,84 @@ main {
 }
 
 #sidebar ol li img {
-    float:  left;
+    float: left;
     margin-right: 5px;
     margin-top: 3px;
     width: 16px;
     height: 16px;
+}
+
+/* TabBar */
+
+.tab-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2em;
+    padding: 0 5px;
+    overflow: hidden;
+    background: linear-gradient(to top, #ccc 1px, transparent 1px) #F0F0F0;
+}
+
+.tab-bar ol {
+    white-space: nowrap;
+}
+
+.tab-bar li {
+    display: inline-block;
+    position: relative;
+    top: 0;
+    height: 2em;
+    border: 1px solid transparent;
+    border-bottom: none;
+    padding: 0 10px 0 10px;
+    overflow: hidden;
+    line-height: calc(2em - 1px);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 70px;
+    width: auto;
+    transition: top .2s, width .2s;
+}
+
+.tab-bar li:hover {
+    background: rgba(0, 0, 0, .1);
+}
+
+.tab-bar li.closing {
+    top: 2em;
+}
+
+.tab-bar li.add {
+    min-width: inherit;
+}
+
+.tab-bar li.selected {
+    background: white;
+    border-color: #ccc;
+}
+
+.tab-bar li img {
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+    margin-top: -3px;
+}
+
+.tab-bar li .close {
+    float: right;
+    margin-top: calc(1em - 6px);
+    margin-left: 10px;
+    opacity: 0;
+    transition: opacity .2s;
+}
+
+.tab-bar li .close:hover { background: #ddd; }
+.tab-bar li .close:active { background: #ccc; }
+
+.tab-bar li:hover .close, .tab-bar li.selected .close {
+    opacity: .8;
 }
 
 /* ColumnView */
@@ -98,7 +171,7 @@ main {
 .column-view {
     position: absolute;
     left: 0;
-    top: 0;
+    top: 2em;
     right: 0;
     bottom: 0;
     overflow-x: auto;
