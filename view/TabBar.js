@@ -84,6 +84,11 @@ class TabBar extends Component {
         )
     }
 
+    getSelectedTab() {
+        let $selected = this.$element.find('.selected')
+        return $selected.data('tab')
+    }
+
     selectTab($li) {
         let $selected = this.$element.find('.selected')
         $selected.removeClass('selected')
