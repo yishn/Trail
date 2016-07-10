@@ -12,6 +12,17 @@
                 "accelerator": "CommandOrControl+N",
                 "action": "new-window"
             },
+            {
+                "label": "New &Tab",
+                "accelerator": "CommandOrControl+T",
+                "action": "new-tab"
+            },
+            { "type": "separator" },
+            {
+                "label": "&Close Tab",
+                "accelerator": "CommandOrControl+W",
+                "action": "close-tab"
+            },
             { "type": "separator" },
             {
                 "label": "&Restart",
