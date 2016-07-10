@@ -24,20 +24,17 @@ const Trail = {
     initializeTabBar: function() {
         let TabBar = require('./TabBar')
 
-        Trail.TabBar = new TabBar($('#tab-bar'), {
-            tabs: [
-                {name: 'Trail', selected: true},
-                {name: 'Hello World!'},
-                {name: 'Blah'}
-            ]
-        })
+        Trail.TabBar = new TabBar($('#tab-bar'), {tabs: []})
 
-        Trail.TabBar.on('addbutton-click', () => Trail.TabBar.addTab({
+        Trail.TabBar.on('tab-selected', tab => {
+            $('#column-view-container .column-view').addClass('hide')
+            tab.$columnView.removeClass('hide')
+        }).on('addbutton-click', () => Trail.TabBar.addTab({
             name: 'Blah'
         }))
     },
 
-    getSidebarData: function(callback = () => {}) {
+    fetchSidebarData: function(callback = () => {}) {
         let {basename} = require('path')
         let drives = require('../modules/drives')
 
@@ -87,19 +84,46 @@ const Trail = {
             favorites.forEach(item => fetch(item, 'folder'))
             devices.forEach(item => fetch(item, item.path))
         })
+    },
+
+    loadSession: function(session = null) {
+        let {basename} = require('path')
+
+        if (!session)
+            session = setting.get('tabbar.session')
+
+        let $container = $('#column-view-container')
+
+        let tabs = session.map((item, i) => {
+            return {
+                name: basename(item.path),
+                selected: i == 0,
+                $columnView: this.createColumnView(item).appendTo($container)
+            }
+        })
+
+        Trail.TabBar.data = {tabs}
+    },
+
+    createColumnView: function(info) {
+        let {path, type = 'DirectoryColumn'} = info
+
+        let ColumnView = require('./ColumnView')
+        let Column = require(`../packages/${type}`)
+
+        let $columnView = $('<div/>').addClass('column-view')
+        let columns = new Column().getBreadcrumbs(path)
+        let component = new ColumnView($columnView, {columns})
+
+        return $columnView.data('component', component)
     }
 }
 
 $(document).ready(function() {
     Trail.initializeSidebar()
     Trail.initializeTabBar()
-    Trail.getSidebarData((_, data) => Trail.Sidebar.data = data)
-
-    let ColumnView = require('./ColumnView')
-    let DirectoryColumn = require('../packages/DirectoryColumn')
-    let columns = new DirectoryColumn().getTrail(require('electron').remote.app.getPath('userData'))
-
-    let cv = new ColumnView($('main .column-view'), {columns})
+    Trail.fetchSidebarData((_, data) => Trail.Sidebar.data = data)
+    Trail.loadSession()
 })
 
 require('./ipc')(Trail)

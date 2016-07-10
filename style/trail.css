@@ -56,6 +56,7 @@ main {
     right: 0;
     top: 0;
     bottom: 0;
+    z-index: 1;
 }
 
 /* Sidebar */
@@ -192,10 +193,18 @@ main {
 
 /* ColumnView */
 
-.column-view {
+#column-view-container {
     position: absolute;
     left: 0;
     top: 2em;
+    right: 0;
+    bottom: 0;
+}
+
+.column-view {
+    position: absolute;
+    left: 0;
+    top: 0;
     right: 0;
     bottom: 0;
     overflow-x: auto;

@@ -55,16 +55,16 @@ class DirectoryColumn extends ListColumn {
         return this
     }
 
-    getTrail(path) {
+    getBreadcrumbs(path) {
         let parent = dirname(path)
         if (helper.trimTrailingSep(path) == helper.trimTrailingSep(parent))
             return [{path, type: this.constructor.name}]
 
         let dc = new DirectoryColumn($('<div/>'))
-        let trail = dc.getTrail(parent)
+        let breadcrumbs = dc.getBreadcrumbs(parent)
 
-        trail.push({path, type: this.constructor.name})
-        return trail
+        breadcrumbs.push({path, type: this.constructor.name})
+        return breadcrumbs
     }
 }
 
