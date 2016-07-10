@@ -27,15 +27,7 @@ class Sidebar extends Component {
                 $li.on('click', evt => {
                     evt.preventDefault()
 
-                    let $selected = this.$element.find('.selected')
-                    let selectedItem = $selected.data('item')
-
-                    $selected.removeClass('selected')
-                    $li.addClass('selected')
-
-                    if (selectedItem) selectedItem.selected = false
-                    item.selected = true
-
+                    this.selectItem($li)
                     this.emit('item-click', item)
                 }).on('mouseenter', evt => {
                     if ($li.get(0).offsetWidth < $li.get(0).scrollWidth)
@@ -50,6 +42,17 @@ class Sidebar extends Component {
 
         this.$element.scrollTop(scrollTop)
         return this
+    }
+
+    selectItem($li) {
+        let $selected = this.$element.find('.selected')
+        let selectedItem = $selected.data('item')
+
+        $selected.removeClass('selected')
+        $li.addClass('selected')
+
+        if (selectedItem) selectedItem.selected = false
+        $li.data('item').selected = true
     }
 
     deselect() {
