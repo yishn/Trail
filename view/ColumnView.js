@@ -43,6 +43,16 @@ class ColumnView extends Component {
         return this.$element.find('.column').eq(-1)
     }
 
+    removeColumnsAfter($column) {
+        let $columns = this.$element.find('.column')
+        let index = $columns.get().indexOf($column.get(0))
+
+        this.data.columns.splice(index + 1, $columns.length)
+        $column.nextAll('.column').remove()
+
+        return this
+    }
+
     addColumn(column, callback = null, updateData = true) {
         let $column = Trail.createColumn(column)
         let component = $column.data('component')

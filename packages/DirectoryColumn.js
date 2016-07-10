@@ -28,7 +28,7 @@ class DirectoryColumn extends ListColumn {
             if ($selected.length > 1) return
 
             if (item.folder) {
-                columnView.disableColumnsAfter($element)
+                columnView.removeColumnsAfter($element)
             }
         })
     }
