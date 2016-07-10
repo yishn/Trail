@@ -37,7 +37,7 @@ class ListColumn extends Column {
             }
 
             this.selectItems($selected)
-            $li.get(0).scrollIntoViewIfNeeded(false)
+            this.scrollIntoView($li)
         }
 
         this.data.items.forEach(item => {
@@ -129,7 +129,7 @@ class ListColumn extends Column {
         let $selected = this.$element.find('.selected')
 
         if ($selected.length)
-            $selected.get(0).scrollIntoViewIfNeeded(false)
+            this.scrollIntoView($selected)
 
         return this
     }
@@ -141,6 +141,20 @@ class ListColumn extends Column {
 
         $li.addClass('selected')
         $li.get().forEach(li => $(li).data('item').selected = true)
+    }
+
+    scrollIntoView($li) {
+        let $ol = this.$element.find('ol')
+        let height = $ol.height()
+        let scrollTop = $ol.scrollTop()
+        let top = $li.position().top
+        let itemHeight = $li.height()
+
+        if (top < 0) {
+            $ol.scrollTop(scrollTop + top)
+        } else if (top + itemHeight > height) {
+            $ol.scrollTop(scrollTop + top + itemHeight - height)
+        }
     }
 }
 
