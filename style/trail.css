@@ -113,6 +113,7 @@ main {
 .tab-bar li {
     display: inline-block;
     position: relative;
+    left: 0;
     top: 0;
     height: 2em;
     border: 1px solid transparent;
@@ -124,11 +125,15 @@ main {
     white-space: nowrap;
     min-width: 70px;
     width: auto;
-    transition: top .2s, width .2s;
+    transition: top .2s, left .2s;
 }
 
 .tab-bar li:hover {
-    background: rgba(0, 0, 0, .1);
+    background: rgba(0, 0, 0, .08);
+}
+
+.tab-bar li:active {
+    background: rgba(0, 0, 0, .16);
 }
 
 .tab-bar li.closing {
@@ -157,6 +162,10 @@ main {
     margin-left: 10px;
     opacity: 0;
     transition: opacity .2s;
+}
+
+.tab-bar li:first-child:nth-last-child(2) .close {
+    display: none;
 }
 
 .tab-bar li .close:hover { background: #ddd; }

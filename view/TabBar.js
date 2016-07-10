@@ -44,17 +44,27 @@ class TabBar extends Component {
     }
 
     close($li) {
+        if (this.$element.find('li').length <= 2)
+            return
+
         let tab = $li.data('tab')
         let index = this.data.tabs.indexOf(tab)
-        let selectIndex = Math.max(index - 1, 0)
+        let nextIndex = Math.max(index - 1, 0)
+        if (nextIndex == index) nextIndex++
 
-        this.select(this.$element.find('li').eq(selectIndex))
-        $li.addClass('closing')
+        if ($li.hasClass('selected'))
+            this.select(this.$element.find('li').eq(nextIndex))
 
         setTimeout(() => {
             this.data.tabs.splice(index, 1)
             this.render()
         }, 200)
+
+        // Animate
+
+        let width = $li.width()
+        $li.addClass('closing')
+        $li.nextAll().css('left', -width + 'px')
     }
 }
 
