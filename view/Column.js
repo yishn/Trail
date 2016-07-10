@@ -1,5 +1,3 @@
-const scroll = require('scroll')
-
 const $ = require('../modules/sprint')
 const setting = require('../modules/setting')
 const Component = require('./Component')
@@ -71,27 +69,9 @@ class Column extends Component {
     }
 
     focus() {
-        // Scroll column into view
-
         let $parent = this.$element.parent('.column-view')
-        if ($parent.length) {
-            let scrollLeft = $parent.scrollLeft()
-            let width = $parent.width()
-            let colLeft = this.$element.position().left
-            let colWidth = this.$element.width()
-            let options = {duration: 200}
 
-            if (colLeft < 0) {
-                scroll.left($parent.get(0), scrollLeft + colLeft, options)
-            } else if (colLeft + colWidth > width) {
-                scroll.left($parent.get(0), scrollLeft + colLeft + colWidth - width, options)
-            }
-
-            $parent.find('.focused').removeClass('focused')
-        }
-
-        // Add classes
-
+        $parent.find('.focused').removeClass('focused')
         this.$element.addClass('focused')
         this.$element.find('.focus-indicator').get(0).focus()
 

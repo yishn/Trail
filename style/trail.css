@@ -176,7 +176,7 @@ main {
 }
 
 .tab-bar li:first-child:nth-last-child(2) .close {
-    display: none;
+    visibility: hidden;
 }
 
 .tab-bar li .close:hover, .tab-bar li .close:active {
@@ -210,6 +210,14 @@ main {
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
+}
+
+.column-view .placeholder {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 1px;
+    z-index: -1;
 }
 
 /* ListColumn */

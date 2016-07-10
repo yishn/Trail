@@ -143,7 +143,7 @@ const Trail = {
     },
 
     getCurrentColumnView: function() {
-        return $('#tab-bar').data('component')
+        return Trail.TabBar
             .getSelectedTab()
             .$columnView
             .data('component')

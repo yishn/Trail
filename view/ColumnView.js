@@ -1,3 +1,5 @@
+const scroll = require('scroll')
+
 const $ = require('../modules/sprint')
 const Component = require('./Component')
 const Trail = require('./index')
@@ -14,6 +16,7 @@ class ColumnView extends Component {
 
     render() {
         this.$element.empty()
+        $('<div/>').addClass('placeholder').appendTo(this.$element)
 
         this.data.columns.forEach((column, i) => {
             this.addColumn(column, err => {
@@ -46,7 +49,9 @@ class ColumnView extends Component {
     removeColumnsAfter($column) {
         let $columns = this.$element.find('.column')
         let index = $columns.get().indexOf($column.get(0))
+        let scrollWidth = this.$element.get(0).scrollWidth
 
+        this.$element.find('.placeholder').css('width', scrollWidth)
         this.data.columns.splice(index + 1, $columns.length)
         $column.nextAll('.column').remove()
 
@@ -58,14 +63,29 @@ class ColumnView extends Component {
         let component = $column.data('component')
 
         this.$element.append($column)
+        component.on('focus', () => this.scrollIntoView($column))
 
         if (updateData)
             this.data.columns.push(column)
         if (!callback)
-            callback = err => component.focus()
+            callback = err => this.scrollIntoView($column)
 
         component.load(column.path, callback)
         return this
+    }
+
+    scrollIntoView($column) {
+        let scrollLeft = this.$element.scrollLeft()
+        let width = this.$element.width()
+        let colLeft = $column.position().left
+        let colWidth = $column.width()
+        let options = {duration: 200}
+
+        if (colLeft < 0) {
+            scroll.left(this.$element.get(0), scrollLeft + colLeft, options)
+        } else if (colLeft + colWidth > width) {
+            scroll.left(this.$element.get(0), scrollLeft + colLeft + colWidth - width, options)
+        }
     }
 }
 
