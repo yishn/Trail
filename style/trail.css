@@ -233,7 +233,19 @@ main {
     z-index: 0;
 }
 
+.list-column ol .placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    z-index: -1;
+}
+
 .list-column ol li {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1.5em;
     padding: 2px 5px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -250,7 +262,7 @@ main {
 }
 
 .list-column ol li img {
-    float:  left;
+    float: left;
     margin-right: 5px;
     margin-top: 3px;
     width: 16px;
