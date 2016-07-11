@@ -74,7 +74,7 @@ class DirectoryColumn extends ListColumn {
                 }
             }
 
-            next()
+            // next()
         })
 
         return this

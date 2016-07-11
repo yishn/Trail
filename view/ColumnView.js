@@ -25,17 +25,17 @@ class ColumnView extends Component {
 
                 // Spray breadcrumbs along the trail
 
-                if (i + 1 == this.data.columns.length) {
-                    $column.find('li').eq(0).trigger('mousedown')
-                    this.$element.scrollLeft(0)
-                    $column.data('component').focus()
-                    return
-                }
-
-                let filter = li => $(li).data('item').path == this.data.columns[i + 1].path
-                let lis = $column.find('li').get().filter(filter)
-
-                if (lis.length > 0) $(lis[0]).trigger('mousedown')
+                // if (i + 1 == this.data.columns.length) {
+                //     $column.find('li').eq(0).trigger('mousedown')
+                //     this.$element.scrollLeft(0)
+                //     $column.data('component').focus()
+                //     return
+                // }
+                //
+                // let filter = li => $(li).data('item').path == this.data.columns[i + 1].path
+                // let lis = $column.find('li').get().filter(filter)
+                //
+                // if (lis.length > 0) $(lis[0]).trigger('mousedown')
             }, false)
         })
 

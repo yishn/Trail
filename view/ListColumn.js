@@ -1,7 +1,6 @@
 const $ = require('../modules/sprint')
 const Column = require('./Column')
-
-let transparentImg = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+const VirtualList = require('./VirtualList')
 
 class ListColumn extends Column {
     constructor($element, data) {
@@ -14,8 +13,6 @@ class ListColumn extends Column {
 
     render() {
         super.render()
-
-        let scrollTop = this.$element.children('ol').scrollTop() || 0
 
         let $ol = $('<ol/>').appendTo(this.$element.addClass('list-column'))
 
@@ -40,45 +37,44 @@ class ListColumn extends Column {
             this.scrollIntoView($li)
         }
 
-        this.data.items.forEach(item => {
-            let $img = $('<img/>').attr('src', item.icon || transparentImg)
-            let $li = $('<li/>').text(item.name).prepend($img)
+        this.data.itemHeight = 14 * 1.5 + 4
+        let virtualList = new VirtualList($ol, this.data)
 
-            $li.data('item', item)
+        virtualList.on('chunk-rendered', () => {
+            let self = this
 
-            if (item.selected) $li.addClass('selected')
-
-            $li.on('mousedown', evt => {
+            $ol.children('li').on('mousedown', function(evt) {
                 evt.preventDefault()
 
-                let selected = this.$element.find('.selected').get()
+                let $li = $(this)
+                let selected = self.$element.find('.selected').get()
+
                 if (selected.indexOf($li.get(0)) < 0) {
                     selectItem($li, evt.shiftKey, evt.ctrlKey)
                 }
-            }).on('mouseup', evt => {
+            }).on('mouseup', function(evt) {
                 evt.preventDefault()
 
-                let selected = this.$element.find('.selected').get()
+                let $li = $(this)
+                let selected = self.$element.find('.selected').get()
+
                 if (selected.indexOf($li.get(0)) >= 0) {
                     selectItem($li, evt.shiftKey, evt.ctrlKey)
                 }
-            }).on('mouseenter', evt => {
+            }).on('mouseenter', function(evt) {
+                let $li = $(this)
                 if ($li.get(0).offsetWidth < $li.get(0).scrollWidth)
                     $li.attr('title', $li.text())
                 else
                     $li.attr('title', '')
-            }).on('click', evt => {
+            }).on('click', function(evt) {
                 evt.preventDefault()
-                this.emit('item-click')
-            }).on('dblclick', evt => {
+                self.emit('item-click')
+            }).on('dblclick', function(evt) {
                 evt.preventDefault()
-                this.emit('item-dblclick')
+                self.emit('item-dblclick')
             })
-
-            $ol.append($li)
         })
-
-        $ol.scrollTop(scrollTop)
 
         // Handle keys
 
