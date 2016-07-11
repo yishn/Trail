@@ -242,10 +242,11 @@ main {
 }
 
 .list-column ol li {
+    display: block;
     position: absolute;
     left: 0;
     right: 0;
-    height: 1.5em;
+    height: calc(1.5em + 4px);
     padding: 2px 5px;
     overflow: hidden;
     text-overflow: ellipsis;

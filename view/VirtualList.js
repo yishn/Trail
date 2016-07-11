@@ -1,8 +1,12 @@
 const $ = require('../modules/sprint')
 const Component = require('./Component')
 
+let transparentImg = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+
 class VirtualList extends Component {
     constructor($element, data) {
+        super($element)
+
         let lastScrolled = 0
         let lastRenderY
 
@@ -22,15 +26,19 @@ class VirtualList extends Component {
 
             lastScrolled = Date.now()
         })
+
+        if (data) this.data = data
     }
 
     render() {
+        let scrollTop = this.$element.scrollTop()
         this.$element.empty()
 
         $('<div/>').addClass('placeholder')
-            .css('height', data.items.length * data.itemHeight)
+            .css('height', this.data.items.length * this.data.itemHeight)
             .appendTo(this.$element)
 
+        this.$element.scrollTop(scrollTop)
         this.$element.trigger('scroll')
     }
 
@@ -50,21 +58,28 @@ class VirtualList extends Component {
         .attr('data-rm', 1)
 
         for (let i = startIndex; i <= endIndex; i++) {
-            if (this.$element.children(`li[data-index="${i}"]`).length)
+            let $check = this.$element.children(`li[data-index="${i}"]`)
+            if ($check.length) {
+                $check.css('display', 'block').attr('data-rm', 0)
                 continue
+            }
 
             let item = this.data.items[i]
-
-            newItems.push(
-                $('<li/>')
+            let $li = $('<li/>')
+                .data('item', item)
                 .text(item.name)
                 .attr('data-index', i)
                 .css('top', i * this.data.itemHeight)
-                .prepend($('<img/>').src(item.icon))
-            )
+                .prepend($('<img/>').attr('src', item.icon || transparentImg))
+
+            if (item.selected) $li.addClass('selected')
+
+            newItems.push($li)
         }
 
         this.$element.append(newItems)
         this.emit('chunk-rendered')
     }
 }
+
+module.exports = VirtualList
