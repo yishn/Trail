@@ -23,19 +23,21 @@ class ColumnView extends Component {
                 let $column = this.$element.find('.column').eq(i)
                 if (err || !$column.hasClass('list-column')) return
 
+                let columnComponent = $column.data('component')
+
                 // Spray breadcrumbs along the trail
 
-                // if (i + 1 == this.data.columns.length) {
-                //     $column.find('li').eq(0).trigger('mousedown')
-                //     this.$element.scrollLeft(0)
-                //     $column.data('component').focus()
-                //     return
-                // }
-                //
-                // let filter = li => $(li).data('item').path == this.data.columns[i + 1].path
-                // let lis = $column.find('li').get().filter(filter)
-                //
-                // if (lis.length > 0) $(lis[0]).trigger('mousedown')
+                if (i + 1 == this.data.columns.length) {
+                    $column.find('li').eq(0).trigger('mousedown')
+                    this.$element.scrollLeft(0)
+                    columnComponent.focus()
+                    return
+                }
+
+                let item = columnComponent.data.items.find(item => item.path == this.data.columns[i + 1].path)
+                let index = columnComponent.data.items.indexOf(item)
+
+                if (index >= 0) columnComponent.selectItems([index]).focus()
             }, false)
         })
 
