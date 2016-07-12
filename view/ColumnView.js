@@ -28,7 +28,6 @@ class ColumnView extends Component {
                 // Spray breadcrumbs along the trail
 
                 if (i + 1 == this.data.columns.length) {
-                    $column.find('li').eq(0).trigger('mousedown')
                     this.$element.scrollLeft(0)
                     columnComponent.focus()
                     return
@@ -72,19 +71,7 @@ class ColumnView extends Component {
         let component = $column.data('component')
 
         this.$element.append($column)
-        component.on('focus', () => {
-            this.scrollIntoView($column)
-        }).on('item-click', () => {
-            let selected = component.data.items.filter(x => x.selected)
-            let item = selected[0]
-
-            if (selected.length != 1) return
-
-            if (item.navigate) {
-                this.removeColumnsAfter($column)
-                this.addColumn(item)
-            }
-        })
+        component.on('focus', () => this.scrollIntoView($column))
 
         if (updateData)
             this.data.columns.push(column)
@@ -92,27 +79,43 @@ class ColumnView extends Component {
             callback = err => this.scrollIntoView($column)
 
         $column.addClass('busy')
+
         component.load(column.path, err => {
             $column.removeClass('busy')
             this.emit('navigated')
+
             callback(err)
+
+            component.on('selection-changed', () => {
+                let selected = component.data.items.filter(x => x.selected)
+                let item = selected[0]
+
+                if (selected.length != 1) return
+
+                if (item.navigate) {
+                    this.removeColumnsAfter($column)
+                    this.addColumn(item)
+                }
+            })
         })
 
         return this
     }
 
     scrollIntoView($column) {
-        let scrollLeft = this.$element.scrollLeft()
-        let width = this.$element.width()
-        let colLeft = $column.position().left
-        let colWidth = $column.width()
-        let options = {duration: 200}
+        try {
+            let scrollLeft = this.$element.scrollLeft()
+            let width = this.$element.width()
+            let colLeft = $column.position().left
+            let colWidth = $column.width()
+            let options = {duration: 200}
 
-        if (colLeft < 0) {
-            scroll.left(this.$element.get(0), scrollLeft + colLeft, options)
-        } else if (colLeft + colWidth > width) {
-            scroll.left(this.$element.get(0), scrollLeft + colLeft + colWidth - width, options)
-        }
+            if (colLeft < 0) {
+                scroll.left(this.$element.get(0), scrollLeft + colLeft, options)
+            } else if (colLeft + colWidth > width) {
+                scroll.left(this.$element.get(0), scrollLeft + colLeft + colWidth - width, options)
+            }
+        } catch(err) {}
     }
 }
 

@@ -80,14 +80,24 @@ class VirtualList extends Component {
     }
 
     selectItems(indices) {
+        let lastIndices = this.data.items
+            .map((item, i) => [i, item.selected])
+            .filter(([_, selected]) => selected)
+            .map(([i, _]) => i)
+            .sort()
+
+        if (indices.sort().every((x, i) => x == lastIndices[i]))
+            return this
+
         this.data.items.forEach((item, i) => {
-            item.selected = indices.indexOf(i) >= 0
+            item.selected = indices.includes(i)
         })
 
         this.$element.children('li').get().forEach(li => {
             $(li).toggleClass('selected', $(li).data('item').selected)
         })
 
+        this.emit('selection-changed')
         return this
     }
 

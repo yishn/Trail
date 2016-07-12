@@ -60,6 +60,8 @@ class ListColumn extends Column {
         }).on('item-dblclick', ($li, evt) => {
             evt.preventDefault()
             this.emit('item-dblclick', $li, evt)
+        }).on('selection-changed', () => {
+            this.emit('selection-changed')
         })
 
         virtualList.data = this.data
