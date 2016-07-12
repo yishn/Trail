@@ -34,8 +34,9 @@ class ColumnView extends Component {
                     return
                 }
 
-                let item = columnComponent.data.items.find(item => item.path == this.data.columns[i + 1].path)
-                let index = columnComponent.data.items.indexOf(item)
+                let index = columnComponent.data.items.findIndex(item => {
+                    return item.path == this.data.columns[i + 1].path
+                })
 
                 if (index >= 0) columnComponent.selectItems([index]).focus()
             }, false)

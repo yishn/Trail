@@ -66,7 +66,10 @@ class ListColumn extends Column {
 
         // Handle keys
 
-        this.$element.find('.focus-indicator').on('keydown', evt => {
+        let $input = this.$element.find('.focus-indicator')
+        let clearInputId
+
+        $input.on('keydown', evt => {
             if ([36, 35, 33, 34, 40, 38, 13].indexOf(evt.keyCode) < 0) return
             evt.preventDefault()
 
@@ -104,6 +107,27 @@ class ListColumn extends Column {
             }
 
             selectItem($li, evt.shiftKey, evt.ctrlKey)
+        }).on('input', evt => {
+            let search = $input.val().toLowerCase().replace(/[^0-9a-z]/gi, '')
+            if (search == '') return
+
+            if (search.split('').every(x => x == search[0])) {
+                $input.val(search[0])
+                search = search[0]
+            }
+
+            let startsWith = (str, start) => str.toLowerCase().indexOf(start) == 0
+            let items = this.data.items.filter(item => startsWith(item.name, search))
+            let selectedIndex = items.findIndex(item => item.selected)
+            let index = this.data.items.indexOf(items[(selectedIndex + 1) % items.length])
+
+            if (index >= 0) {
+                this.selectItems([index])
+                this.scrollIntoView(index)
+            }
+
+            clearTimeout(clearInputId)
+            clearInputId = setTimeout(() => $input.val(''), 1000)
         })
 
         return this
@@ -112,11 +136,10 @@ class ListColumn extends Column {
     focus() {
         super.focus()
 
-        let selected = this.data.items.find(item => item.selected)
-        if (!selected) return this
+        let selected = this.data.items.findIndex(item => item.selected)
+        if (selected < 0) return this
 
-        let index = this.data.items.indexOf(selected)
-        this.scrollIntoView(index)
+        this.scrollIntoView(selected)
 
         return this
     }
