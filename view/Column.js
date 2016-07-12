@@ -76,7 +76,7 @@ class Column extends Component {
     }
 
     focus() {
-        let $parent = this.$element.parent('.column-view')
+        let $parent = this.getColumnView().$element
 
         $parent.find('.focused').removeClass('focused')
         this.$element.addClass('focused')
@@ -84,6 +84,10 @@ class Column extends Component {
 
         this.emit('focus')
         return this
+    }
+
+    getColumnView() {
+        return this.$element.parent('.column-view').data('component')
     }
 }
 
