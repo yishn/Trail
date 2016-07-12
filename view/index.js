@@ -119,10 +119,13 @@ const Trail = {
 
         let $container = $('#column-view-container').empty()
         let tabs = session.map((item, i) => {
+            let $columnView = this.createColumnView(item).appendTo($container)
+            let name = $columnView.data('component').getTitle()
+
             return {
-                name: basename(item.path),
+                name,
                 selected: i == 0,
-                $columnView: this.createColumnView(item).appendTo($container)
+                $columnView
             }
         })
 
@@ -140,10 +143,7 @@ const Trail = {
         let component = new ColumnView($columnView, {columns})
 
         component.on('navigated', () => {
-            let $column = component.getLastColumn()
-            let name = $column.data('component').getTitle($column.data('column').path)
-
-            Trail.TabBar.getSelectedTab().name = name
+            Trail.TabBar.getSelectedTab().name = component.getTitle()
             Trail.TabBar.render()
         })
 

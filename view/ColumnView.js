@@ -45,8 +45,13 @@ class ColumnView extends Component {
         return this
     }
 
+    getTitle() {
+        let component = this.getLastColumn()
+        return component.getTitle(component.$element.data('column').path)
+    }
+
     getLastColumn() {
-        return this.$element.find('.column').eq(-1)
+        return this.$element.find('.column').eq(-1).data('component')
     }
 
     removeColumnsAfter($column) {
