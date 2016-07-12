@@ -39,6 +39,7 @@ class ListColumn extends Column {
 
         this.data.itemHeight = 14 * 1.5 + 4
         let virtualList = new VirtualList($ol)
+        $ol.data('component', virtualList)
 
         virtualList.on('chunk-rendered', () => {
             let self = this

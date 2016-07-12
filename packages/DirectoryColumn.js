@@ -34,6 +34,36 @@ class DirectoryColumn extends ListColumn {
         })
     }
 
+    render() {
+        super.render()
+
+        this.$element.find('ol').data('component').on('chunk-rendered', () => {
+            let i = 0
+            let $lis = this.$element.find('li')
+
+            let next = () => {
+                let j = i++
+                if (j >= $lis.length) return
+
+                let item = $lis.eq(j).data('item')
+                let updateIcon = (err, img) => {
+                    if (err) img = '../node_modules/octicons/build/svg/circle-slash.svg'
+                    item.icon = img
+                    $lis.eq(j).children('img').attr('src', img)
+                    next()
+                }
+
+                if (item.folder) {
+                    iconExtractor.get('folder', true, updateIcon)
+                } else {
+                    iconExtractor.get(item.path, true, updateIcon)
+                }
+            }
+
+            next()
+        })
+    }
+
     load(path, callback = () => {}) {
         fs.readdir(path, (err, files) => {
             if (err) return callback(err)
@@ -53,28 +83,6 @@ class DirectoryColumn extends ListColumn {
 
             this.data = {items}
             callback(err)
-
-            let i = 0
-            let next = () => {
-                let j = i++
-                if (j >= items.length) return
-
-                let item = items[j]
-                let updateIcon = (err, img) => {
-                    if (err) img = '../node_modules/octicons/build/svg/circle-slash.svg'
-                    item.icon = img
-                    this.$element.find('li img').eq(j).attr('src', img)
-                    next()
-                }
-
-                if (item.folder) {
-                    iconExtractor.get('folder', true, updateIcon)
-                } else {
-                    iconExtractor.get(item.path, true, updateIcon)
-                }
-            }
-
-            // next()
         })
 
         return this
