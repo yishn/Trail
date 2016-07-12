@@ -1,4 +1,4 @@
-const fs = require('fs')
+const fs = require('original-fs')
 const {basename, dirname, join} = require('path')
 const {shell} = require('electron')
 
