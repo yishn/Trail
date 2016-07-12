@@ -23,6 +23,8 @@ class VirtualList extends Component {
     }
 
     render() {
+        if (!this.data.items) this.data.items = []
+
         let scrollTop = this.$element.scrollTop()
         this.$element.empty()
 

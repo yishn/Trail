@@ -11,7 +11,7 @@ const Trail = {
         let $column = $('<div/>').addClass('column').data('column', info)
 
         let Column = require('../packages/' + type)
-        let component = new Column($column)
+        let component = new Column($column, {})
         $column.data('component', component)
 
         return $column
