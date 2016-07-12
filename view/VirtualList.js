@@ -39,7 +39,7 @@ class VirtualList extends Component {
         let scrollMiddle = scrollTop + height / 2
         let percent = scrollMiddle / scrollHeight
         let shownItemsCount = height / this.data.itemHeight
-        let renderItemsCount = shownItemsCount * 3
+        let renderItemsCount = shownItemsCount * 2
         let startIndex = Math.max(0, Math.round(percent * this.data.items.length - renderItemsCount / 2))
         let endIndex = Math.min(startIndex + renderItemsCount - 1, this.data.items.length - 1)
         let newItems = []
@@ -48,12 +48,20 @@ class VirtualList extends Component {
 
         for (let i = startIndex; i <= endIndex; i++) {
             let item = this.data.items[i]
+            let $img = $('<img/>')
             let $li = $('<li/>')
                 .data('item', item)
                 .text(item.name)
                 .attr('data-index', i)
                 .css('top', i * this.data.itemHeight)
-                .prepend($('<img/>').attr('src', item.icon || transparentImg))
+                .prepend($img)
+
+            if (item.icon instanceof Function) {
+                $img.attr('src', transparentImg)
+                item.icon(img => $img.attr('src', img))
+            } else {
+                $img.attr('src', item.icon || transparentImg)
+            }
 
             if (item.selected) $li.addClass('selected')
 
