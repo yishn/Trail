@@ -278,10 +278,8 @@ main {
     height: 100%;
 }
 
-.column .focus-indicator {
+.column input.focus-indicator {
     top: -9999em;
-    left: 0;
-    width: 100%;
 }
 
 .column .resizer {

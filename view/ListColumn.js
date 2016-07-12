@@ -60,7 +60,6 @@ class ListColumn extends Column {
                 $li.attr('title', '')
         }).on('item-click', ($li, evt) => {
             evt.preventDefault()
-            this.focus()
             this.emit('item-click', $li, evt)
         }).on('item-dblclick', ($li, evt) => {
             evt.preventDefault()
