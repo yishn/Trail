@@ -38,12 +38,14 @@ class ListColumn extends Column {
         }
 
         this.data.itemHeight = 14 * 1.5 + 4
-        let virtualList = new VirtualList($ol, this.data)
+        let virtualList = new VirtualList($ol)
 
         virtualList.on('chunk-rendered', () => {
             let self = this
 
-            $ol.children('li').on('mousedown', function(evt) {
+            $ol.children('li')
+            .off('mousedown mouseup mouseenter click dblclick')
+            .on('mousedown', function(evt) {
                 evt.preventDefault()
 
                 let $li = $(this)
@@ -76,6 +78,8 @@ class ListColumn extends Column {
             })
         })
 
+        virtualList.data = this.data
+
         // Handle keys
 
         this.$element.find('.focus-indicator').on('keydown', evt => {
@@ -90,10 +94,12 @@ class ListColumn extends Column {
 
             if (evt.keyCode == 36) {
                 // Home Arrow
-                $li = $lis.eq(0)
+                $ol.scrollTop(0).trigger('scroll')
+                $li = this.$element.find('li').eq(0)
             } else if (evt.keyCode == 35) {
                 // End Arrow
-                $li = $lis.eq(-1)
+                $ol.scrollTop($ol.get(0).scrollHeight).trigger('scroll')
+                $li = this.$element.find('li').eq(-1)
             } else if (evt.keyCode == 33) {
                 // Page Up Arrow
                 $li = $lis.eq(Math.max(i - 10, 0))
@@ -151,6 +157,8 @@ class ListColumn extends Column {
         } else if (top + itemHeight > height) {
             $ol.scrollTop(scrollTop + top + itemHeight - height)
         }
+
+        $ol.trigger('scroll')
     }
 }
 
