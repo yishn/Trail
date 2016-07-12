@@ -110,8 +110,9 @@ class ListColumn extends Column {
         }).on('input', evt => {
             let search = $input.val().toLowerCase().replace(/[^0-9a-z]/gi, '')
             if (search == '') return
+            let repeating = search.split('').every(x => x == search[0])
 
-            if (search.split('').every(x => x == search[0])) {
+            if (repeating) {
                 $input.val(search[0])
                 search = search[0]
             }
@@ -119,7 +120,8 @@ class ListColumn extends Column {
             let startsWith = (str, start) => str.toLowerCase().indexOf(start) == 0
             let items = this.data.items.filter(item => startsWith(item.name, search))
             let selectedIndex = items.findIndex(item => item.selected)
-            let index = this.data.items.indexOf(items[(selectedIndex + 1) % items.length])
+            if (repeating) selectedIndex++
+            let index = this.data.items.indexOf(items[Math.max(0, selectedIndex) % items.length])
 
             if (index >= 0) {
                 this.selectItems([index])
