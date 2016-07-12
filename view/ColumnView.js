@@ -41,6 +41,7 @@ class ColumnView extends Component {
             }, false)
         })
 
+        this.emit('navigated')
         return this
     }
 
@@ -75,6 +76,7 @@ class ColumnView extends Component {
         $column.addClass('busy')
         component.load(column.path, err => {
             $column.removeClass('busy')
+            this.emit('navigated')
             callback(err)
         })
 

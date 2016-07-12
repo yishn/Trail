@@ -139,6 +139,14 @@ const Trail = {
         let columns = new Column().getBreadcrumbs(path)
         let component = new ColumnView($columnView, {columns})
 
+        component.on('navigated', () => {
+            let $column = component.getLastColumn()
+            let name = $column.data('component').getTitle($column.data('column').path)
+
+            Trail.TabBar.getSelectedTab().name = name
+            Trail.TabBar.render()
+        })
+
         return $columnView.data('component', component)
     },
 

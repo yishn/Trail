@@ -1,5 +1,5 @@
 const fs = require('fs')
-const {dirname, join} = require('path')
+const {basename, dirname, join} = require('path')
 const {shell} = require('electron')
 
 const $ = require('../modules/sprint')
@@ -69,6 +69,10 @@ class DirectoryColumn extends ListColumn {
         })
 
         return this
+    }
+
+    getTitle(path) {
+        return basename(path)
     }
 
     getBreadcrumbs(path) {
