@@ -1,5 +1,6 @@
 const fs = require('fs')
 const {dirname, join} = require('path')
+const {shell} = require('electron')
 
 const $ = require('../modules/sprint')
 const helper = require('../modules/helper')
@@ -20,16 +21,25 @@ class DirectoryColumn extends ListColumn {
         super($element, data)
 
         this.on('item-click', () => {
-            let $selected = $element.find('.selected')
             let $parent = $element.parent('.column-view')
-            let item = $selected.data('item')
+            let selected = this.data.items.filter(x => x.selected)
+            let item = selected[0]
             let columnView = $parent.data('component')
 
-            if ($selected.length > 1) return
+            if (selected.length != 1) return
 
             if (item.folder) {
                 columnView.removeColumnsAfter($element)
                 columnView.addColumn(item)
+            }
+        }).on('item-dblclick', () => {
+            let selected = this.data.items.filter(x => x.selected)
+            let item = selected[0]
+
+            if (selected.length != 1) return
+
+            if (!item.folder && item.path) {
+                shell.openItem(item.path)
             }
         })
     }
