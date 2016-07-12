@@ -42,17 +42,13 @@ class ListColumn extends Column {
         virtualList.on('item-mousedown', ($li, evt) => {
             evt.preventDefault()
 
-            let selected = this.data.items.find(item => item.selected)
-            if (!selected) {
-                selectItem($li, evt.shiftKey, evt.ctrlKey)
-            }
+            if ($li.hasClass('selected')) return
+            selectItem($li, evt.shiftKey, evt.ctrlKey)
         }).on('item-mouseup', ($li, evt) => {
             evt.preventDefault()
 
-            let selected = this.data.items.find(item => item.selected)
-            if (selected) {
-                selectItem($li, evt.shiftKey, evt.ctrlKey)
-            }
+            if (!$li.hasClass('selected')) return
+            selectItem($li, evt.shiftKey, evt.ctrlKey)
         }).on('item-mouseenter', ($li, evt) => {
             if ($li.get(0).offsetWidth < $li.get(0).scrollWidth)
                 $li.attr('title', $li.text())
