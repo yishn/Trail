@@ -3,6 +3,13 @@ const setting = require('../modules/setting')
 const Component = require('./Component')
 
 class Column extends Component {
+    constructor($element, data) {
+        super($element, data)
+
+        if (!$element) return
+        $element.on('click', () => this.focus())
+    }
+
     render() {
         if (!('width' in this.data))
             this.data.width = setting.get('columnview.colwidth')

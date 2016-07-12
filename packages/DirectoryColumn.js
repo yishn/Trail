@@ -40,12 +40,15 @@ class DirectoryColumn extends ListColumn {
 
             let items = files.map(name => {
                 let filepath = helper.trimTrailingSep(join(path, name))
+                let icon = callback => iconExtractor.get(folder ? 'folder' : filepath, true, callback)
+
                 let folder = false
                 try { folder = fs.lstatSync(filepath).isDirectory() }
                 catch (err) {}
 
                 return {
                     name,
+                    icon,
                     path: filepath,
                     folder
                 }
@@ -53,28 +56,6 @@ class DirectoryColumn extends ListColumn {
 
             this.data = {items}
             callback(err)
-
-            let i = 0
-            let next = () => {
-                let j = i++
-                if (j >= items.length) return
-
-                let item = items[j]
-                let updateIcon = (err, img) => {
-                    if (err) img = '../node_modules/octicons/build/svg/circle-slash.svg'
-                    item.icon = img
-                    this.$element.find('li img').eq(j).attr('src', img)
-                    next()
-                }
-
-                if (item.folder) {
-                    iconExtractor.get('folder', true, updateIcon)
-                } else {
-                    iconExtractor.get(item.path, true, updateIcon)
-                }
-            }
-
-            next()
         })
 
         return this

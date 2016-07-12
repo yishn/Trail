@@ -115,8 +115,12 @@ form p, form ul li {
         cursor: ns-resize;
 }
 
-.focus-indicator {
-    position: absolute;
+input.focus-indicator {
+    position: fixed;
     opacity: 0;
     z-index: -1;
+    left: 50%;
+    top: 50%;
+    width: 1px;
+    height: 1px;
 }

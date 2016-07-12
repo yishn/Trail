@@ -212,7 +212,7 @@ main {
     white-space: nowrap;
 }
 
-.column-view .placeholder {
+.column-view > .placeholder {
     position: absolute;
     left: 0;
     top: 0;
@@ -233,7 +233,20 @@ main {
     z-index: 0;
 }
 
+.list-column ol > .placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    z-index: -1;
+}
+
 .list-column ol li {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: calc(1.5em + 4px);
     padding: 2px 5px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -250,7 +263,7 @@ main {
 }
 
 .list-column ol li img {
-    float:  left;
+    float: left;
     margin-right: 5px;
     margin-top: 3px;
     width: 16px;
@@ -265,10 +278,8 @@ main {
     height: 100%;
 }
 
-.column .focus-indicator {
+.column input.focus-indicator {
     top: -9999em;
-    left: 0;
-    width: 100%;
 }
 
 .column .resizer {

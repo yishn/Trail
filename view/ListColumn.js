@@ -1,84 +1,72 @@
 const $ = require('../modules/sprint')
 const Column = require('./Column')
-
-let transparentImg = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+const VirtualList = require('./VirtualList')
 
 class ListColumn extends Column {
     constructor($element, data) {
         super($element, data)
 
         if (!$element) return
-
-        $element.on('click', () => this.focus())
     }
 
     render() {
         super.render()
 
-        let scrollTop = this.$element.children('ol').scrollTop() || 0
-
         let $ol = $('<ol/>').appendTo(this.$element.addClass('list-column'))
 
         let selectItem = ($li, shift, ctrl) => {
+            let index = $li.attr('data-index')
             let item = $li.data('item')
-            let $selected = this.$element.find('.selected')
+            let selectedItems = this.data.items.filter(item => item.selected)
 
             if (!ctrl && !shift) {
-                $selected = $li
+                selectedItems = [item]
             } else if (ctrl) {
-                $selected = $selected.add($li)
+                selectedItems.push(item)
             } else if (shift) {
-                let $lis = this.$element.find('li')
-                let i = $lis.get().indexOf($selected.get(0))
-                let j = $lis.get().indexOf($selected.get(-1))
-                let k = $lis.get().indexOf($li.get(0))
+                let i = this.data.items.indexOf(selectedItems[0])
+                let j = this.data.items.indexOf(selectedItems[selectedItems.length - 1])
+                let k = index
 
-                $selected = $lis.slice(Math.min(i, j, k), Math.max(i, j, k) + 1)
+                selectedItems = this.data.items.slice(Math.min(i, j, k), Math.max(i, j, k) + 1)
             }
 
-            this.selectItems($selected)
-            this.scrollIntoView($li)
+            this.selectItems(selectedItems.map(item => this.data.items.indexOf(item)))
+            this.scrollIntoView(index)
         }
 
-        this.data.items.forEach(item => {
-            let $img = $('<img/>').attr('src', item.icon || transparentImg)
-            let $li = $('<li/>').text(item.name).prepend($img)
+        this.data.itemHeight = 14 * 1.5 + 4
+        let virtualList = new VirtualList($ol)
+        $ol.data('component', virtualList)
 
-            $li.data('item', item)
+        virtualList.on('item-mousedown', ($li, evt) => {
+            evt.preventDefault()
 
-            if (item.selected) $li.addClass('selected')
+            let selected = this.data.items.find(item => item.selected)
+            if (!selected) {
+                selectItem($li, evt.shiftKey, evt.ctrlKey)
+            }
+        }).on('item-mouseup', ($li, evt) => {
+            evt.preventDefault()
 
-            $li.on('mousedown', evt => {
-                evt.preventDefault()
-
-                let selected = this.$element.find('.selected').get()
-                if (selected.indexOf($li.get(0)) < 0) {
-                    selectItem($li, evt.shiftKey, evt.ctrlKey)
-                }
-            }).on('mouseup', evt => {
-                evt.preventDefault()
-
-                let selected = this.$element.find('.selected').get()
-                if (selected.indexOf($li.get(0)) >= 0) {
-                    selectItem($li, evt.shiftKey, evt.ctrlKey)
-                }
-            }).on('mouseenter', evt => {
-                if ($li.get(0).offsetWidth < $li.get(0).scrollWidth)
-                    $li.attr('title', $li.text())
-                else
-                    $li.attr('title', '')
-            }).on('click', evt => {
-                evt.preventDefault()
-                this.emit('item-click')
-            }).on('dblclick', evt => {
-                evt.preventDefault()
-                this.emit('item-dblclick')
-            })
-
-            $ol.append($li)
+            let selected = this.data.items.find(item => item.selected)
+            if (selected) {
+                selectItem($li, evt.shiftKey, evt.ctrlKey)
+            }
+        }).on('item-mouseenter', ($li, evt) => {
+            if ($li.get(0).offsetWidth < $li.get(0).scrollWidth)
+                $li.attr('title', $li.text())
+            else
+                $li.attr('title', '')
+        }).on('item-click', ($li, evt) => {
+            evt.preventDefault()
+            this.emit('item-click', $li, evt)
+        }).on('item-dblclick', ($li, evt) => {
+            evt.preventDefault()
+            this.emit('item-dblclick', $li, evt)
         })
 
-        $ol.scrollTop(scrollTop)
+        virtualList.data = this.data
 
         // Handle keys
 
@@ -94,10 +82,12 @@ class ListColumn extends Column {
 
             if (evt.keyCode == 36) {
                 // Home Arrow
-                $li = $lis.eq(0)
+                $ol.scrollTop(0).trigger('scroll')
+                $li = this.$element.find('li').eq(0)
             } else if (evt.keyCode == 35) {
                 // End Arrow
-                $li = $lis.eq(-1)
+                $ol.scrollTop($ol.get(0).scrollHeight).trigger('scroll')
+                $li = this.$element.find('li').eq(-1)
             } else if (evt.keyCode == 33) {
                 // Page Up Arrow
                 $li = $lis.eq(Math.max(i - 10, 0))
@@ -126,35 +116,23 @@ class ListColumn extends Column {
     focus() {
         super.focus()
 
-        let $selected = this.$element.find('.selected')
+        let selected = this.data.items.find(item => item.selected)
+        if (!selected) return this
 
-        if ($selected.length)
-            this.scrollIntoView($selected)
+        let index = this.data.items.indexOf(selected)
+        this.scrollIntoView(index)
 
         return this
     }
 
-    selectItems($li) {
-        let $selected = this.$element.find('.selected')
-        $selected.removeClass('selected')
-        $selected.get().forEach(li => $(li).data('item').selected = false)
-
-        $li.addClass('selected')
-        $li.get().forEach(li => $(li).data('item').selected = true)
+    selectItems(indices) {
+        this.$element.find('ol').data('component').selectItems(indices)
+        return this
     }
 
-    scrollIntoView($li) {
-        let $ol = this.$element.find('ol')
-        let height = $ol.height()
-        let scrollTop = $ol.scrollTop()
-        let top = $li.position().top
-        let itemHeight = $li.height()
-
-        if (top < 0) {
-            $ol.scrollTop(scrollTop + top)
-        } else if (top + itemHeight > height) {
-            $ol.scrollTop(scrollTop + top + itemHeight - height)
-        }
+    scrollIntoView(index) {
+        this.$element.find('ol').data('component').scrollIntoView(index)
+        return this
     }
 }
 
