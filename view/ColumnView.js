@@ -72,7 +72,12 @@ class ColumnView extends Component {
         if (!callback)
             callback = err => this.scrollIntoView($column)
 
-        component.load(column.path, callback)
+        $column.addClass('busy')
+        component.load(column.path, err => {
+            $column.removeClass('busy')
+            callback(err)
+        })
+
         return this
     }
 

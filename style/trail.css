@@ -278,6 +278,10 @@ main {
     height: 100%;
 }
 
+.column.busy {
+    cursor: wait;
+}
+
 .column input.focus-indicator {
     top: -9999em;
 }
