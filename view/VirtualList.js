@@ -13,7 +13,7 @@ class VirtualList extends Component {
             let height = $element.height()
             let scrollTop = $element.scrollTop()
 
-            if (!lastRenderY || Math.abs(scrollTop - lastRenderY) > height) {
+            if (!lastRenderY || Math.abs(scrollTop - lastRenderY) >= height / 2) {
                 this._renderChunk(height, scrollTop)
                 lastRenderY = scrollTop
             }

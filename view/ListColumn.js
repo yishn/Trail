@@ -153,12 +153,10 @@ class ListColumn extends Column {
         let itemHeight = $li.height()
 
         if (top < 0) {
-            $ol.scrollTop(scrollTop + top)
+            $ol.scrollTop(scrollTop + top).trigger('scroll')
         } else if (top + itemHeight > height) {
-            $ol.scrollTop(scrollTop + top + itemHeight - height)
+            $ol.scrollTop(scrollTop + top + itemHeight - height).trigger('scroll')
         }
-
-        $ol.trigger('scroll')
     }
 }
 
