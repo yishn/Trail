@@ -72,7 +72,19 @@ class ColumnView extends Component {
         let component = $column.data('component')
 
         this.$element.append($column)
-        component.on('focus', () => this.scrollIntoView($column))
+        component.on('focus', () => {
+            this.scrollIntoView($column)
+        }).on('item-click', () => {
+            let selected = component.data.items.filter(x => x.selected)
+            let item = selected[0]
+
+            if (selected.length != 1) return
+
+            if (item.navigate) {
+                this.removeColumnsAfter($column)
+                this.addColumn(item)
+            }
+        })
 
         if (updateData)
             this.data.columns.push(column)

@@ -20,19 +20,7 @@ class DirectoryColumn extends ListColumn {
     constructor($element, data) {
         super($element, data)
 
-        this.on('item-click', () => {
-            let $parent = $element.parent('.column-view')
-            let selected = this.data.items.filter(x => x.selected)
-            let item = selected[0]
-            let columnView = $parent.data('component')
-
-            if (selected.length != 1) return
-
-            if (item.folder) {
-                columnView.removeColumnsAfter($element)
-                columnView.addColumn(item)
-            }
-        }).on('item-dblclick', () => {
+        this.on('item-dblclick', () => {
             let selected = this.data.items.filter(x => x.selected)
             let item = selected[0]
 
@@ -50,16 +38,17 @@ class DirectoryColumn extends ListColumn {
 
             let items = files.map(name => {
                 let filepath = helper.trimTrailingSep(join(path, name))
-                let icon = callback => iconExtractor.get(folder ? 'folder' : filepath, true, callback)
-
+                let type = Trail.getColumnType(filepath)
                 let folder = false
-                try { folder = fs.lstatSync(filepath).isDirectory() }
-                catch (err) {}
+                try { folder = fs.lstatSync(filepath).isDirectory() } catch (err) {}
+                let icon = callback => iconExtractor.get(folder ? 'folder' : filepath, true, callback)
 
                 return {
                     name,
                     icon,
                     path: filepath,
+                    type,
+                    navigate: !!type,
                     folder
                 }
             }).sort(dirSort)
@@ -80,8 +69,7 @@ class DirectoryColumn extends ListColumn {
         if (helper.trimTrailingSep(path) == helper.trimTrailingSep(parent))
             return [{path, type: this.constructor.name}]
 
-        let dc = new DirectoryColumn($('<div/>'))
-        let breadcrumbs = dc.getBreadcrumbs(parent)
+        let breadcrumbs = this.getBreadcrumbs(parent)
 
         breadcrumbs.push({path, type: this.constructor.name})
         return breadcrumbs

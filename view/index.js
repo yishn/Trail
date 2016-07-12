@@ -1,3 +1,4 @@
+const fs = require('original-fs')
 const {basename} = require('path')
 
 const $ = require('../modules/sprint')
@@ -15,6 +16,15 @@ const Trail = {
         $column.data('component', component)
 
         return $column
+    },
+
+    getColumnType: function(path) {
+        try {
+            let stat = fs.lstatSync(path)
+            if (stat.isDirectory()) return 'DirectoryColumn'
+        } catch(err) {}
+
+        return null
     },
 
     initializeSidebar: function() {
