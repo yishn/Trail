@@ -1,38 +1,46 @@
 const {execFile} = require('child_process')
 const {join} = require('path')
 
-let server = execFile(join(__dirname, 'bin/TrailShell.exe'))
+let server
 let log = []
-let commands = []
-let buffer = ''
+let commands
+let buffer
 
 function logPush(str) {
     if (log.length > 1000) log.shift()
     log.push(str)
 }
 
-server.stdout.on('data', function(data) {
-    buffer += (data + '').replace(/\r/g, '')
+function initializeServer() {
+    server = execFile(join(__dirname, 'bin/TrailShell.exe'))
+    commands = []
+    buffer = ''
 
-    let start = buffer.indexOf('\n\n')
+    server.stdout.on('data', data => {
+        buffer += (data + '').replace(/\r/g, '')
 
-    while (start != -1) {
-        let response = buffer.substr(0, start)
-        buffer = buffer.substr(start + 2)
+        let start = buffer.indexOf('\n\n')
 
-        if (commands.length > 0) {
-            let command = commands.shift()
+        while (start != -1) {
+            let response = buffer.substr(0, start)
+            buffer = buffer.substr(start + 2)
 
-            logPush(response)
-            if (response != 'error')
+            if (commands.length > 0) {
+                let command = commands.shift()
+
+                logPush(response)
+                if (response != 'error')
                 command.callback(null, response)
-            else
+                else
                 command.callback(new Error('TrailShell error'))
-        }
+            }
 
-        start = buffer.indexOf('\n\n')
-    }
-})
+            start = buffer.indexOf('\n\n')
+        }
+    }).on('close', () => {
+        initializeServer()
+    })
+}
 
 exports.getLog = function(index = null) {
     if (index == null) return log
@@ -56,3 +64,5 @@ exports.extractIcon = function(name, small, callback) {
     let size = small ? 's' : 'l'
     return exports.sendCommand(`extract-icon ${size} ${name}`, callback)
 }
+
+initializeServer()
