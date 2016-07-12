@@ -57,8 +57,7 @@ class VirtualList extends Component {
                 .prepend($img)
 
             if (item.icon instanceof Function) {
-                $img.attr('src', transparentImg)
-                item.icon(img => $img.attr('src', img))
+                item.icon((err, img) => $img.attr('src', img || transparentImg))
             } else {
                 $img.attr('src', item.icon || transparentImg)
             }

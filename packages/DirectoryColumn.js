@@ -34,48 +34,21 @@ class DirectoryColumn extends ListColumn {
         })
     }
 
-    render() {
-        super.render()
-
-        this.$element.find('ol').data('component').on('chunk-rendered', () => {
-            let i = 0
-            let $lis = this.$element.find('li')
-
-            let next = () => {
-                let j = i++
-                if (j >= $lis.length) return
-
-                let item = $lis.eq(j).data('item')
-                let updateIcon = (err, img) => {
-                    if (err) img = '../node_modules/octicons/build/svg/circle-slash.svg'
-                    item.icon = img
-                    $lis.eq(j).children('img').attr('src', img)
-                    next()
-                }
-
-                if (item.folder) {
-                    iconExtractor.get('folder', true, updateIcon)
-                } else {
-                    iconExtractor.get(item.path, true, updateIcon)
-                }
-            }
-
-            next()
-        })
-    }
-
     load(path, callback = () => {}) {
         fs.readdir(path, (err, files) => {
             if (err) return callback(err)
 
             let items = files.map(name => {
                 let filepath = helper.trimTrailingSep(join(path, name))
+                let icon = callback => iconExtractor.get(folder ? 'folder' : filepath, true, callback)
+
                 let folder = false
                 try { folder = fs.lstatSync(filepath).isDirectory() }
                 catch (err) {}
 
                 return {
                     name,
+                    icon,
                     path: filepath,
                     folder
                 }
