@@ -143,17 +143,16 @@ const Trail = {
     },
 
     createColumnView: function(info) {
-        let {path, type = 'DirectoryColumn'} = info
-
         let ColumnView = require('./ColumnView')
-        let Column = require(`../packages/${type}`)
-
         let $columnView = $('<div/>').addClass('column-view')
-        let columns = new Column().getBreadcrumbs(path)
-        let component = new ColumnView($columnView, {columns})
+        let component = new ColumnView($columnView)
 
+        component.navigateTo(info)
         component.on('navigated', () => {
-            Trail.TabBar.getSelectedTab().name = component.getTitle()
+            let tab = Trail.TabBar.getSelectedTab()
+            if (!tab) return
+
+            tab.name = component.getTitle()
             Trail.TabBar.render()
         })
 

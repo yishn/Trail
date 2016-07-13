@@ -54,6 +54,16 @@ class ColumnView extends Component {
         return this.$element.find('.column').eq(-1).data('component')
     }
 
+    navigateTo(column) {
+        let {path, type = 'DirectoryColumn'} = column
+
+        let Column = require(`../packages/${type}`)
+        let columns = new Column().getBreadcrumbs(path)
+        this.data = {columns}
+
+        return this
+    }
+
     removeColumnsAfter($column) {
         let $columns = this.$element.find('.column')
         let index = $columns.get().indexOf($column.get(0))
