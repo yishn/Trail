@@ -101,12 +101,10 @@ class ColumnView extends Component {
                 let selected = component.data.items.filter(x => x.selected)
                 let item = selected[0]
 
+                this.removeColumnsAfter($column)
                 if (selected.length != 1) return
 
-                if (item.navigate) {
-                    this.removeColumnsAfter($column)
-                    this.addColumn(item)
-                }
+                if (item.navigate) this.addColumn(item)
             })
         })
 

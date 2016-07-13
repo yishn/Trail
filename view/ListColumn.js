@@ -22,7 +22,9 @@ class ListColumn extends Column {
             if (!ctrl && !shift) {
                 selectedItems = [item]
             } else if (ctrl) {
-                selectedItems.push(item)
+                let i = selectedItems.indexOf(item)
+                if (i < 0) selectedItems.push(item)
+                else selectedItems.splice(i, 1)
             } else if (shift) {
                 let i = this.data.items.indexOf(selectedItems[0])
                 let j = this.data.items.indexOf(selectedItems[selectedItems.length - 1])
@@ -39,23 +41,15 @@ class ListColumn extends Column {
         let virtualList = new VirtualList($ol)
         $ol.data('component', virtualList)
 
-        virtualList.on('item-mousedown', ($li, evt) => {
-            evt.preventDefault()
-
-            if ($li.hasClass('selected')) return
-            selectItem($li, evt.shiftKey, evt.ctrlKey)
-        }).on('item-mouseup', ($li, evt) => {
-            evt.preventDefault()
-
-            if (!$li.hasClass('selected')) return
-            selectItem($li, evt.shiftKey, evt.ctrlKey)
-        }).on('item-mouseenter', ($li, evt) => {
+        virtualList.on('item-mouseenter', ($li, evt) => {
             if ($li.get(0).offsetWidth < $li.get(0).scrollWidth)
                 $li.attr('title', $li.text())
             else
                 $li.attr('title', '')
         }).on('item-click', ($li, evt) => {
             evt.preventDefault()
+
+            selectItem($li, evt.shiftKey, evt.ctrlKey)
             this.emit('item-click', $li, evt)
         }).on('item-dblclick', ($li, evt) => {
             evt.preventDefault()
