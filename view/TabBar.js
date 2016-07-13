@@ -66,9 +66,13 @@ class TabBar extends Component {
                 let index = $lis.get().indexOf($li.get(0))
                 let insertIndex = $lis.not($li).get().indexOf($indicator.get(0))
 
-                this.data.tabs.splice(index, 1)
-                this.data.tabs.splice(insertIndex, 0, tab)
-                this.render()
+                if (insertIndex >= 0) {
+                    this.data.tabs.splice(index, 1)
+                    this.data.tabs.splice(insertIndex, 0, tab)
+                    this.render()
+                } else {
+                    $indicator.removeClass('indicator')
+                }
             })
 
             $li.find('.close').on('click', evt => {
