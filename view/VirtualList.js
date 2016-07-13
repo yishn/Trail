@@ -1,4 +1,5 @@
 const $ = require('../modules/sprint')
+const helper = require('../modules/helper')
 const Component = require('./Component')
 
 let transparentImg = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
@@ -81,13 +82,12 @@ class VirtualList extends Component {
 
     selectItems(indices) {
         let lastIndices = this.data.items
-            .map((item, i) => [i, item.selected])
-            .filter(([_, selected]) => selected)
-            .map(([i, _]) => i)
+            .map((item, i) => item.selected ? i : null)
+            .filter(x => x != null)
             .sort()
 
-        if (indices.sort().every((x, i) => x == lastIndices[i]))
-            return this
+        indices.sort()
+        if (helper.arrayEqual(lastIndices, indices)) return this
 
         this.data.items.forEach((item, i) => {
             item.selected = indices.includes(i)
