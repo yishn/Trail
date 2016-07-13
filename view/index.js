@@ -42,6 +42,10 @@ const Trail = {
             {name: 'Favorites', items: []},
             {name: 'Devices', items: []}
         ])
+
+        Trail.Sidebar.on('item-click', item => {
+            Trail.getCurrentColumnView().navigateTo(item)
+        })
     },
 
     initializeTabBar: function() {

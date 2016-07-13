@@ -294,5 +294,6 @@ main {
     bottom: 0;
     width: 5px;
     background: linear-gradient(to left, #ccc 1px, transparent 1px);
+    cursor: col-resize;
     z-index: 1;
 }

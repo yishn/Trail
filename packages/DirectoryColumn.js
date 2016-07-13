@@ -61,7 +61,11 @@ class DirectoryColumn extends ListColumn {
     }
 
     getTitle(path) {
-        return basename(path)
+        let title = basename(path)
+        if (title.trim() == '')
+            title = helper.trimTrailingSep(path)
+
+        return title
     }
 
     getBreadcrumbs(path) {

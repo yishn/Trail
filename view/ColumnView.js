@@ -21,7 +21,8 @@ class ColumnView extends Component {
         this.data.columns.forEach((column, i) => {
             this.addColumn(column, err => {
                 let $column = this.$element.find('.column').eq(i)
-                if (err || !$column.hasClass('list-column')) return
+                if (err) return $column.addClass('error')
+                if (!$column.hasClass('list-column')) return
 
                 let columnComponent = $column.data('component')
 
