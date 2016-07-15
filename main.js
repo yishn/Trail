@@ -9,14 +9,21 @@ const Menu = require('electron').Menu
 
 const windows = []
 
-function newWindow(path) {
+function newWindow(session, info = {}) {
+    if (!session)
+        session = [{path: app.getPath('userData')}]
+
+    let {height = 350, width = 800, top = 30, left = 30} = info
+
     let window = new BrowserWindow({
         icon: process.platform == 'linux' ? `${__dirname}/logo.png` : null,
         title: app.getName(),
         useContentSize: true,
         backgroundColor: '#F0F0F0',
-        width: setting.get('window.width'),
-        height: setting.get('window.height'),
+        width,
+        height,
+        x: left,
+        y: top,
         minWidth: setting.get('window.minwidth'),
         minHeight: setting.get('window.minheight')
     })
@@ -25,7 +32,7 @@ function newWindow(path) {
     buildMenu()
 
     window.webContents.on('did-finish-load', function() {
-        if (path) window.webContents.send('load-dir', path)
+        window.webContents.send('load-session', session)
     }).on('new-window', function(e) {
         e.preventDefault()
     })
@@ -91,12 +98,12 @@ function buildMenu(noWindows) {
     if (process.platform == 'darwin') {
         app.dock.setMenu(Menu.buildFromTemplate([{
             label: 'New Window',
-            click: newWindow.bind(null, null)
+            click: () => newWindow()
         }]))
     }
 }
 
-ipcMain.on('new-window', function(e, path) { newWindow(path) })
+ipcMain.on('new-window', function(e, session) { newWindow(session) })
 ipcMain.on('build-menu', function(e) { buildMenu() })
 
 app.on('window-all-closed', function() {
@@ -108,10 +115,12 @@ app.on('window-all-closed', function() {
 })
 
 app.on('ready', function() {
+    setting.get('session.tabs').forEach((session, i) => {
+        newWindow(session, setting.get('session.windows')[i])
+    })
+
     if (process.argv.length >= 2) {
         newWindow(process.argv[1])
-    } else {
-        newWindow()
     }
 })
 

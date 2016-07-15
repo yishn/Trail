@@ -25,14 +25,13 @@ let defaults = {
     'columnview.colwidth': 200,
     'debug.dev_tools': false,
     'iconextractor.nocache_ext': [ ".exe", ".ico", ".lnk", ".msi", ".cur", ".ani" ],
-    'tabbar.session': [{path: app.getPath('userData')}],
+    'session.tabs': [[{path: app.getPath('userData')}]],
+    'session.windows': [{height: 350, width: 800, top: 30, left: 30}],
     'sidebar.favorites': [{path: app.getPath('userData')}],
     'sidebar.minwidth': 100,
     'sidebar.width': 160,
     'window.minheight': 100,
-    'window.minwidth': 400,
-    'window.height': 350,
-    'window.width': 800
+    'window.minwidth': 400
 }
 
 exports.load = function() {

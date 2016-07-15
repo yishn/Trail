@@ -127,10 +127,7 @@ const Trail = {
         })
     },
 
-    loadSession: function(session = null) {
-        if (!session)
-            session = setting.get('tabbar.session')
-
+    loadSession: function(session) {
         let $container = $('#column-view-container').empty()
         let tabs = session.map((item, i) => {
             let $columnView = this.createColumnView(item).appendTo($container)
@@ -177,7 +174,6 @@ $(document).ready(function() {
     Trail.initializeSidebar()
     Trail.initializeTabBar()
     Trail.fetchSidebarData((_, data) => Trail.Sidebar.data = data)
-    Trail.loadSession()
 })
 
 require('./ipc')

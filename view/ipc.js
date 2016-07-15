@@ -10,4 +10,8 @@ let menudata = {
     'restart': () => { app.relaunch(); app.exit(0) }
 }
 
-ipcRenderer.on('menu-click', (e, action) => menudata[action]())
+ipcRenderer.on('menu-click', (evt, action) => menudata[action]())
+
+ipcRenderer.on('load-session', (evt, session) => {
+    Trail.loadSession(session)
+})
