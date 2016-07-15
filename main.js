@@ -9,7 +9,7 @@ const Menu = require('electron').Menu
 
 const windows = []
 
-function newWindow(session, info = {}) {
+function newWindow(session, tabIndex = 0, info = {}) {
     if (!session)
         session = [{path: app.getPath('userData')}]
 
@@ -32,7 +32,7 @@ function newWindow(session, info = {}) {
     buildMenu()
 
     window.webContents.on('did-finish-load', function() {
-        window.webContents.send('load-session', session)
+        window.webContents.send('load-session', session, tabIndex)
     }).on('new-window', function(e) {
         e.preventDefault()
     })
@@ -115,12 +115,15 @@ app.on('window-all-closed', function() {
 })
 
 app.on('ready', function() {
+    let windowInfos = setting.get('session.windows')
+    let tabIndices = setting.get('session.tab_indices')
+
     setting.get('session.tabs').forEach((session, i) => {
-        newWindow(session, setting.get('session.windows')[i])
+        newWindow(session, tabIndices[i], windowInfos[i])
     })
 
     if (process.argv.length >= 2) {
-        newWindow(process.argv[1])
+        newWindow([{path: process.argv[1]}])
     }
 })
 

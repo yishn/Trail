@@ -12,6 +12,6 @@ let menudata = {
 
 ipcRenderer.on('menu-click', (evt, action) => menudata[action]())
 
-ipcRenderer.on('load-session', (evt, session) => {
-    Trail.loadSession(session)
+ipcRenderer.on('load-session', (evt, session, tabIndex) => {
+    Trail.loadSession(session, tabIndex)
 })

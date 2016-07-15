@@ -26,6 +26,7 @@ let defaults = {
     'debug.dev_tools': false,
     'iconextractor.nocache_ext': [ ".exe", ".ico", ".lnk", ".msi", ".cur", ".ani" ],
     'session.tabs': [[{path: app.getPath('userData')}]],
+    'session.tab_indices': [0],
     'session.windows': [{height: 350, width: 800, top: 30, left: 30}],
     'sidebar.favorites': [{path: app.getPath('userData')}],
     'sidebar.minwidth': 100,

@@ -127,7 +127,7 @@ const Trail = {
         })
     },
 
-    loadSession: function(session) {
+    loadSession: function(session, tabIndex = 0) {
         let $container = $('#column-view-container').empty()
         let tabs = session.map((item, i) => {
             let $columnView = this.createColumnView(item).appendTo($container)
@@ -135,7 +135,7 @@ const Trail = {
 
             return {
                 name,
-                selected: i == 0,
+                selected: i == tabIndex,
                 $columnView
             }
         })
