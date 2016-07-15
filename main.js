@@ -14,6 +14,7 @@ function newWindow(session, tabIndex = 0, info = {}) {
         session = [{path: app.getPath('userData')}]
 
     let {height = 350, width = 800, top = 30, left = 30} = info
+    let saveSettingsId
 
     let window = new BrowserWindow({
         icon: process.platform == 'linux' ? `${__dirname}/logo.png` : null,
@@ -31,14 +32,30 @@ function newWindow(session, tabIndex = 0, info = {}) {
     windows.push(window)
     buildMenu()
 
-    window.webContents.on('did-finish-load', function() {
+    window.webContents.on('did-finish-load', () => {
         window.webContents.send('load-session', session, tabIndex)
-    }).on('new-window', function(e) {
-        e.preventDefault()
+    }).on('new-window', evt => {
+        evt.preventDefault()
     })
 
-    window.on('closed', function() {
+    window.on('closed', () => {
         window = null
+    }).on('resize', () => {
+        clearTimeout(saveSettingsId)
+
+        let size = window.getContentSize()
+        info.width = size[0]
+        info.height = size[1]
+
+        saveSettingsId = setTimeout(() => setting.save(), 500)
+    }).on('move', () => {
+        clearTimeout(saveSettingsId)
+
+        let position = window.getPosition()
+        info.left = position[0]
+        info.top = position[1]
+
+        saveSettingsId = setTimeout(() => setting.save(), 500)
     })
 
     window.loadURL(`file://${__dirname}/view/index.html`)
@@ -49,7 +66,7 @@ function newWindow(session, tabIndex = 0, info = {}) {
     return window
 }
 
-function buildMenu(noWindows) {
+function buildMenu() {
     let template = JSON.parse(JSON.stringify(require('./menu.json')))
 
     // Process menu
@@ -103,10 +120,10 @@ function buildMenu(noWindows) {
     }
 }
 
-ipcMain.on('new-window', function(e, session) { newWindow(session) })
-ipcMain.on('build-menu', function(e) { buildMenu() })
+ipcMain.on('new-window', (e, session) => newWindow(session))
+ipcMain.on('build-menu', () => buildMenu() )
 
-app.on('window-all-closed', function() {
+app.on('window-all-closed', () => {
     if (process.platform != 'darwin') {
         app.quit()
     } else {
@@ -114,7 +131,7 @@ app.on('window-all-closed', function() {
     }
 })
 
-app.on('ready', function() {
+app.on('ready', () => {
     let windowInfos = setting.get('session.windows')
     let tabIndices = setting.get('session.tab_indices')
 
@@ -127,11 +144,11 @@ app.on('ready', function() {
     }
 })
 
-app.on('activate', function(e, hasVisibleWindows) {
+app.on('activate', (evt, hasVisibleWindows) => {
     if (!hasVisibleWindows) newWindow()
 })
 
-process.on('uncaughtException', function(err) {
+process.on('uncaughtException', err => {
     dialog.showErrorBox(app.getName() + ' v' + app.getVersion(), [
         'Something weird happened. ',
         app.getName(),
