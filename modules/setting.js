@@ -25,6 +25,7 @@ let defaults = {
     'columnview.colwidth': 200,
     'debug.dev_tools': false,
     'iconextractor.nocache_ext': [ ".exe", ".ico", ".lnk", ".msi", ".cur", ".ani" ],
+    'session.homepage': {path: app.getPath('userData')},
     'session.tabs': [[{path: app.getPath('userData')}]],
     'session.tab_indices': [0],
     'session.windows': [{height: 350, width: 800, top: 30, left: 30}],

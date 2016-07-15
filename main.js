@@ -11,7 +11,7 @@ const windows = []
 
 function newWindow(session, tabIndex = 0, info = null) {
     if (!session)
-        session = [{path: app.getPath('userData')}]
+        session = [setting.get('session.homepage')]
     if (!info) {
         let windowInfos = setting.get('session.windows')
         info = JSON.parse(JSON.stringify(windowInfos[windowInfos.length - 1]))
