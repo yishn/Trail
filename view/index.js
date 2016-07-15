@@ -1,4 +1,5 @@
 const fs = require('original-fs')
+const {ipcRenderer} = require('electron')
 const {basename} = require('path')
 
 const $ = require('../modules/sprint')
@@ -63,6 +64,8 @@ const Trail = {
                 .data('component')
 
             if (component) component.focus()
+
+            Trail.updateSession()
         }).on('addbutton-click', () => {
             let {$columnView} = $('#tab-bar .selected').data('tab')
             let {columns} = $columnView.data('component').data
@@ -135,6 +138,7 @@ const Trail = {
 
             return {
                 name,
+                path: item.path,
                 selected: i == tabIndex,
                 $columnView
             }
@@ -149,15 +153,28 @@ const Trail = {
         let component = new ColumnView($columnView)
 
         component.navigateTo(info)
-        component.on('navigated', () => {
-            let tab = Trail.TabBar.getSelectedTab()
+        component.on('navigated', path => {
+            let tab = Trail.TabBar.data.tabs.find(x => x.$columnView.data('component') == component)
             if (!tab) return
 
             tab.name = component.getTitle()
+            tab.path = path
+
             Trail.TabBar.render()
+            Trail.updateSession()
         })
 
         return $columnView.data('component', component)
+    },
+
+    updateSession: function() {
+        let session = Trail.TabBar.data.tabs.map(x => {
+            return {path: x.path, type: Trail.getColumnType(x.path)}
+        })
+
+        let tabIndex = Trail.TabBar.data.tabs.indexOf(Trail.TabBar.getSelectedTab())
+
+        ipcRenderer.send('update-session', session, tabIndex)
     },
 
     getCurrentColumnView: function() {

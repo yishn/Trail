@@ -17,6 +17,7 @@ class TabBar extends Component {
         this.$element.empty()
 
         let $ol = $('<ol/>').appendTo(this.$element)
+        let $selected
 
         this.data.tabs.forEach(tab => {
             let $li = $('<li/>')
@@ -27,7 +28,10 @@ class TabBar extends Component {
                 .addClass('close')
                 .attr('src', '../node_modules/octicons/build/svg/x.svg')
 
-            if (tab.selected) $li.addClass('selected')
+            if (tab.selected) {
+                $selected = $li
+                $li.addClass('selected')
+            }
 
             $li.append($img)
             $ol.append($li)
@@ -86,6 +90,9 @@ class TabBar extends Component {
                 $('<img/>').attr('src', '../node_modules/octicons/build/svg/plus.svg')
             ).on('click', () => this.emit('addbutton-click'))
         )
+
+        if ($selected && $selected.length)
+            this.emit('tab-selected', $selected.data('tab'))
     }
 
     getSelectedTab() {

@@ -1,11 +1,5 @@
-const app = require('electron').app
-const shell = require('electron').shell
-const dialog = require('electron').dialog
-const ipcMain = require('electron').ipcMain
 const setting = require('./modules/setting')
-
-const BrowserWindow = require('electron').BrowserWindow
-const Menu = require('electron').Menu
+const {app, shell, dialog, ipcMain, BrowserWindow, Menu} = require('electron')
 
 const windows = []
 
@@ -144,9 +138,20 @@ ipcMain.on('new-window', (evt, session, tabIndex, info) => {
     setting.get('session.tab_indices').push(tabIndex)
     setting.get('session.windows').push(info)
     setting.save()
-})
+}).on('build-menu', () => {
+    buildMenu()
+}).on('update-session', (evt, session, tabIndex) => {
+    let window = BrowserWindow.fromWebContents(evt.sender)
+    let index = windows.indexOf(window)
 
-ipcMain.on('build-menu', () => buildMenu() )
+    let windowTabs = setting.get('session.tabs')
+    let tabIndices = setting.get('session.tab_indices')
+
+    windowTabs[index] = session
+    tabIndices[index] = tabIndex
+
+    setting.save()
+})
 
 app.on('window-all-closed', () => {
     if (process.platform != 'darwin') {
@@ -154,9 +159,7 @@ app.on('window-all-closed', () => {
     } else {
         buildMenu(true)
     }
-})
-
-app.on('ready', () => {
+}).on('ready', () => {
     let windowInfos = setting.get('session.windows')
     let tabIndices = setting.get('session.tab_indices')
 
@@ -167,9 +170,7 @@ app.on('ready', () => {
     if (process.argv.length >= 2) {
         ipcMain.emit('new-window', null, [{path: process.argv[1]}])
     }
-})
-
-app.on('activate', (evt, hasVisibleWindows) => {
+}).on('activate', (evt, hasVisibleWindows) => {
     if (!hasVisibleWindows) newWindow()
 })
 
