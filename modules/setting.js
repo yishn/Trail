@@ -29,6 +29,7 @@ let defaults = {
     'session.tabs': [[{path: app.getPath('userData')}]],
     'session.tab_indices': [0],
     'session.windows': [{height: 350, width: 800, top: 30, left: 30}],
+    'session.window_index': 0,
     'sidebar.favorites': [{path: app.getPath('userData')}],
     'sidebar.minwidth': 100,
     'sidebar.width': 160,

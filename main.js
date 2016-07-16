@@ -67,6 +67,12 @@ function newWindow(session, tabIndex = 0, info = null) {
         info.top = position[1]
 
         saveSettingsId = setTimeout(() => setting.save(), 500)
+    }).on('focus', () => {
+        clearTimeout(saveSettingsId)
+
+        let index = windows.indexOf(window)
+
+        saveSettingsId = setTimeout(() => setting.set('session.window_index', index), 500)
     })
 
     window.loadURL(`file://${__dirname}/view/index.html`)
@@ -154,14 +160,12 @@ ipcMain.on('new-window', (evt, session, tabIndex, info) => {
 })
 
 app.on('window-all-closed', () => {
-    if (process.platform != 'darwin') {
+    if (process.platform != 'darwin')
         app.quit()
-    } else {
-        buildMenu(true)
-    }
 }).on('ready', () => {
     let windowInfos = setting.get('session.windows')
     let tabIndices = setting.get('session.tab_indices')
+    let windowIndex = setting.get('session.window_index')
 
     setting.get('session.tabs').forEach((session, i) => {
         newWindow(session, tabIndices[i], windowInfos[i])
@@ -169,7 +173,10 @@ app.on('window-all-closed', () => {
 
     if (process.argv.length >= 2) {
         ipcMain.emit('new-window', null, [{path: process.argv[1]}])
+        windowIndex = windows.length - 1
     }
+
+    windows[windowIndex].focus()
 }).on('activate', (evt, hasVisibleWindows) => {
     if (!hasVisibleWindows) newWindow()
 })
