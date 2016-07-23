@@ -3,18 +3,14 @@ const {basename, dirname, join} = require('path')
 const {shell} = require('electron')
 
 const $ = require('../modules/sprint')
-const helper = require('../modules/helper')
 const iconExtractor = require('../modules/icon-extractor')
+const helper = require('../modules/helper')
 
 const Trail = require('../view/index')
 const ListColumn = require('../view/ListColumn')
 
-let transformSort = f => (x1, x2) => f(x1) < f(x2) ? -1 : +(f(x1) != f(x2))
-let dirSort = (x1, x2) => {
-    if (x1.folder == x2.folder)
-        return transformSort(x => x.name.toLowerCase())(x1, x2)
-    return +x2.folder - +x1.folder
-}
+let itemTransform = x => [x.name.toLowerCase(), -x.folder]
+let dirCompare = (x, y) => helper.transformCompare(itemTransform, x, y, helper.lexicalCompare)
 
 class DirectoryColumn extends ListColumn {
     constructor($element, data) {
@@ -51,7 +47,7 @@ class DirectoryColumn extends ListColumn {
                     navigate: !!type,
                     folder
                 }
-            }).sort(dirSort)
+            }).sort(dirCompare)
 
             callback(null, items)
         })
