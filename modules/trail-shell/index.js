@@ -1,4 +1,3 @@
-const {shell} = require('electron')
 const {execFile} = require('child_process')
 const {join} = require('path')
 
@@ -6,8 +5,6 @@ let server
 let log = []
 let commands
 let buffer
-
-for (let k in shell) exports.k = shell.k
 
 function logPush(str) {
     if (log.length > 1000) log.shift()
