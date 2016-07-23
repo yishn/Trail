@@ -10,7 +10,7 @@ class ColumnView extends Component {
 
         this.$element.on('scroll', () => {
             if (this.$element.hasClass('hide')) return
-            
+
             let $resizer = $('#sidebar + .resizer')
             $resizer.toggleClass('shadow', this.$element.scrollLeft() != 0)
         })
@@ -92,14 +92,16 @@ class ColumnView extends Component {
 
         $column.addClass('busy')
 
-        component.load(column.path, err => {
+        component.fetchItems(column.path, (err, items) => {
+            component.data = {items}
+
             $column.removeClass('busy')
             this.emit('navigated', column.path)
 
             callback(err)
 
             component.on('selection-changed', () => {
-                let selected = component.data.items.filter(x => x.selected)
+                let selected = items.filter(x => x.selected)
                 let item = selected[0]
 
                 this.removeColumnsAfter($column)

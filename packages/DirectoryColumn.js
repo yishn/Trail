@@ -32,7 +32,7 @@ class DirectoryColumn extends ListColumn {
         })
     }
 
-    load(path, callback = () => {}) {
+    fetchItems(path, callback = () => {}) {
         fs.readdir(path, (err, files) => {
             if (err) return callback(err)
 
@@ -53,8 +53,7 @@ class DirectoryColumn extends ListColumn {
                 }
             }).sort(dirSort)
 
-            this.data = {items}
-            callback(err)
+            callback(null, items)
         })
 
         return this
