@@ -1,5 +1,6 @@
-const setting = require('./modules/setting')
+const fs = require('fs')
 const {app, shell, dialog, ipcMain, BrowserWindow, Menu} = require('electron')
+const setting = require('./modules/setting')
 
 const windows = []
 
@@ -83,7 +84,7 @@ function newWindow(info = null, overwriteLocation = null) {
 }
 
 function buildMenu() {
-    let template = Object.assign({}, require('./menu.json'))
+    let template = JSON.parse(fs.readFileSync(`${__dirname}/menu.json`, 'utf8'))
 
     // Process menu
 
