@@ -1,0 +1,85 @@
+/**
+ * Provides general styles for native app like behavior.
+ */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    background: white;
+}
+
+body, input, button, select, option, textarea {
+    font: menu;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+body, a {
+    cursor: default;
+    overflow: hidden;
+    outline: 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+pre, code {
+    font: 14px/1.3 Consolas, Menlo, Monaco, 'Ubuntu Mono', monospace;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+a, img {
+    user-drag: none;
+    -webkit-user-drag: none;
+    object-fit: contain;
+}
+
+img {
+    vertical-align: bottom;
+}
+
+#busy {
+        display: none;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        cursor: wait;
+        z-index: 999;
+    }
+    body.busy #busy {
+        display: block;
+}
+
+.resizer {
+        background: #ccc;
+    }
+    .resizer.vertical {
+        width: 2px;
+        height: 100%;
+        cursor: ew-resize;
+    }
+    .resizer.horizontal {
+        height: 2px;
+        width: 100%;
+        cursor: ns-resize;
+}
+
+input.focus-indicator {
+    position: fixed;
+    opacity: 0;
+    z-index: -1;
+    left: 50%;
+    top: 50%;
+    width: 1px;
+    height: 1px;
+}
