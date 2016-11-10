@@ -70,7 +70,6 @@ exports.save = function() {
 
 exports.get = function(key) {
     if (key in settings) return settings[key]
-    if (key in defaults) return defaults[key]
     return null
 }
 
