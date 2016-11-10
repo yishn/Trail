@@ -30,9 +30,17 @@ let start = function() {
     busy = false
 }
 
+module.exports = exports = function(options = {}) {
+    exports.options = Object.assign({
+        noCacheExts: []
+    }, options)
+
+    return exports
+}
+
 exports.get = function(name, small, callback = () => {}) {
     let ext = extname(name).toLowerCase()
-    if (ext != '' && !setting.get('iconextractor.nocache_ext').includes(ext))
+    if (ext != '' && !exports.options.noCacheExts.includes(ext))
         name = ext
 
     let id = [name, small].join('|')
