@@ -1,83 +1,169 @@
-var process = require('process')
-var app = require('electron').app
-var shell = require('electron').shell
-var dialog = require('electron').dialog
-var ipcMain = require('electron').ipcMain
-var setting = require('./modules/setting')
+const setting = require('./modules/setting')
+const {app, shell, dialog, ipcMain, BrowserWindow, Menu} = require('electron')
 
-var BrowserWindow = require('electron').BrowserWindow
-var Menu = require('electron').Menu
+const windows = []
 
-var windows = []
+function newWindow(info = null, overwriteLocation = null) {
+    if (!info) {
+        let windowInfos = setting.get('session.windows')
+        info = JSON.parse(JSON.stringify(windowInfos.slice(-1)[0]))
+        info.top += 30
+        info.left += 30
+    }
 
-function newWindow(path) {
-    var window = new BrowserWindow({
-        icon: process.platform == 'linux' ? __dirname + '/logo.png' : null,
+    if (overwriteLocation != null) {
+        info.location = overwriteLocation
+    }
+
+    let {height, width, top, left, location} = info
+    let saveSettingsId
+
+    let window = new BrowserWindow({
+        icon: process.platform == 'linux' ? `${__dirname}/logo.png` : null,
         title: app.getName(),
         useContentSize: true,
-        width: setting.get('window.width'),
-        height: setting.get('window.height'),
+        backgroundColor: '#F0F0F0',
+        width,
+        height,
+        x: left,
+        y: top,
         minWidth: setting.get('window.minwidth'),
-        minHeight: setting.get('window.minheight')
+        minHeight: setting.get('window.minheight'),
+        show: false
     })
 
     windows.push(window)
     buildMenu()
 
-    window.webContents.on('did-finish-load', function() {
-        if (path) window.webContents.send('load-dir', path)
-    }).on('new-window', function(e) {
-        e.preventDefault()
+    window.webContents.on('did-finish-load', () => {
+        window.show()
+        window.webContents.send('navigate', location)
+    }).on('new-window', evt => {
+        evt.preventDefault()
     })
 
-    window.on('closed', function() {
+    window.on('closed', () => {
+        if (BrowserWindow.getAllWindows().length == 0) return
+
+        clearTimeout(saveSettingsId)
+        let index = windows.indexOf(window)
+
         window = null
+        windows.splice(index, 1)
+        setting.get('session.windows').splice(index, 1)
+
+        saveSettingsId = setTimeout(setting.save, 500)
+    }).on('resize', () => {
+        clearTimeout(saveSettingsId)
+
+        let size = window.getContentSize()
+        info.width = size[0]
+        info.height = size[1]
+
+        saveSettingsId = setTimeout(setting.save, 500)
+    }).on('move', () => {
+        clearTimeout(saveSettingsId)
+
+        let position = window.getPosition()
+        info.left = position[0]
+        info.top = position[1]
+
+        saveSettingsId = setTimeout(setting.save, 500)
+    }).on('focus', () => {
+        setting.set('session.window_index', windows.indexOf(window))
     })
 
-    window.loadURL('file://' + __dirname + '/view/index.html')
+    window.loadURL(`file://${__dirname}/browser/index.html`)
 
     if (setting.get('debug.dev_tools')) {
         window.toggleDevTools()
     }
 
-    return window
+    return [window, info]
 }
 
-function buildMenu(noWindows) {
+function buildMenu() {
+    let template = JSON.parse(JSON.stringify(require('./menu.json')))
+
+    // Process menu
+
+    let processMenu = items => {
+        items.forEach(item => {
+            if ('label' in item) {
+                item.label = item.label
+                .replace('{name}', app.getName())
+                .replace('{version}', app.getVersion())
+            }
+
+            if ('action' in item) {
+                let action = item.action
+
+                item.click = () => {
+                    let window = BrowserWindow.getFocusedWindow()
+                    if (!window) return
+
+                    window.webContents.send('menu-click', action)
+                }
+
+                delete item.action
+            }
+
+            if ('checked' in item) {
+                item.type = 'checkbox'
+                item.checked = !!setting.get(item.checked)
+            }
+
+            if ('submenu' in item) {
+                processMenu(item.submenu)
+            }
+        })
+    }
+
+    processMenu(template)
+
+    // Set menu
+
+    let menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu)
+
     // Create dock menu
 
     if (process.platform == 'darwin') {
         app.dock.setMenu(Menu.buildFromTemplate([{
             label: 'New Window',
-            click: newWindow.bind(null, null)
+            click: () => newWindow()
         }]))
     }
 }
 
-ipcMain.on('new-window', function(e, path) { newWindow(path) })
-ipcMain.on('build-menu', function(e) { buildMenu() })
+ipcMain.on('new-window', (evt, ...args) => {
+    let [window, info] = newWindow(...args)
 
-app.on('window-all-closed', function() {
-    if (process.platform != 'darwin') {
-        app.quit()
-    } else {
-        buildMenu(true)
-    }
+    setting.get('session.windows').push(info)
+    setting.save()
+}).on('build-menu', () => {
+    buildMenu()
 })
 
-app.on('ready', function() {
+app.on('window-all-closed', () => {
+    app.quit()
+}).on('ready', () => {
+    let windowInfos = setting.get('session.windows')
+    let windowIndex = setting.get('session.window_index')
+
+    windowInfos.forEach(info => newWindow(info))
+
     if (process.argv.length >= 2) {
-        newWindow(process.argv[1])
-    } else {
-        newWindow()
+        ipcMain.emit('new-window', null, {path: process.argv[1]})
+        windowIndex = windows.length - 1
     }
-})
 
-app.on('activate', function(e, hasVisibleWindows) {
+    windows[windowIndex].focus()
+}).on('activate', (evt, hasVisibleWindows) => {
     if (!hasVisibleWindows) newWindow()
 })
 
-process.on('uncaughtException', function(err) {
+process.on('uncaughtException', err => {
     dialog.showErrorBox(app.getName() + ' v' + app.getVersion(), [
         'Something weird happened. ',
         app.getName(),

@@ -1,79 +1,82 @@
-const fs = require('fs')
+const fs = require('original-fs')
 const path = require('path')
-const remote = require('electron').remote
+const {remote} = require('electron')
 const app = remote ? remote.app : require('electron').app
 
-var directory = app.getPath('userData')
-try { fs.mkdirSync(directory) } catch(e) {}
+let directory = app.getPath('userData')
+try { fs.mkdirSync(directory) } catch(err) {}
 
 exports.settingsPath = path.join(directory, 'settings.json')
-exports.stylesPath = path.join(directory, 'styles.css')
 
-try {
-    fs.accessSync(exports.stylesPath, fs.R_OK)
-} catch(e) {
-    fs.writeFileSync(
-        exports.stylesPath,
-        '/* This stylesheet is loaded when ' + app.getName() + ' starts up. */'
-    )
-}
+let settings = {}
 
-var settings = {}
-
-var defaults = {
+let defaults = {
+    'columnview.colminwidth': 100,
+    'columnview.colwidth': 200,
     'debug.dev_tools': false,
-    'window.minheight': 400,
-    'window.minwidth': 800
-    'window.height': 400,
-    'window.width': 800
+    'iconextractor.nocache_ext': ['.exe', '.ico', '.lnk', '.msi', '.cur', '.ani'],
+    'session.homepage': {path: app.getPath('userData')},
+    'session.windows': [{
+        height: 350,
+        width: 800,
+        top: 30,
+        left: 30,
+        location: {path: app.getPath('userData')}
+    }],
+    'session.window_index': 0,
+    'sidebar.favorites': [{path: app.getPath('userData')}],
+    'sidebar.minwidth': 100,
+    'sidebar.width': 160,
+    'window.minheight': 100,
+    'window.minwidth': 400
 }
 
-context.load = function() {
+exports.load = function() {
     try {
-        settings = JSON.parse(fs.readFileSync(exports.settingsPath, { encoding: 'utf8' }))
+        settings = JSON.parse(fs.readFileSync(exports.settingsPath, 'utf8'))
     } catch(e) {
         settings = {}
     }
 
     // Load default settings
 
-    for (var key in defaults) {
+    for (let key in defaults) {
         if (key in settings) continue
         settings[key] = defaults[key]
     }
 
     // Overwrite settings
 
-    for (var overwriteKey in settings) {
+    for (let overwriteKey in settings) {
         if (overwriteKey.indexOf('setting.overwrite.') != 0) continue
 
-        var overwrites = settings[overwriteKey]
+        let overwrites = settings[overwriteKey]
         if (!overwrites.length) continue
 
-        for (var i = 0; i < overwrites.length; i++) {
+        for (let i = 0; i < overwrites.length; i++) {
             settings[overwrites[i]] = defaults[overwrites[i]]
         }
 
         settings[overwriteKey] = []
     }
 
-    return context.save()
+    exports.save()
 }
 
-context.save = function() {
+exports.save = function() {
     fs.writeFileSync(exports.settingsPath, JSON.stringify(settings, null, '  '))
-    return context
+    exports
 }
 
-context.get = function(key) {
+exports.get = function(key) {
     if (key in settings) return settings[key]
     if (key in defaults) return defaults[key]
     return null
 }
 
-context.set = function(key, value) {
+exports.set = function(key, value) {
     settings[key] = value
-    return context.save()
+    exports.save()
 }
 
-context.load()
+exports.load()
