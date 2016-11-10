@@ -1,8 +1,8 @@
-const {extname} = require('path')
 const EventEmitter = require('events')
-
+const {extname} = require('path')
+const {remote} = require('electron')
 const {extractIcon} = require('./trail-shell')
-const setting = require('./setting')
+const setting = remote.require('./modules/setting')
 
 let emitter = new EventEmitter()
 let busy = false
@@ -30,17 +30,9 @@ let start = function() {
     busy = false
 }
 
-module.exports = exports = function(options = {}) {
-    exports.options = Object.assign({
-        noCacheExts: []
-    }, options)
-
-    return exports
-}
-
 exports.get = function(name, small, callback = () => {}) {
     let ext = extname(name).toLowerCase()
-    if (ext != '' && !exports.options.noCacheExts.includes(ext))
+    if (ext != '' && !setting.get('iconextractor.nocache_ext').includes(ext))
         name = ext
 
     let id = [name, small].join('|')

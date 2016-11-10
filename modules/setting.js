@@ -1,7 +1,6 @@
 const fs = require('original-fs')
 const path = require('path')
-const {remote} = require('electron')
-const app = remote ? remote.app : require('electron').app
+const {app} = require('electron')
 
 let directory = app.getPath('userData')
 try { fs.mkdirSync(directory) } catch(err) {}
