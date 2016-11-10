@@ -6,7 +6,7 @@ const windows = []
 function newWindow(info = null, overwriteLocation = null) {
     if (!info) {
         let windowInfos = setting.get('session.windows')
-        info = JSON.parse(JSON.stringify(windowInfos.slice(-1)[0]))
+        info = Object.assign({}, windowInfos.slice(-1)[0])
         info.top += 30
         info.left += 30
     }
@@ -83,7 +83,7 @@ function newWindow(info = null, overwriteLocation = null) {
 }
 
 function buildMenu() {
-    let template = JSON.parse(JSON.stringify(require('./menu.json')))
+    let template = Object.assign({}, require('./menu.json'))
 
     // Process menu
 
