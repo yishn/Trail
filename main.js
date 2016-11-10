@@ -146,9 +146,7 @@ ipcMain.on('new-window', (evt, ...args) => {
     buildMenu()
 })
 
-app.on('window-all-closed', () => {
-    app.quit()
-}).on('ready', () => {
+app.on('ready', () => {
     let windowInfos = setting.get('session.windows')
     let windowIndex = setting.get('session.window_index')
 
@@ -162,6 +160,8 @@ app.on('window-all-closed', () => {
     windows[windowIndex].focus()
 }).on('activate', (evt, hasVisibleWindows) => {
     if (!hasVisibleWindows) newWindow()
+}).on('window-all-closed', () => {
+    app.quit()
 })
 
 process.on('uncaughtException', err => {
