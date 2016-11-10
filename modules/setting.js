@@ -65,7 +65,7 @@ exports.load = function() {
 
 exports.save = function() {
     fs.writeFileSync(exports.settingsPath, JSON.stringify(settings, null, '  '))
-    exports
+    return exports
 }
 
 exports.get = function(key) {
