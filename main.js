@@ -148,6 +148,9 @@ ipcMain.on('new-window', (evt, ...args) => {
     setting.save()
 }).on('build-menu', () => {
     buildMenu()
+}).on('window-index', evt => {
+    let window = BrowserWindow.fromWebContents(event.sender)
+    evt.returnValue = windows.indexOf(window)
 })
 
 app.on('ready', () => {
