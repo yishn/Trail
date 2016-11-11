@@ -4,6 +4,8 @@ const {remote} = require('electron')
 const {extractIcon} = require('./trail-shell')
 const setting = remote.require('./modules/setting')
 
+const noCacheExts = setting.get('iconextractor.nocache_ext')
+
 let emitter = new EventEmitter().setMaxListeners(0)
 let busy = false
 let inProgress = {}
@@ -32,7 +34,7 @@ let start = function() {
 
 exports.get = function(name, small, callback = () => {}) {
     let ext = extname(name).toLowerCase()
-    if (ext != '' && !setting.get('iconextractor.nocache_ext').includes(ext))
+    if (ext != '' && !noCacheExts.includes(ext))
         name = ext
 
     let id = [name, small].join('|')

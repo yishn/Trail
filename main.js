@@ -28,6 +28,7 @@ function newWindow(info = null, overwriteLocation = null) {
         height,
         x: left,
         y: top,
+        maximizable: false,
         minWidth: setting.get('window.minwidth'),
         minHeight: setting.get('window.minheight'),
         show: false
@@ -55,6 +56,8 @@ function newWindow(info = null, overwriteLocation = null) {
 
         saveSettingsId = setTimeout(setting.save, 500)
     }).on('resize', () => {
+        if (window.isMinimized()) return
+
         clearTimeout(saveSettingsId)
 
         let size = window.getContentSize()
