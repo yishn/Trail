@@ -27,7 +27,7 @@ class TrailWindow extends App {
     }
 
     render() {
-        return h('pre', {}, JSON.stringify(this.state.settings['session.windows'], '  '))
+        return h('pre', {}, JSON.stringify(this.state.settings['session.windows'], null, '  '))
     }
 }
 

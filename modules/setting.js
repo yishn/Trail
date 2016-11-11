@@ -66,6 +66,7 @@ exports.load = function() {
 
 exports.save = function() {
     fs.writeFileSync(exports.settingsPath, JSON.stringify(settings, null, '  '))
+    exports.events.emit('change')
     return exports
 }
 
@@ -78,9 +79,6 @@ exports.get = function(key = null) {
 exports.set = function(key, value) {
     if (typeof key == 'object') Object.assign(settings, key)
     else settings[key] = value
-
-    exports.events.emit('change')
-
     return exports.save()
 }
 
