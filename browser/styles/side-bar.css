@@ -1,0 +1,43 @@
+.side-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: #F0F0F0;
+    overflow: auto;
+}
+
+.side-bar .group h3 {
+    margin: 10px 10px 5px;
+    font-size: .8em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.side-bar .group ul {
+    margin-bottom: 20px;
+}
+
+.side-bar .group ul li {
+    position: relative;
+    height: 25px;
+    line-height: 25px;
+}
+
+.side-bar .group ul li img {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    margin-top: -8px;
+    width: 16px;
+    height: 16px;
+}
+
+.side-bar .group ul li span {
+    display: block;
+    position: absolute;
+    left: 33px;
+    right: 10px;
+    top: 0;
+    bottom: 0;
+}

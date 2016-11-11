@@ -43,19 +43,23 @@ class TrailWindow extends App {
 
     render({}, {settings}) {
         return h('section', {class: 'trail-window'}, [
-            h(SideBar, {data: [
-                {
-                    label: 'Devices',
-                    locations: this.state.devices.map(d => d = {
-                        path: d.name,
-                        label: d.volumeName
-                    })
-                },
-                {
-                    label: 'Favorites',
-                    locations: settings['sidebar.favorites']
-                }
-            ]})
+            h(SideBar, {
+                width: settings['sidebar.width'],
+                minWidth: settings['sidebar.minwidth'],
+                data: [
+                    {
+                        label: 'Devices',
+                        locations: this.state.devices.map(d => d = {
+                            path: d.name,
+                            label: d.volumeName
+                        })
+                    },
+                    {
+                        label: 'Favorites',
+                        locations: settings['sidebar.favorites']
+                    }
+                ]
+            })
         ])
     }
 }

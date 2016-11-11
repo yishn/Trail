@@ -17,8 +17,8 @@ class SideBar extends Component {
         })
     }
 
-    render({data}, {icons = {}}) {
-        return h('section', {class: 'side-bar'}, data.map(group =>
+    render({width, data}, {icons = {}}) {
+        return h('section', {class: 'side-bar', style: {width}}, data.map(group =>
             h('div', {class: 'group'}, [
                 h('h3', {}, group.label),
 
@@ -28,7 +28,7 @@ class SideBar extends Component {
 
                     return h('li', {}, [
                         h('img', {src: icons[l.path] || './img/blank.svg'}),
-                        label
+                        h('span', {}, label)
                     ])
                 }))
             ])
