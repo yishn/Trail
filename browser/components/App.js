@@ -10,6 +10,16 @@ class App extends Component {
             settings: setting.get()
         }
 
+        let handleSettingChange = () => this.setState({
+            settings: setting.get()
+        })
+
+        setting.events.on('change', handleSettingChange)
+
+        window.addEventListener('unload', () => {
+            setting.events.removeListener('change', handleSettingChange)
+        })
+
         this._settingChanges = {}
         this._settingChanged = false
     }
