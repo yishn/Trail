@@ -4,7 +4,7 @@ const {remote} = require('electron')
 const {extractIcon} = require('./trail-shell')
 const setting = remote.require('./modules/setting')
 
-let emitter = new EventEmitter()
+let emitter = new EventEmitter().setMaxListeners(0)
 let busy = false
 let inProgress = {}
 let cache = {}
@@ -44,9 +44,5 @@ exports.get = function(name, small, callback = () => {}) {
         if (!busy) start()
     }
 
-    emitter.setMaxListeners(emitter.getMaxListeners() + 1);
-    emitter.once(id, (err, result) => {
-        emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0));
-        callback(err, result)
-    })
+    emitter.once(id, callback)
 }

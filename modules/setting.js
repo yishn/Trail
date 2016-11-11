@@ -1,10 +1,12 @@
 const fs = require('original-fs')
 const path = require('path')
+const EventEmitter = require('events')
 const {app} = require('electron')
 
 let directory = app.getPath('userData')
 try { fs.mkdirSync(directory) } catch(err) {}
 
+exports.events = new EventEmitter().setMaxListeners(0)
 exports.settingsPath = path.join(directory, 'settings.json')
 
 let settings = {}
@@ -76,6 +78,9 @@ exports.get = function(key = null) {
 exports.set = function(key, value) {
     if (typeof key == 'object') Object.assign(settings, key)
     else settings[key] = value
+
+    exports.events.emit('change')
+
     return exports.save()
 }
 
