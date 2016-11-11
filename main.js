@@ -10,6 +10,7 @@ function newWindow(info = null, overwriteLocation = null) {
         info = Object.assign({}, windowInfos.slice(-1)[0])
         info.top += 30
         info.left += 30
+        info.location = Object.assign({}, setting.get('session.homepage'))
     }
 
     if (overwriteLocation != null) {
