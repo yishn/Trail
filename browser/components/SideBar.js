@@ -2,7 +2,22 @@ const {h, Component} = require('preact')
 const Location = require('../../modules/location')
 
 class SideBar extends Component {
-    render({data}) {
+    componentWillReceiveProps() {
+        let icons = {}
+
+        this.props.data.forEach(group => {
+            group.locations.forEach(location => {
+                let l = Location.resolve(location)
+
+                l.getIcon((err, icon) => {
+                    icons[l.path] = icon
+                    this.setState({icons})
+                })
+            })
+        })
+    }
+
+    render({data}, {icons = {}}) {
         return h('section', {class: 'side-bar'}, data.map(group =>
             h('div', {class: 'group'}, [
                 h('h3', {}, group.label),
@@ -12,18 +27,7 @@ class SideBar extends Component {
                     let label = location.label || l.getName()
 
                     return h('li', {}, [
-                        h('img', {
-                            src: './img/blank.svg',
-                            ref: img => {
-                                if (!img) return
-
-                                l.getIcon((err, icon) => {
-                                    if (err) return
-                                    img.src = icon
-                                })
-                            }
-                        }),
-
+                        h('img', {src: icons[l.path] || './img/blank.svg'}),
                         label
                     ])
                 }))
