@@ -1,6 +1,7 @@
 const {ipcRenderer, remote} = require('electron')
 const {app} = remote
 const {h, Component} = require('preact')
+const drives = require('../../modules/drives')
 
 const App = require('./App')
 const SideBar = require('./SideBar')
@@ -9,7 +10,12 @@ class TrailWindow extends App {
     constructor() {
         super()
 
+        this.setState({
+            devices: []
+        })
+
         this.prepareMenu()
+        this.loadDevices()
     }
 
     prepareMenu() {
@@ -28,12 +34,22 @@ class TrailWindow extends App {
         })
     }
 
+    loadDevices() {
+        drives.list((err, list) => {
+            if (err) return
+            this.setState({devices: list})
+        })
+    }
+
     render({}, {settings}) {
         return h('section', {class: 'trail-window'}, [
             h(SideBar, {data: [
                 {
                     label: 'Devices',
-                    locations: []
+                    locations: this.state.devices.map(d => d = {
+                        path: d.name,
+                        label: d.volumeName
+                    })
                 },
                 {
                     label: 'Favorites',

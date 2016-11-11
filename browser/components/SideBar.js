@@ -1,4 +1,5 @@
 const {h, Component} = require('preact')
+const Location = require('../../modules/location')
 
 class SideBar extends Component {
     render({data}) {
@@ -6,9 +7,26 @@ class SideBar extends Component {
             h('div', {class: 'group'}, [
                 h('h3', {}, group.label),
 
-                h('ul', {}, group.locations.map(location =>
-                    h('li', {}, location.path)
-                ))
+                h('ul', {}, group.locations.map(location => {
+                    let l = Location.resolve(location)
+                    let label = location.label || l.getName()
+
+                    return h('li', {}, [
+                        h('img', {
+                            src: './img/blank.svg',
+                            ref: img => {
+                                if (!img) return
+
+                                l.getIcon((err, icon) => {
+                                    if (err) return
+                                    img.src = icon
+                                })
+                            }
+                        }),
+
+                        label
+                    ])
+                }))
             ])
         ))
     }
