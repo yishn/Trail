@@ -1,7 +1,9 @@
 const {ipcRenderer, remote} = require('electron')
 const {app} = remote
 const {h, Component} = require('preact')
+
 const App = require('./App')
+const SideBar = require('./SideBar')
 
 class TrailWindow extends App {
     constructor() {
@@ -26,8 +28,19 @@ class TrailWindow extends App {
         })
     }
 
-    render() {
-        return h('pre', {}, JSON.stringify(this.state.settings['session.windows'], null, '  '))
+    render({}, {settings}) {
+        return h('section', {class: 'trail-window'}, [
+            h(SideBar, {data: [
+                {
+                    label: 'Devices',
+                    locations: []
+                },
+                {
+                    label: 'Favorites',
+                    locations: settings['sidebar.favorites']
+                }
+            ]})
+        ])
     }
 }
 
