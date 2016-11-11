@@ -67,14 +67,16 @@ exports.save = function() {
     return exports
 }
 
-exports.get = function(key) {
+exports.get = function(key = null) {
+    if (key == null) return settings
     if (key in settings) return settings[key]
     return null
 }
 
 exports.set = function(key, value) {
-    settings[key] = value
-    exports.save()
+    if (typeof key == 'object') Object.assign(settings, key)
+    else settings[key] = value
+    return exports.save()
 }
 
 exports.load()

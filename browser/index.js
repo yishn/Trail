@@ -1,4 +1,4 @@
 const {h, render} = require('preact')
-const App = require('./components/App')
+const TrailWindow = require('./components/TrailWindow')
 
-render(h(App), document.body)
+render(h(TrailWindow), document.body)

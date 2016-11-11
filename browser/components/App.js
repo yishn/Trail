@@ -1,30 +1,39 @@
-const {ipcRenderer, remote: {app}} = require('electron')
+const {remote} = require('electron')
 const {h, Component} = require('preact')
-
-function prepareMenu() {
-    ipcRenderer.on('menu-click', (evt, action) => {
-        let data = {
-            'new-window': () => {
-                ipcRenderer.send('new-window')
-            },
-            'restart': () => {
-                app.relaunch()
-                app.quit()
-            }
-        }
-
-        data[action]()
-    })
-}
+const setting = remote.require('./modules/setting')
 
 class App extends Component {
     constructor() {
         super()
-        prepareMenu()
+
+        this.state = {
+            settings: setting.get()
+        }
+
+        this._settingChanges = {}
+        this._settingChanged = false
     }
 
-    render() {
-        return h('h1', {}, 'Hello World!')
+    componentDidUpdate({}, {settings: prevSettings}) {
+        let {settings} = this.state
+
+        for (let key in settings) {
+            if (prevSettings[key] == settings[key])
+                continue
+
+            this._settingChanges[key] = settings[key]
+            this._settingChanged = true
+        }
+
+        if (this._settingChanged) {
+            clearTimeout(this._settingUpdateId)
+
+            this._settingUpdateId = setTimeout(() => {
+                setting.set(this._settingChanges)
+                this._settingChanges = {}
+                this._settingChanged = false
+            }, 500)
+        }
     }
 }
 
