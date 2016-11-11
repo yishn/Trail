@@ -22,6 +22,18 @@ class Location {
             iconExtractor.get('folder', true, callback)
         }
     }
+
+    getBreadcrumbs() {
+        let parent = dirname(this.path)
+        if (helper.trimTrailingSep(this.path) == helper.trimTrailingSep(parent))
+            return [new Location(this.path)]
+
+        let l = new Location(parent)
+        let breadcrumbs = l.getBreadcrumbs()
+
+        breadcrumbs.push(new Location(this.path))
+        return breadcrumbs
+    }
 }
 
 module.exports = Location
