@@ -23,11 +23,11 @@ class SideBar extends Component {
                 h('h3', {}, group.label),
 
                 h('ul', {}, group.locations.map(location => {
-                    let current = Location.resolve(this.props.location)
                     let l = Location.resolve(location)
+                    let selected = Location.resolve(this.props.location).path == l.path
                     let label = location.label || l.getName()
 
-                    return h('li', {class: {selected: current.path == l.path}}, [
+                    return h('li', {class: {selected}}, [
                         h('img', {src: icons[l.path] || './img/blank.svg'}),
                         h('span', {}, label)
                     ])
