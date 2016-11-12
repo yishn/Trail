@@ -2,7 +2,7 @@ const {ipcRenderer, remote} = require('electron')
 const {h, Component} = require('preact')
 const setting = remote.require('./modules/setting')
 
-class App extends Component {
+class Window extends Component {
     constructor() {
         super()
 
@@ -29,4 +29,4 @@ class App extends Component {
     }
 }
 
-module.exports = App
+module.exports = Window
