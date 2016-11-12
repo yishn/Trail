@@ -12,7 +12,7 @@ class Location {
         let basename = path.basename(this.path)
 
         if (basename != '') return basename
-        return helper.trimTrailingSep(this.path)
+        return this.path
     }
 
     getIcon(callback) {
@@ -25,7 +25,7 @@ class Location {
 
     getBreadcrumbs() {
         let parent = dirname(this.path)
-        if (helper.trimTrailingSep(this.path) == helper.trimTrailingSep(parent))
+        if (this.path == helper.trimTrailingSep(parent))
             return [new Location(this.path)]
 
         let l = new Location(parent)

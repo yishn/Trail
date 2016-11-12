@@ -10,7 +10,11 @@ class TrailWindow extends Window {
     constructor() {
         super()
 
+        let {settings, windowIndex} = this.state
+        let {location} = settings['session.windows'][windowIndex]
+
         this.setState({
+            location,
             devices: []
         })
 
@@ -44,8 +48,8 @@ class TrailWindow extends Window {
     render({}, {settings}) {
         return h('section', {class: 'trail-window'}, [
             h(SideBar, {
+                location: this.state.location,
                 width: settings['sidebar.width'],
-                minWidth: settings['sidebar.minwidth'],
                 data: [
                     {
                         label: 'Devices',

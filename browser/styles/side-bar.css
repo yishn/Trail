@@ -24,6 +24,11 @@
     line-height: 25px;
 }
 
+.side-bar .group ul li.selected {
+    background: #007ACC;
+    color: white;
+}
+
 .side-bar .group ul li img {
     position: absolute;
     left: 12px;
