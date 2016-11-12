@@ -5,6 +5,7 @@ const drives = require('../../modules/drives')
 
 const Window = require('./Window')
 const SideBar = require('./SideBar')
+const ColumnView = require('./ColumnView')
 
 class TrailWindow extends Window {
     constructor() {
@@ -63,7 +64,9 @@ class TrailWindow extends Window {
                         locations: settings['sidebar.favorites']
                     }
                 ]
-            })
+            }),
+
+            h(ColumnView, {columns: []})
         ])
     }
 }
