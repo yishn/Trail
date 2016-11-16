@@ -20,7 +20,9 @@ class TrailWindow extends App {
             location,
             devices: []
         })
+    }
 
+    componentDidMount() {
         this.prepareMenu()
         this.loadDevices()
     }
@@ -72,10 +74,12 @@ class TrailWindow extends App {
                 class: 'side-bar-resizer',
                 style: value => value = {left: value},
                 value: settings['sidebar.width'],
+                minValue: settings['sidebar.minwidth'],
+                maxValue: settings['sidebar.maxwidth'],
+                diff: ([x1, y1], [x2, y2]) => x2 - x1,
                 update: width => {
-                    let state = this.state
-                    state.settings['sidebar.width'] = width
-                    this.setState(state)
+                    this.state.settings['sidebar.width'] = width
+                    this.setState(this.state)
                     setting.set('sidebar.width', width)
                 }
             }),

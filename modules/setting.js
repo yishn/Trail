@@ -27,6 +27,7 @@ let defaults = {
     'session.window_index': 0,
     'sidebar.favorites': [{path: app.getPath('userData')}],
     'sidebar.minwidth': 100,
+    'sidebar.maxwidth': 500,
     'sidebar.width': 160,
     'window.minheight': 100,
     'window.minwidth': 400
