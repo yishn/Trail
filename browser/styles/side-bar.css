@@ -10,9 +10,9 @@
 
 .side-bar .group h3 {
     margin: 10px 10px 5px;
-    font-size: .8em;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    font-size: 1.1em;
+    font-weight: normal;
+    color: #555;
 }
 
 .side-bar .group ul {
