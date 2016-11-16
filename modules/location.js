@@ -23,7 +23,11 @@ exports.resolve = function({path, type = null}) {
             Location = require(`../packages/${result[i]}`)
             if (Location.supports(path)) break
         }
+    } else {
+        Location = require(`../packages/${type}`)
     }
+
+    if (Location == null) return null
 
     return new Location(helper.trimTrailingSep(normalize(path)))
 }
