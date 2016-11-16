@@ -32,6 +32,8 @@ let defaults = {
     'window.minwidth': 400
 }
 
+let saveId
+
 exports.load = function() {
     try {
         settings = JSON.parse(fs.readFileSync(exports.settingsPath, 'utf8'))
@@ -65,7 +67,12 @@ exports.load = function() {
 }
 
 exports.save = function() {
-    fs.writeFileSync(exports.settingsPath, JSON.stringify(settings, null, '  '))
+    clearTimeout(saveId)
+
+    saveId = setTimeout(() => {
+        fs.writeFileSync(exports.settingsPath, JSON.stringify(settings, null, '  '))
+    }, 500)
+
     exports.events.emit('change')
     return exports
 }

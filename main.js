@@ -18,7 +18,6 @@ function newWindow(info = null, overwriteLocation = null) {
     }
 
     let {height, width, top, left, location} = info
-    let saveSettingsId
 
     let window = new BrowserWindow({
         icon: process.platform == 'linux' ? `${__dirname}/logo.png` : null,
@@ -48,32 +47,27 @@ function newWindow(info = null, overwriteLocation = null) {
     window.on('closed', () => {
         if (BrowserWindow.getAllWindows().length == 0) return
 
-        clearTimeout(saveSettingsId)
         let index = windows.indexOf(window)
 
         window = null
         windows.splice(index, 1)
         setting.get('session.windows').splice(index, 1)
 
-        saveSettingsId = setTimeout(setting.save, 500)
+        setting.save()
     }).on('resize', () => {
         if (window.isMinimized()) return
-
-        clearTimeout(saveSettingsId)
 
         let size = window.getContentSize()
         info.width = size[0]
         info.height = size[1]
 
-        saveSettingsId = setTimeout(setting.save, 500)
+        setting.save()
     }).on('move', () => {
-        clearTimeout(saveSettingsId)
-
         let position = window.getPosition()
         info.left = position[0]
         info.top = position[1]
 
-        saveSettingsId = setTimeout(setting.save, 500)
+        setting.save()
     }).on('focus', () => {
         setting.set('session.window_index', windows.indexOf(window))
     })
