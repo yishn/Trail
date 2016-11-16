@@ -71,9 +71,9 @@ exports.save = function() {
 
     saveId = setTimeout(() => {
         fs.writeFileSync(exports.settingsPath, JSON.stringify(settings, null, '  '))
+        exports.events.emit('change')
     }, 500)
 
-    exports.events.emit('change')
     return exports
 }
 
