@@ -1,4 +1,5 @@
-const path = require('path')
+const fs = require('fs')
+const {basename} = require('path')
 const helper = require('../modules/helper')
 const iconExtractor = require('../modules/icon-extractor')
 
@@ -9,14 +10,14 @@ class Location {
     }
 
     getName() {
-        let basename = path.basename(this.path)
+        let basename = basename(this.path)
 
         if (basename != '') return basename
         return this.path
     }
 
     getIcon(callback) {
-        if (path.basename(this.path).trim() == '') {
+        if (basename(this.path).trim() == '') {
             iconExtractor.get(this.path, true, callback)
         } else {
             iconExtractor.get('folder', true, callback)
@@ -34,6 +35,14 @@ class Location {
         breadcrumbs.push(new Location(this.path))
         return breadcrumbs
     }
+}
+
+Location.supports = function(path) {
+    try {
+        return fs.lstatSync(path).isDirectory()
+    } catch(err) {}
+
+    return false
 }
 
 module.exports = Location
