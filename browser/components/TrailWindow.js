@@ -3,11 +3,11 @@ const {app} = remote
 const {h, Component} = require('preact')
 const drives = require('../../modules/drives')
 
-const Window = require('./Window')
+const App = require('./App')
 const SideBar = require('./SideBar')
 const ColumnView = require('./ColumnView')
 
-class TrailWindow extends Window {
+class TrailWindow extends App {
     constructor() {
         super()
 

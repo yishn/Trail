@@ -2,7 +2,7 @@ const {ipcRenderer, remote} = require('electron')
 const {h, Component} = require('preact')
 const setting = remote.require('./modules/setting')
 
-class Window extends Component {
+class App extends Component {
     constructor() {
         super()
 
@@ -23,10 +23,7 @@ class Window extends Component {
         window.addEventListener('unload', () => {
             setting.events.removeListener('change', handleSettingChange)
         })
-
-        this._settingChanges = {}
-        this._settingChanged = false
     }
 }
 
-module.exports = Window
+module.exports = App
