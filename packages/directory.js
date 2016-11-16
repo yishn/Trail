@@ -10,9 +10,9 @@ class Location {
     }
 
     getName() {
-        let basename = basename(this.path)
+        let name = basename(this.path)
 
-        if (basename != '') return basename
+        if (name != '') return name
         return this.path
     }
 

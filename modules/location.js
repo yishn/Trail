@@ -1,3 +1,4 @@
+const fs = require('fs')
 const helper = require('./helper')
 
 function normalize(path) {
@@ -10,7 +11,19 @@ function normalize(path) {
     return result
 }
 
-exports.resolve = function({path, type = 'directory'}) {
-    let Location = require(`../packages/${type}`)
+exports.resolve = function({path, type = null}) {
+    let Location = null
+
+    if (type == null) {
+        let result = fs.readdirSync(normalize(`${__dirname}/../packages/`))
+
+        for (let i = 0; i < result.length; i++) {
+            if (result[i].slice(-3) != '.js') continue
+
+            Location = require(`../packages/${result[i]}`)
+            if (Location.supports(path)) break
+        }
+    }
+
     return new Location(helper.trimTrailingSep(normalize(path)))
 }
