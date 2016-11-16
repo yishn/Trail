@@ -1,4 +1,5 @@
 const {h, Component} = require('preact')
+const deepEqual = require('universal-deep-strict-equal')
 const Location = require('../../modules/location')
 
 class SideBar extends Component {
@@ -24,7 +25,7 @@ class SideBar extends Component {
 
                 h('ul', {}, group.locations.map(location => {
                     let l = Location.resolve(location)
-                    let selected = Location.resolve(this.props.location).path == l.path
+                    let selected = deepEqual(location, this.props.location)
                     let label = location.label || l.getName()
 
                     return h('li', {class: {selected}}, [

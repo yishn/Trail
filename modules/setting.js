@@ -16,16 +16,16 @@ let defaults = {
     'columnview.colwidth': 200,
     'debug.dev_tools': false,
     'iconextractor.nocache_ext': ['.exe', '.ico', '.lnk', '.msi', '.cur', '.ani'],
-    'session.homepage': {path: app.getPath('userData')},
+    'session.homepage': {path: app.getPath('userData'), type: 'directory'},
     'session.windows': [{
         height: 350,
         width: 800,
         top: 30,
         left: 30,
-        location: {path: app.getPath('userData')}
+        location: {path: app.getPath('userData'), type: 'directory'}
     }],
     'session.window_index': 0,
-    'sidebar.favorites': [{path: app.getPath('userData')}],
+    'sidebar.favorites': [{path: app.getPath('userData'), type: 'directory'}],
     'sidebar.minwidth': 100,
     'sidebar.maxwidth': 500,
     'sidebar.width': 160,

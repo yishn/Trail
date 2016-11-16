@@ -21,7 +21,9 @@ exports.resolve = function({path, type = null}) {
             if (result[i].slice(-3) != '.js') continue
 
             Location = require(`../packages/${result[i]}`)
+
             if (Location.supports(path)) break
+            else Location = null
         }
     } else {
         Location = require(`../packages/${type}`)
