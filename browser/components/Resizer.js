@@ -19,13 +19,6 @@ class Resizer extends Component {
             update(helper.clamp(this._oldValue + delta, minValue, maxValue))
         })
 
-        window.addEventListener('mousedown', evt => {
-            if (evt.button != 0) return
-
-            this._oldValue = this.props.value
-            this._mousePos = [evt.x, evt.y]
-        })
-
         window.addEventListener('mouseup', evt => {
             if (evt.button != 0) return
 
@@ -33,10 +26,20 @@ class Resizer extends Component {
         })
     }
 
+    componentDidMount() {
+        this.element.addEventListener('mousedown', evt => {
+            if (evt.button != 0) return
+
+            this._oldValue = this.props.value
+            this._mousePos = [evt.x, evt.y]
+        })
+    }
+
     render({value, style}) {
         return h('div', {
             class: this.props.class,
-            style: style(value)
+            style: style(value),
+            ref: el => this.element = el
         })
     }
 }
