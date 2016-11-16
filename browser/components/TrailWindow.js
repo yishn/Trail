@@ -73,9 +73,11 @@ class TrailWindow extends App {
             h(Resizer, {
                 class: 'side-bar-resizer',
                 style: value => value = {left: value},
+
                 value: settings['sidebar.width'],
                 minValue: settings['sidebar.minwidth'],
                 maxValue: settings['sidebar.maxwidth'],
+
                 diff: ([x1, y1], [x2, y2]) => x2 - x1,
                 update: width => {
                     this.state.settings['sidebar.width'] = width

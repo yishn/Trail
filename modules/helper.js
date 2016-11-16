@@ -8,6 +8,11 @@ exports.trimTrailingSep = function(str) {
     return str
 }
 
+exports.clamp = function(x, min, max) {
+    if (min > max) return x
+    return Math.max(Math.min(x, max), min)
+}
+
 exports.arrayEqual = function(a, b) {
     return a == b || a.length == b.length && a.every((x, i) => x == b[i])
 }
