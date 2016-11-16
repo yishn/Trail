@@ -7,7 +7,7 @@ const drives = require('../../modules/drives')
 const App = require('./App')
 const SideBar = require('./SideBar')
 const Resizer = require('./Resizer')
-const ColumnView = require('./ColumnView')
+const Main = require('./Main')
 
 class TrailWindow extends App {
     constructor() {
@@ -46,7 +46,13 @@ class TrailWindow extends App {
     loadDevices() {
         drives.list((err, list) => {
             if (err) return
-            this.setState({devices: list})
+
+            let devices = list.map(d => d = {
+                path: d.name,
+                label: d.volumeName
+            })
+
+            this.setState({devices})
         })
     }
 
@@ -58,10 +64,7 @@ class TrailWindow extends App {
                 data: [
                     {
                         label: 'Devices',
-                        locations: this.state.devices.map(d => d = {
-                            path: d.name,
-                            label: d.volumeName
-                        })
+                        locations: this.state.devices
                     },
                     {
                         label: 'Favorites',
@@ -86,7 +89,10 @@ class TrailWindow extends App {
                 }
             }),
 
-            h(ColumnView, {columns: []})
+            h(Main, {
+                location: this.state.location,
+                settings
+            })
         ])
     }
 }
