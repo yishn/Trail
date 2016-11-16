@@ -11,7 +11,9 @@ class Resizer extends Component {
         window.addEventListener('mousemove', evt => {
             if (evt.button != 0 || this._mousePos == null) return
 
-            let {diff, update, minValue, maxValue} = this.props
+            let {type, update, minValue, maxValue} = this.props
+            let t = type == 'horizontal' ? a => a[0] : a => a[1]
+            let diff = (a, b) => t(b) - t(a)
             let delta = diff(this._mousePos, [evt.x, evt.y])
 
             update(helper.clamp(this._oldValue + delta, minValue, maxValue))
