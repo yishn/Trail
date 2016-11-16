@@ -1,10 +1,12 @@
 const {ipcRenderer, remote} = require('electron')
 const {app} = remote
 const {h, Component} = require('preact')
+const setting = remote.require('./modules/setting')
 const drives = require('../../modules/drives')
 
 const App = require('./App')
 const SideBar = require('./SideBar')
+const Resizer = require('./Resizer')
 const ColumnView = require('./ColumnView')
 
 class TrailWindow extends App {
@@ -64,6 +66,18 @@ class TrailWindow extends App {
                         locations: settings['sidebar.favorites']
                     }
                 ]
+            }),
+
+            h(Resizer, {
+                class: 'side-bar-resizer',
+                style: value => value = {left: value},
+                value: settings['sidebar.width'],
+                update: width => {
+                    let state = this.state
+                    state.settings['sidebar.width'] = width
+                    this.setState(state)
+                    setting.set('sidebar.width', width)
+                }
             }),
 
             h(ColumnView, {columns: []})

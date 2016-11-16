@@ -50,3 +50,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.side-bar-resizer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #ccc;
+    cursor: ew-resize;
+}
