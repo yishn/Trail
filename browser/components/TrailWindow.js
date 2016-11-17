@@ -85,7 +85,7 @@ class TrailWindow extends App {
                 maxValue: settings['sidebar.maxwidth'],
 
                 type: 'horizontal',
-                update: width => {
+                onUpdate: width => {
                     this.state.settings['sidebar.width'] = width
                     this.setState(this.state)
                     setting.set('sidebar.width', width)

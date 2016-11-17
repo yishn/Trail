@@ -1,11 +1,11 @@
 const fs = require('fs')
-const {basename, join} = require('path')
+const {dirname, basename, join} = require('path')
 const helper = require('../modules/helper')
 const iconExtractor = require('../modules/icon-extractor')
 
 class Location {
     constructor(path) {
-        this.path = path
+        this.path = helper.trimTrailingSep(path)
         this.type = 'directory'
     }
 

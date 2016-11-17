@@ -10,9 +10,13 @@
 
 .side-bar .group h3 {
     margin: 10px 10px 5px;
+    width: 100%;
+    overflow: hidden;
     font-size: 1.1em;
     font-weight: normal;
     color: #555;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .side-bar .group ul {
