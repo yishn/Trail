@@ -44,13 +44,16 @@ class TrailWindow extends App {
     }
 
     loadDevices() {
+        let {supports} = require('../../packages/directory')
+
         drives.list((err, list) => {
             if (err) return
 
             let devices = list.map(d => d = {
                 path: d.name,
-                label: d.volumeName
-            })
+                label: d.volumeName,
+                type: 'directory'
+            }).filter(d => supports(d.path))
 
             this.setState({devices})
         })
