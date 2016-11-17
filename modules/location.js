@@ -33,3 +33,7 @@ exports.resolve = function({path, type = null}) {
 
     return new Location(helper.trimTrailingSep(normalize(path)))
 }
+
+exports.equals = function(l1, l2) {
+    return l1.path == l2.path && l1.type == l2.type
+}

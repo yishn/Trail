@@ -25,7 +25,7 @@ class SideBar extends Component {
 
                 h('ul', {}, group.locations.map(location => {
                     let l = Location.resolve(location)
-                    let selected = deepEqual(location, this.props.location)
+                    let selected = Location.equals(l, Location.resolve(this.props.location))
                     let label = location.label || l.getName()
 
                     return h('li', {class: {selected}}, [
