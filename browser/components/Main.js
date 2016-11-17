@@ -7,7 +7,7 @@ class Main extends Component {
         let l = Location.resolve(location)
         let breadcrumbs = l.getBreadcrumbs()
 
-        return h('main', {style: {left: settings['sidebar.width']}}, [
+        return h('main', {style: {left: settings['sidebar.width'] + 3}}, [
             h(ColumnView, {breadcrumbs, settings})
         ])
     }
