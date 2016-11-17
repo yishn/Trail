@@ -1,5 +1,4 @@
 const {h, Component} = require('preact')
-const deepEqual = require('universal-deep-strict-equal')
 const Location = require('../../modules/location')
 
 class SideBar extends Component {
