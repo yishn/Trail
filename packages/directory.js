@@ -40,9 +40,12 @@ class Location {
         fs.readdir(this.path, (err, files) => {
             if (err) return callback(err)
 
-            callback(null, files.map(file => file = {
-                label: file,
-                path: join(this.path, file)
+            callback(null, files.map(label => {
+                let path = join(this.path, label)
+                let folder = Location.supports(path)
+                let icon = cb => iconExtractor.get(folder ? 'folder' : path, true, cb)
+
+                return {label, path, icon}
             }))
         })
     }
