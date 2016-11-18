@@ -29,43 +29,55 @@ class Column extends Component {
             let i = items.findIndex(item => item.path == this.props.initialSelectedPath)
             if (i >= 0) selectedIndices.push(i)
 
-            this.setState({items, selectedIndices})
+            this.setState({items, icons: [], selectedIndices})
             this.updateScrollState()
-
-            items.forEach((item, i) => {
-                let {icons} = this.state
-
-                item.icon((err, icon) => {
-                    if (err) return
-
-                    icons[i] = icon
-                    this.setState({icons})
-                })
-            })
         })
     }
 
     componentDidMount() {
-        let ol = this.element.querySelector('ol')
-        ol.addEventListener('scroll', () => this.updateScrollState())
+        window.addEventListener('resize', () => this.updateScrollState())
+        this.ol.addEventListener('scroll', () => this.updateScrollState())
         this.updateScrollState()
     }
 
     updateScrollState() {
-        let ol = this.element.querySelector('ol')
-        let height = ol.offsetHeight
-        let {scrollTop, scrollHeight} = ol
+        let height = this.ol.offsetHeight
+        let {scrollTop, scrollHeight} = this.ol
 
         this.setState({
             scrollPercentage: scrollTop / scrollHeight,
             height
         })
+
+        // Get icons
+
+        let [startIndex, endIndex] = this.getStartEndIndices()
+
+        this.state.items.forEach((item, i) => {
+            if (i < startIndex || i > endIndex) return
+
+            let {icons} = this.state
+            if (icons[i] != null) return
+
+            item.icon((err, icon) => {
+                if (err) return
+
+                icons[i] = icon
+                this.setState({icons})
+            })
+        })
+    }
+
+    getStartEndIndices() {
+        let itemsCount = Math.ceil(this.state.height / this.itemHeight)
+        let startIndex = Math.floor(this.state.scrollPercentage * (this.state.items.length - 1))
+        let endIndex = startIndex + itemsCount
+
+        return [startIndex, endIndex]
     }
 
     render({location, width, minWidth}, {items, icons, selectedIndices, error}) {
-        let itemsCount = Math.ceil(this.state.height / this.itemHeight)
-        let startIndex = Math.floor(this.state.scrollPercentage * (items.length - 1))
-        let endIndex = startIndex + itemsCount
+        let [startIndex, endIndex] = this.getStartEndIndices()
 
         return h('section', {
             class: 'column-box',
@@ -74,7 +86,7 @@ class Column extends Component {
         }, [
             !error
 
-            ? h('ol', {}, [
+            ? h('ol', {ref: el => this.ol = el}, [
                 items.map((item, i) => {
                     if (i < startIndex || i > endIndex) return
 
