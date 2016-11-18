@@ -39,9 +39,20 @@ class Column extends Component {
     }
 
     componentDidMount() {
+        // Manage scroll state
+
         window.addEventListener('resize', () => this.updateScrollState())
         this.ol.addEventListener('scroll', () => this.updateScrollState())
         this.updateScrollState()
+
+        // Focus indicator
+
+        this.element.addEventListener('click', () => this.focus())
+        this.focusIndicator.addEventListener('focus', this.props.onFocus)
+    }
+
+    focus() {
+        this.focusIndicator.focus()
     }
 
     scrollItemIntoView(index) {
@@ -94,11 +105,11 @@ class Column extends Component {
         return [startIndex, endIndex]
     }
 
-    render({location, width, minWidth}, {items, icons, selectedIndices, error}) {
+    render({width, focused}, {items, icons, selectedIndices, error}) {
         let [startIndex, endIndex] = this.getStartEndIndices()
 
         return h('section', {
-            class: 'column-box',
+            class: {'column-box': true, focused},
             style: {width},
             ref: el => this.element = el
         }, [
@@ -122,10 +133,12 @@ class Column extends Component {
 
             : h('div', {class: 'error'}),
 
+            h('input', {class: 'focus-indicator', ref: el => this.focusIndicator = el}),
+
             h(Resizer, {
                 class: 'resizer',
                 value: width,
-                minValue: minWidth,
+                minValue: this.props.minWidth,
                 type: 'horizontal',
                 onUpdate: value => this.props.onResize(value)
             })

@@ -52,8 +52,11 @@ main {
         line-height: 25px;
     }
     .column-box li.selected {
-        background: #007ACC;
+        background: #5E6770;
         color: white;
+    }
+    .column-box.focused li.selected {
+        background: #007ACC;
     }
     .column-box li.placeholder {
         position: absolute;
