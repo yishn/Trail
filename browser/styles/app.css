@@ -46,6 +46,21 @@ img {
     vertical-align: bottom;
 }
 
+::-webkit-scrollbar {
+        height: 8px;
+        width: 8px;
+        background: #F0F0F0;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #ccc;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #A9A9A9;
+    }
+    ::-webkit-scrollbar-corner {
+        background: #F0F0F0;
+}
+
 #busy {
         display: none;
         position: fixed;
