@@ -44,14 +44,22 @@ main {
 }
 
 .column-box li {
-        position: relative;
-        padding: 0 5px;
+        position: absolute;
+        left: 0;
+        right: 0;
         height: 25px;
+        padding: 0 5px;
         line-height: 25px;
     }
     .column-box li.selected {
         background: #007ACC;
         color: white;
+    }
+    .column-box li.placeholder {
+        position: absolute;
+        width: 1px;
+        left: -1px;
+        top: 0;
 }
 
 .column-box li img {
