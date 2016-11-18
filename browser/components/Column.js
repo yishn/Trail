@@ -38,7 +38,7 @@ class Column extends Component {
         // Focus indicator
 
         this.element.addEventListener('click', () => this.focus())
-        this.focusIndicator.addEventListener('focus', () => this.props.onFocus(this))
+        this.focusIndicator.addEventListener('focus', () => this.focus())
 
         this.load()
     }
@@ -61,7 +61,10 @@ class Column extends Component {
     }
 
     focus() {
+        if (this.props.focused) return
+
         this.focusIndicator.focus()
+        this.props.onFocus(this)
     }
 
     scrollItemIntoView(index) {
