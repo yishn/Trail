@@ -27,7 +27,11 @@ class Column extends Component {
 
             let selectedIndices = []
             let i = items.findIndex(item => item.path == this.props.initialSelectedPath)
-            if (i >= 0) selectedIndices.push(i)
+
+            if (i >= 0) {
+                selectedIndices.push(i)
+                this.scrollItemIntoView(i)
+            }
 
             this.setState({items, icons: [], selectedIndices})
             this.updateScrollState()
@@ -37,6 +41,20 @@ class Column extends Component {
     componentDidMount() {
         window.addEventListener('resize', () => this.updateScrollState())
         this.ol.addEventListener('scroll', () => this.updateScrollState())
+        this.updateScrollState()
+    }
+
+    scrollItemIntoView(index) {
+        let {scrollTop} = this.ol
+        let {height} = this.state
+        let itemTop = index * this.itemHeight
+
+        if (itemTop < scrollTop) {
+            this.ol.scrollTop = itemTop
+        } else if (itemTop + this.itemHeight > scrollTop + height) {
+            this.ol.scrollTop = itemTop - height + this.itemHeight
+        }
+
         this.updateScrollState()
     }
 
