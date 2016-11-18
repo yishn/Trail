@@ -8,7 +8,9 @@ class ColumnView extends Component {
                 location,
                 width: widths[i] || settings['columnview.colwidth'],
                 minWidth: settings['columnview.colminwidth'],
-                
+
+                initialSelectedPath: i + 1 < breadcrumbs.length ? breadcrumbs[i + 1].path : '',
+
                 onResize: width => {
                     widths[i] = width
                     this.setState({widths})

@@ -24,14 +24,13 @@
 }
 
 .side-bar .group ul li {
-    position: relative;
-    height: 25px;
-    line-height: 25px;
-}
-
-.side-bar .group ul li.selected {
-    background: #007ACC;
-    color: white;
+        position: relative;
+        height: 25px;
+        line-height: 25px;
+    }
+    .side-bar .group ul li.selected {
+        background: #007ACC;
+        color: white;
 }
 
 .side-bar .group ul li img {

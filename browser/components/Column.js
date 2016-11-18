@@ -6,8 +6,6 @@ class Column extends Component {
     constructor() {
         super()
 
-        this._firstTimeLoading = true
-
         this.state = {
             scrollTop: 0,
             items: [],
@@ -26,7 +24,11 @@ class Column extends Component {
                 this.setState({error: true})
             }
 
-            this.setState({items})
+            let selectedIndices = []
+            let i = items.findIndex(item => item.path == this.props.initialSelectedPath)
+            if (i >= 0) selectedIndices.push(i)
+
+            this.setState({items, selectedIndices})
 
             items.forEach((item, i) => {
                 let {icons} = this.state
@@ -38,8 +40,6 @@ class Column extends Component {
                     this.setState({icons})
                 })
             })
-
-            this._firstTimeLoading = false
         })
     }
 
