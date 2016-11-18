@@ -1,4 +1,5 @@
 const {h, Component} = require('preact')
+
 const Location = require('../../modules/location')
 const Resizer = require('./Resizer')
 
@@ -19,23 +20,12 @@ class Column extends Component {
         }
     }
 
-    componentWillReceiveProps() {
-        let l = Location.resolve(this.props.location)
+    componentDidUpdate({location: prevLocation}) {
+        let l1 = Location.resolve(prevLocation)
+        let l2 = Location.resolve(this.props.location)
 
-        l.list((err, items) => {
-            if (err) return this.setState({items: [], error: true})
-
-            let selectedIndices = []
-            let i = items.findIndex(item => item.path == this.props.initialSelectedPath)
-
-            if (i >= 0) {
-                selectedIndices.push(i)
-                this.scrollItemIntoView(i)
-            }
-
-            this.setState({items, icons: [], selectedIndices})
-            this.updateScrollState()
-        })
+        if (!Location.equals(l1, l2))
+            load()
     }
 
     componentDidMount() {
@@ -48,7 +38,26 @@ class Column extends Component {
         // Focus indicator
 
         this.element.addEventListener('click', () => this.focus())
-        this.focusIndicator.addEventListener('focus', this.props.onFocus)
+        this.focusIndicator.addEventListener('focus', () => this.props.onFocus(this))
+
+        this.load()
+    }
+
+    load() {
+        let l = Location.resolve(this.props.location)
+
+        l.list((err, items) => {
+            if (err) return this.setState({items: [], error: true})
+
+            let selectedIndices = []
+            let i = items.findIndex(item => this.props.breadcrumbs.some(x => x.path == item.path))
+            if (i >= 0) selectedIndices.push(i)
+
+            this.setState({items, icons: [], selectedIndices})
+            this.updateScrollState()
+
+            if (i >= 0) this.scrollItemIntoView(i)
+        })
     }
 
     focus() {
@@ -70,8 +79,7 @@ class Column extends Component {
     }
 
     updateScrollState() {
-        let height = this.ol.offsetHeight
-        let {scrollTop, scrollHeight} = this.ol
+        let {scrollTop, scrollHeight, offsetHeight: height} = this.ol
 
         this.setState({
             scrollPercentage: scrollTop / scrollHeight,
@@ -105,7 +113,7 @@ class Column extends Component {
         return [startIndex, endIndex]
     }
 
-    render({width, focused}, {items, icons, selectedIndices, error}) {
+    render({breadcrumbs, width, focused}, {items, icons, selectedIndices, error}) {
         let [startIndex, endIndex] = this.getStartEndIndices()
 
         return h('section', {
@@ -120,8 +128,13 @@ class Column extends Component {
                     if (i < startIndex || i > endIndex) return
 
                     return h('li', {
-                        class: {selected: selectedIndices.includes(i)},
-                        style: {top: i * this.itemHeight}
+                        class: {
+                            selected: selectedIndices.includes(i),
+                            opened: breadcrumbs.some(x => x.path == item.path)
+                        },
+                        style: {
+                            top: i * this.itemHeight
+                        }
                     }, [
                         h('img', {src: icons[i] || 'img/blank.svg'}),
                         h('span', {title: item.label}, item.label)

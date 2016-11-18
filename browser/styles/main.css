@@ -51,12 +51,13 @@ main {
         padding: 0 5px;
         line-height: 25px;
     }
-    .column-box li.selected {
+    .column-box li.opened {
         background: #5E6770;
         color: white;
     }
     .column-box.focused li.selected {
         background: #007ACC;
+        color: white;
     }
     .column-box li.placeholder {
         position: absolute;
